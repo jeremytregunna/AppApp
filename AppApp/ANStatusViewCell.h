@@ -21,6 +21,8 @@ extern CGFloat const ANStatusViewCellAvatarWidth;
 
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *created_at;
+
 @property (nonatomic, strong) UIImage  *avatar;
 
 @property (nonatomic, readonly) SDImageView *avatarView;
