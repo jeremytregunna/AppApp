@@ -69,7 +69,7 @@
 
 - (NSString *)sideMenuImageName
 {
-    return @"sidemenu_user_icon";
+    return @"sidemenu_usermentions_icon";
 }
 
 - (void)configureFromUserData
