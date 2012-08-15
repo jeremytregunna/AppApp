@@ -61,5 +61,7 @@
 		<string>Ubuntu-B.ttf</string>
 		<string>Ubuntu-M.ttf</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 </dict>
 </plist>
