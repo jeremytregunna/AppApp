@@ -16,6 +16,8 @@
 #import "MFSideMenu.h"
 #import "NSObject+SDExtensions.h"
 #import "NSDictionary+SDExtensions.h"
+//#import "NSDate+Helper.h"
+
 
 @interface ANBaseStreamController ()
 
@@ -37,6 +39,10 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                            target:self
                                                                                            action:@selector(newPostAction:)];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:
+                                     [[UIImage imageNamed:@"statusCellBackground"]
+                                      resizableImageWithCapInsets:UIEdgeInsetsZero]];
     
     // setup refresh/load more
     
@@ -111,13 +117,14 @@
     NSString *statusText =[[streamData objectAtIndex: [indexPath row]] objectForKey:@"text"];
     if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
     
-    CGSize maxStatusLabelSize = CGSizeMake(240,200);
+    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
     CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
                                     constrainedToSize:maxStatusLabelSize
                                         lineBreakMode: UILineBreakModeWordWrap];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
+    
     return height;
 }
 
@@ -138,6 +145,15 @@
     cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
     cell.status = statusText;
     cell.statusTextLabel.delegate = self;
+    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
+    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
+                                    constrainedToSize:maxStatusLabelSize
+                                        lineBreakMode: UILineBreakModeWordWrap];
+    CGRect frame = cell.statusTextLabel.frame;
+    frame.size.height = statusLabelSize.height;
+    cell.statusTextLabel.frame = frame;
+    //NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
+    //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
     
     //detect usernames
     NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]

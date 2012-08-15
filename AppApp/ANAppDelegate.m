@@ -14,6 +14,7 @@
 
 @implementation ANAppDelegate
 
+
 static ANAppDelegate *sharedInstance = nil;
 
 + (ANAppDelegate *)sharedInstance
@@ -57,9 +58,23 @@ static ANAppDelegate *sharedInstance = nil;
         [self.window.rootViewController presentModalViewController:authView animated:YES];
     }
     
+    [self _setupGlobalStyling];
+    
     return YES;
 }
 
+// Use this method to set up any styles that are used app wide
+- (void)_setupGlobalStyling
+{
+    // Set up navigation bar bg
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbarBg"] forBarMetrics:UIBarMetricsDefault];
+    
+    // Set up navigation title
+    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeFont:[UIFont fontWithName:@"Ubuntu-Medium" size:20.0f]}];
+    
+    // Set UIBarButton item bg
+    [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+}
 
 // https://[your registered redirect URI]/#access_token=[user access token]
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {

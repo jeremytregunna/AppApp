@@ -19,6 +19,10 @@
     return @"User Stream";
 }
 
+- (NSString *)sideMenuImageName
+{
+    return @"sidemenu_userstream_icon";
+}
 
 - (void)addItemsOnTop
 {

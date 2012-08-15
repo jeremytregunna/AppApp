@@ -19,6 +19,11 @@
     return @"User Mentions";
 }
 
+- (NSString *)sideMenuImageName
+{
+    return @"sidemenu_usermentions_icon";
+}
+
 - (void)addItemsOnTop
 {
     // Call this to indicate that we have finished "refreshing".

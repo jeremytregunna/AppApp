@@ -67,6 +67,11 @@
     return @"Me";
 }
 
+- (NSString *)sideMenuImageName
+{
+    return @"sidemenu_usermentions_icon";
+}
+
 - (void)configureFromUserData
 {
     userImageView.imageURL = [userData valueForKeyPath:@"avatar_image.url"];

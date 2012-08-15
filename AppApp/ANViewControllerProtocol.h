@@ -11,6 +11,7 @@
 @protocol ANViewControllerProtocol <NSObject>
 
 @property (nonatomic, readonly) NSString *sideMenuTitle;
+@property (nonatomic, readonly) NSString *sideMenuImageName;
 
 - (BOOL)refresh;
 
