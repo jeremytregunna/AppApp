@@ -57,13 +57,6 @@ static ANAppDelegate *sharedInstance = nil;
         [self.window.rootViewController presentModalViewController:authView animated:YES];
     }
     
-    for (NSString *family in [UIFont familyNames]) {
-        NSArray *fonts  = [UIFont fontNamesForFamilyName:family];
-        for (NSString *font in fonts) {
-            NSLog(@"Font :: %@", font);
-        }
-    }
-    
     return YES;
 }
 
