@@ -117,13 +117,14 @@
     NSString *statusText =[[streamData objectAtIndex: [indexPath row]] objectForKey:@"text"];
     if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
     
-    CGSize maxStatusLabelSize = CGSizeMake(240,200);
+    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
     CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
                                     constrainedToSize:maxStatusLabelSize
                                         lineBreakMode: UILineBreakModeWordWrap];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
+    
     return height;
 }
 
@@ -144,7 +145,13 @@
     cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
     cell.status = statusText;
     cell.statusTextLabel.delegate = self;
-    
+    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
+    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
+                                    constrainedToSize:maxStatusLabelSize
+                                        lineBreakMode: UILineBreakModeWordWrap];
+    CGRect frame = cell.statusTextLabel.frame;
+    frame.size.height = statusLabelSize.height;
+    cell.statusTextLabel.frame = frame;
     //NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
     //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
     
