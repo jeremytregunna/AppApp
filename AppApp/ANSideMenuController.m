@@ -10,6 +10,8 @@
 #import "ANUserStreamController.h"
 #import "ANUserMentionsController.h"
 #import "ANUserViewController.h"
+#import "ANSideMenuCell.h"
+#import "NSObject+SDExtensions.h"
 
 @implementation ANSideMenuController
 {
@@ -38,6 +40,11 @@
     [super viewDidLoad];
     
     [self.tableView setScrollsToTop:NO];
+    
+    // Set up title
+    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor colorWithRed:7/255.0f green:92/255.0f blue:127/255.0f alpha:1.0f];
 }
 
 #pragma mark - UITableViewDataSource
@@ -54,17 +61,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"sideMenuCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    ANSideMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [ANSideMenuCell loadFromNib];
     }
     
-    ANBaseStreamController *controller = [_navigationArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = controller.sideMenuTitle;
+    id<ANViewControllerProtocol> controller = [_navigationArray objectAtIndex:indexPath.row];
+    cell.menuTitleLabel.text = [controller.sideMenuTitle uppercaseString];
     
+    if ([controller respondsToSelector:@selector(sideMenuImageName)]) {
+        cell.menuIconImageView.image = [UIImage imageNamed:controller.sideMenuImageName];
+    } else {
+        cell.menuIconImageView.image = nil;
+    }
+
     return cell;
 }
 
@@ -87,6 +100,10 @@
 			c.tableView.scrollsToTop = (current==c);
 		}
 	}
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 53.0f;
 }
 
 @end
