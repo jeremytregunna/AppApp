@@ -16,6 +16,8 @@
 #import "MFSideMenu.h"
 #import "NSObject+SDExtensions.h"
 #import "NSDictionary+SDExtensions.h"
+#import "NSDate+Helper.h"
+
 
 @interface ANBaseStreamController ()
 
@@ -138,6 +140,9 @@
     cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
     cell.status = statusText;
     cell.statusTextLabel.delegate = self;
+    
+    NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
+    cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
     
     //detect usernames
     NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]

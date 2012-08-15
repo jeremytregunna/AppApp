@@ -20,6 +20,8 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     UIButton *showUserButton;
     SDImageView *avatarView;
     UILabel *usernameTextLabel;
+    UILabel *created_atTextLabel;
+
 }
 
 - (void)registerObservers;
@@ -28,7 +30,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @end
 
 @implementation ANStatusViewCell
-@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel;
+@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel, created_at;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -45,10 +47,17 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         [self.contentView addSubview: showUserButton];
         
         // username
-        usernameTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 240, 15)];
+        usernameTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 180, 15)];
         usernameTextLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
         usernameTextLabel.highlightedTextColor = [UIColor whiteColor];
         [self.contentView addSubview: usernameTextLabel];
+        
+        //created_atTextLabel
+        created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(255, 10, 55, 15)];
+        created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        created_atTextLabel.highlightedTextColor = [UIColor whiteColor];
+        created_atTextLabel.textAlignment = UITextAlignmentRight;
+        [self.contentView addSubview: created_atTextLabel];
         
         // status label
         statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(70, 27, 240, 100)];
@@ -75,13 +84,16 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 {
     [self addObserver:self forKeyPath:@"status" options:0 context:0];
     [self addObserver:self forKeyPath:@"username" options:0 context:0];
-    
+    [self addObserver:self forKeyPath:@"created_at" options:0 context:0];
+
 }
 
 - (void)unregisterObservers
 {
     [self removeObserver:self forKeyPath:@"status"];
     [self removeObserver:self forKeyPath:@"username"];
+    [self removeObserver:self forKeyPath:@"created_at"];
+
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -100,7 +112,11 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusTextLabel.frame = statusLabelNewFrame;
     } else if([keyPath isEqualToString:@"username"]) {
         [usernameTextLabel setText: self.username];
-    } else if([keyPath isEqualToString:@"avatar"]) 
+    }
+    else if([keyPath isEqualToString:@"created_at"]) {
+        [created_atTextLabel setText: self.created_at];
+    }
+    else if([keyPath isEqualToString:@"avatar"])
 {
     if(self.avatar) {
         avatarView.image = self.avatar;
