@@ -93,6 +93,16 @@
 		CAD8D9A415D7709C007FC765 /* UIViewController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD8D99E15D7709C007FC765 /* UIViewController+MFSideMenu.m */; };
 		CAD8D9A815D77113007FC765 /* ANSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD8D9A715D77113007FC765 /* ANSideMenuController.m */; };
 		FD3EB0D515DA341C005BF189 /* ANConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3EB0D415DA341C005BF189 /* ANConstants.m */; };
+		FD3EB15D15DB48EE005BF189 /* ANSideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3EB15C15DB48EE005BF189 /* ANSideMenuCell.m */; };
+		FD3EB16015DB491D005BF189 /* ANSideMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB15F15DB491D005BF189 /* ANSideMenuCell.xib */; };
+		FD3EB16415DB49A1005BF189 /* sidemenu_cell_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16215DB49A1005BF189 /* sidemenu_cell_bg.png */; };
+		FD3EB16515DB49A1005BF189 /* sidemenu_cell_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16315DB49A1005BF189 /* sidemenu_cell_bg@2x.png */; };
+		FD3EB16815DB53AF005BF189 /* sidemenu_userstream_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16615DB53AF005BF189 /* sidemenu_userstream_icon.png */; };
+		FD3EB16915DB53AF005BF189 /* sidemenu_userstream_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16715DB53AF005BF189 /* sidemenu_userstream_icon@2x.png */; };
+		FD3EB16C15DB54BA005BF189 /* sidemenu_usermentions_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16A15DB54BA005BF189 /* sidemenu_usermentions_icon.png */; };
+		FD3EB16D15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16B15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png */; };
+		FD3EB17315DB5671005BF189 /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */; };
+		FD3EB17615DB584D005BF189 /* Ubuntu-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -229,6 +239,17 @@
 		CAD8D9A715D77113007FC765 /* ANSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANSideMenuController.m; sourceTree = "<group>"; };
 		FD3EB0D315DA341C005BF189 /* ANConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANConstants.h; sourceTree = "<group>"; };
 		FD3EB0D415DA341C005BF189 /* ANConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANConstants.m; sourceTree = "<group>"; };
+		FD3EB15B15DB48EE005BF189 /* ANSideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANSideMenuCell.h; sourceTree = "<group>"; };
+		FD3EB15C15DB48EE005BF189 /* ANSideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANSideMenuCell.m; sourceTree = "<group>"; };
+		FD3EB15F15DB491D005BF189 /* ANSideMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ANSideMenuCell.xib; sourceTree = "<group>"; };
+		FD3EB16215DB49A1005BF189 /* sidemenu_cell_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidemenu_cell_bg.png; sourceTree = "<group>"; };
+		FD3EB16315DB49A1005BF189 /* sidemenu_cell_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidemenu_cell_bg@2x.png"; sourceTree = "<group>"; };
+		FD3EB16615DB53AF005BF189 /* sidemenu_userstream_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidemenu_userstream_icon.png; sourceTree = "<group>"; };
+		FD3EB16715DB53AF005BF189 /* sidemenu_userstream_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidemenu_userstream_icon@2x.png"; sourceTree = "<group>"; };
+		FD3EB16A15DB54BA005BF189 /* sidemenu_usermentions_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidemenu_usermentions_icon.png; sourceTree = "<group>"; };
+		FD3EB16B15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidemenu_usermentions_icon@2x.png"; sourceTree = "<group>"; };
+		FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-M.ttf"; sourceTree = "<group>"; };
+		FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-B.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +298,7 @@
 		0067483115D8473100065DFF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				FD3EB16115DB4995005BF189 /* Side Menu */,
 				1FADC98D15D88B8600CFD1F8 /* avatarPlaceholder.png */,
 				1FADC98E15D88B8600CFD1F8 /* avatarPlaceholder@2x.png */,
 				003B7CAE15D7815B002F9A95 /* icon-114.png */,
@@ -310,6 +332,7 @@
 		00B473FF15D38E3C00F767CE = {
 			isa = PBXGroup;
 			children = (
+				FD3EB17015DB5670005BF189 /* Assets */,
 				0067483115D8473100065DFF /* Images */,
 				CAD8D8DF15D706E7007FC765 /* Externals */,
 				922F80C015D58F360049F194 /* API */,
@@ -595,8 +618,33 @@
 			children = (
 				CAD8D9A615D77113007FC765 /* ANSideMenuController.h */,
 				CAD8D9A715D77113007FC765 /* ANSideMenuController.m */,
+				FD3EB15B15DB48EE005BF189 /* ANSideMenuCell.h */,
+				FD3EB15C15DB48EE005BF189 /* ANSideMenuCell.m */,
+				FD3EB15F15DB491D005BF189 /* ANSideMenuCell.xib */,
 			);
 			name = "Side Menu";
+			sourceTree = "<group>";
+		};
+		FD3EB16115DB4995005BF189 /* Side Menu */ = {
+			isa = PBXGroup;
+			children = (
+				FD3EB16A15DB54BA005BF189 /* sidemenu_usermentions_icon.png */,
+				FD3EB16B15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png */,
+				FD3EB16615DB53AF005BF189 /* sidemenu_userstream_icon.png */,
+				FD3EB16715DB53AF005BF189 /* sidemenu_userstream_icon@2x.png */,
+				FD3EB16215DB49A1005BF189 /* sidemenu_cell_bg.png */,
+				FD3EB16315DB49A1005BF189 /* sidemenu_cell_bg@2x.png */,
+			);
+			name = "Side Menu";
+			sourceTree = "<group>";
+		};
+		FD3EB17015DB5670005BF189 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */,
+				FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -652,6 +700,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00B4741915D38E3C00F767CE /* InfoPlist.strings in Resources */,
+				FD3EB17615DB584D005BF189 /* Ubuntu-B.ttf in Resources */,
 				922F80CF15D595510049F194 /* AuthViewController.xib in Resources */,
 				922F80D515D5A0890049F194 /* ANPostStatusViewController.xib in Resources */,
 				CAD8D8AB15D6E59F007FC765 /* ANAPI.plist in Resources */,
@@ -686,6 +735,14 @@
 				CA5863D015D8BF5C0044BA4A /* repost@2x.png in Resources */,
 				CA13EF1B15D9EFF6005359E3 /* check.png in Resources */,
 				CA13EF1C15D9EFF6005359E3 /* check@2x.png in Resources */,
+				FD3EB16015DB491D005BF189 /* ANSideMenuCell.xib in Resources */,
+				FD3EB16415DB49A1005BF189 /* sidemenu_cell_bg.png in Resources */,
+				FD3EB16515DB49A1005BF189 /* sidemenu_cell_bg@2x.png in Resources */,
+				FD3EB16815DB53AF005BF189 /* sidemenu_userstream_icon.png in Resources */,
+				FD3EB16915DB53AF005BF189 /* sidemenu_userstream_icon@2x.png in Resources */,
+				FD3EB16C15DB54BA005BF189 /* sidemenu_usermentions_icon.png in Resources */,
+				FD3EB16D15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png in Resources */,
+				FD3EB17315DB5671005BF189 /* Ubuntu-M.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +794,7 @@
 				CA7052CE15D89A87009A3011 /* ANPostDetailController.m in Sources */,
 				0067488D15D9F79100065DFF /* TTTAttributedLabel.m in Sources */,
 				FD3EB0D515DA341C005BF189 /* ANConstants.m in Sources */,
+				FD3EB15D15DB48EE005BF189 /* ANSideMenuCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
