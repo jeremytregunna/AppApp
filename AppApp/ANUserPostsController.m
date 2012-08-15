@@ -17,6 +17,12 @@
     NSString *userID;
 }
 
+- (id)init
+{
+    self = [super init];
+    return self;
+}
+
 - (id)initWithUserID:(NSString *)aUserID
 {
     self = [super init];
