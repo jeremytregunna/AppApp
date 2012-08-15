@@ -105,6 +105,8 @@
 		FD3EB16D15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB16B15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png */; };
 		FD3EB17315DB5671005BF189 /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */; };
 		FD3EB17615DB584D005BF189 /* Ubuntu-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */; };
+		FD3EB47515DB6AA3005BF189 /* navbarBg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47315DB6AA3005BF189 /* navbarBg.png */; };
+		FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -254,6 +256,8 @@
 		FD3EB16B15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidemenu_usermentions_icon@2x.png"; sourceTree = "<group>"; };
 		FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-M.ttf"; sourceTree = "<group>"; };
 		FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-B.ttf"; sourceTree = "<group>"; };
+		FD3EB47315DB6AA3005BF189 /* navbarBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbarBg.png; sourceTree = "<group>"; };
+		FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbarBg@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,9 +306,10 @@
 		0067483115D8473100065DFF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				FD3EB16115DB4995005BF189 /* Side Menu */,
+				FD3EB47115DB6A98005BF189 /* Navigation Bar */,
 				1F6EAAF715DB54F600892268 /* statusCellBackground.png */,
 				1F6EAAF815DB54F600892268 /* statusCellBackground@2x.png */,
-				FD3EB16115DB4995005BF189 /* Side Menu */,
 				1FADC98D15D88B8600CFD1F8 /* avatarPlaceholder.png */,
 				1FADC98E15D88B8600CFD1F8 /* avatarPlaceholder@2x.png */,
 				003B7CAE15D7815B002F9A95 /* icon-114.png */,
@@ -653,6 +658,15 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		FD3EB47115DB6A98005BF189 /* Navigation Bar */ = {
+			isa = PBXGroup;
+			children = (
+				FD3EB47315DB6AA3005BF189 /* navbarBg.png */,
+				FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */,
+			);
+			name = "Navigation Bar";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -751,6 +765,8 @@
 				FD3EB16C15DB54BA005BF189 /* sidemenu_usermentions_icon.png in Resources */,
 				FD3EB16D15DB54BA005BF189 /* sidemenu_usermentions_icon@2x.png in Resources */,
 				FD3EB17315DB5671005BF189 /* Ubuntu-M.ttf in Resources */,
+				FD3EB47515DB6AA3005BF189 /* navbarBg.png in Resources */,
+				FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
