@@ -12,6 +12,13 @@
 #import "NSDictionary+SDExtensions.h"
 #import "NSObject+SDExtensions.h"
 
+@interface ANUserListController ()
+
+@property (assign, nonatomic) BOOL isFiltered;
+@property (strong, nonatomic) NSMutableArray *filteredUsers;
+
+@end
+
 @implementation ANUserListController
 {
     NSArray *userArray;
@@ -69,7 +76,16 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [userArray count];
+//    return [userArray count];
+    
+    NSInteger items = 0;
+    if (self.filteredUsers) {
+        items = [self.filteredUsers count];
+    } else {
+        items = [userArray count];
+    }
+    
+    return items;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,7 +96,14 @@
         cell = [ANUserListCell loadFromNib];
     
     // Configure the cell...
-    NSDictionary *userObject = [userArray objectAtIndex:indexPath.row];
+    NSDictionary *userObject = nil;
+    
+    if (self.isFiltered) {
+        userObject = [self.filteredUsers objectAtIndex:[indexPath row]];
+    } else {
+        userObject = [userArray objectAtIndex:[indexPath row]];
+    }
+    
     cell.nameLabel.text = [userObject stringForKey:@"name"];
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [userObject stringForKeyPath:@"username"]];
     cell.userImageView.imageURL = [userObject stringForKeyPath:@"avatar_image.url"];
@@ -138,6 +161,37 @@
     // Navigation logic may go here. Create and push another view controller.
     ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:[userArray objectAtIndex:indexPath.row]];
     [self.navigationController pushViewController:userController animated:YES];
+}
+
+#pragma mark - Search Bar Delegate methods.
+
+-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
+{
+    
+    if(text.length == 0) {
+        self.isFiltered = NO;
+        self.filteredUsers = nil;
+        
+    } else {
+        
+        self.isFiltered = YES;
+        self.filteredUsers = [[NSMutableArray alloc] init];
+        
+        NSDictionary *user = nil;
+        for (user in userArray) {
+                        
+            NSRange nameRange = [[user stringForKey:@"name"] rangeOfString:text options:NSCaseInsensitiveSearch];
+            NSRange usernameRange = [[user objectForKey:@"username"] rangeOfString:text options:NSCaseInsensitiveSearch];
+            
+            if(nameRange.location != NSNotFound || usernameRange.location != NSNotFound) {
+                [self.filteredUsers addObject:user];
+            }
+            
+        }
+        
+    }
+    
+    [self.tableView reloadData];
 }
 
 @end
