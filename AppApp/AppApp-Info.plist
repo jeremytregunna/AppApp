@@ -56,5 +56,10 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Ubuntu-B.ttf</string>
+		<string>Ubuntu-M.ttf</string>
+	</array>
 </dict>
 </plist>
