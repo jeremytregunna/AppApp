@@ -38,6 +38,10 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self)
     {
+        //turn this off for custom highlighting in setSelected
+        self.selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,0)];
+        self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+        
         UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
         // future avatar
@@ -81,7 +85,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         // username
         usernameTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 180, 15)];
         usernameTextLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
-        usernameTextLabel.highlightedTextColor = [UIColor whiteColor];
         usernameTextLabel.backgroundColor = postColor;
         usernameTextLabel.textColor = textColor;
         [self.postView addSubview: usernameTextLabel];
@@ -89,7 +92,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         //created_atTextLabel
         created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(185, 10, 55, 15)];
         created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
-        created_atTextLabel.highlightedTextColor = [UIColor whiteColor];
         created_atTextLabel.backgroundColor = postColor;
         created_atTextLabel.textAlignment = UITextAlignmentRight;
         [self.postView addSubview: created_atTextLabel];
@@ -98,11 +100,17 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 27, 230, 100)];
         statusTextLabel.dataDetectorTypes = UIDataDetectorTypeAll;
         statusTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-        statusTextLabel.highlightedTextColor = [UIColor whiteColor];
         statusTextLabel.backgroundColor = postColor;
         statusTextLabel.numberOfLines = 0;
         statusTextLabel.textColor = textColor;
         statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        
+        // set the link style
+        NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
+        statusTextLabel.linkAttributes = linkAttributes;
+        [linkAttributes setValue:(id)[[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0]
+                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+       
         [self.postView addSubview: statusTextLabel];
         
         // register observers
@@ -110,6 +118,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     }
     return self;
 }
+
 
 
 -(void) dealloc
@@ -176,6 +185,15 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     }
 }
 
+-(void)setHighlighted:(BOOL)selected
+{
+    if(selected) {
+        [self.postView.superview bringSubviewToFront:self.postView];
+        self.postView.backgroundColor = [UIColor whiteColor];
+    } else {
+        self.postView.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
+    }
+}
 -(void)layoutSubviews {
     // size the post views according to the height of the cell
     self.postView.frame = CGRectMake(self.postView.frame.origin.x,self.postView.frame.origin.y,
@@ -187,7 +205,11 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     
     _avatarConnector.frame = CGRectMake(_avatarConnector.frame.origin.x,round(10.0+avatarView.frame.size.height/2.0),
                                      _avatarConnector.frame.size.width,_avatarConnector.frame.size.height);
-
+    
+     self.selectedBackgroundView.frame = CGRectMake(self.selectedBackgroundView.frame.origin.x,
+                                                    self.selectedBackgroundView.frame.origin.y,
+                                                    self.selectedBackgroundView.frame.size.width,
+                                                    self.frame.size.height);
 }
 
 @end
