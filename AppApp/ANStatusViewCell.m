@@ -5,7 +5,7 @@
 //  Created by Zach Holmquist on 8/10/12.
 //  Copyright (c) 2012 Sneakyness. All rights reserved.
 //
-
+#import <QuartzCore/QuartzCore.h>
 #import "ANStatusViewCell.h"
 
 CGFloat const ANStatusViewCellTopMargin = 10.0;
@@ -21,6 +21,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     SDImageView *avatarView;
     UILabel *usernameTextLabel;
     UILabel *created_atTextLabel;
+    UIView *postView;
 
 }
 
@@ -30,43 +31,79 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @end
 
 @implementation ANStatusViewCell
-@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel, created_at;
+@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel, created_at, postView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self)
     {
+        UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
+        UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
         // future avatar
         avatarView = [[SDImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         avatarView.backgroundColor = [UIColor grayColor];
+        avatarView.layer.borderWidth = 1.0;
+        avatarView.layer.borderColor = [borderColor CGColor];
         [self.contentView addSubview: avatarView];
 
         showUserButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         showUserButton.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview: showUserButton];
         
+        UIColor *postColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
+        postView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,100)];
+        postView.alpha = 1.0;
+        self.postView.backgroundColor = postColor;
+        
+        _leftBorder = [[CALayer alloc] init];
+        _leftBorder.frame = CGRectMake(0,0,1,self.bounds.size.height);
+        _leftBorder.backgroundColor = [borderColor CGColor];
+        [self.postView.layer addSublayer:_leftBorder];
+        
+        _bottomBorder = [[CALayer alloc] init];
+        _bottomBorder.frame = CGRectMake(0,0,self.bounds.size.width,1);
+        _bottomBorder.backgroundColor = [borderColor CGColor];
+        [self.postView.layer addSublayer:_bottomBorder];
+        
+        _topBorder = [[CALayer alloc] init];
+        _topBorder.frame = CGRectMake(1,0,self.bounds.size.width-1,1);
+        _topBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+        [self.postView.layer addSublayer:_topBorder];
+        
+        _avatarConnector = [[CALayer alloc] init];
+        _avatarConnector.frame = CGRectMake(60,0,10,1);
+        _avatarConnector.backgroundColor = [borderColor CGColor];
+        [self.contentView.layer addSublayer:_avatarConnector];
+        
+        [self.contentView addSubview: postView];
+        
         // username
-        usernameTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 180, 15)];
+        usernameTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 180, 15)];
         usernameTextLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
         usernameTextLabel.highlightedTextColor = [UIColor whiteColor];
-        [self.contentView addSubview: usernameTextLabel];
+        usernameTextLabel.backgroundColor = postColor;
+        usernameTextLabel.textColor = textColor;
+        [self.postView addSubview: usernameTextLabel];
         
         //created_atTextLabel
-        created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(255, 10, 55, 15)];
+        created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(185, 10, 55, 15)];
         created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         created_atTextLabel.highlightedTextColor = [UIColor whiteColor];
+        created_atTextLabel.backgroundColor = postColor;
         created_atTextLabel.textAlignment = UITextAlignmentRight;
-        [self.contentView addSubview: created_atTextLabel];
+        [self.postView addSubview: created_atTextLabel];
         
         // status label
-        statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(70, 27, 240, 100)];
+        statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 27, 230, 100)];
         statusTextLabel.dataDetectorTypes = UIDataDetectorTypeAll;
         statusTextLabel.lineBreakMode = UILineBreakModeWordWrap;
         statusTextLabel.highlightedTextColor = [UIColor whiteColor];
+        statusTextLabel.backgroundColor = postColor;
         statusTextLabel.numberOfLines = 0;
+        statusTextLabel.textColor = textColor;
         statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
-        [self.contentView addSubview: statusTextLabel];
+        [self.postView addSubview: statusTextLabel];
         
         // register observers
         [self registerObservers];
@@ -137,6 +174,20 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
+}
+
+-(void)layoutSubviews {
+    // size the post views according to the height of the cell
+    self.postView.frame = CGRectMake(self.postView.frame.origin.x,self.postView.frame.origin.y,
+                                     self.postView.frame.size.width,self.frame.size.height);
+    _leftBorder.frame = CGRectMake(_leftBorder.frame.origin.x,_leftBorder.frame.origin.y,
+                                     _leftBorder.frame.size.width,self.frame.size.height);
+    _bottomBorder.frame = CGRectMake(_bottomBorder.frame.origin.x,self.frame.size.height-1.0,
+                                   _bottomBorder.frame.size.width,_bottomBorder.frame.size.height);
+    
+    _avatarConnector.frame = CGRectMake(_avatarConnector.frame.origin.x,round(10.0+avatarView.frame.size.height/2.0),
+                                     _avatarConnector.frame.size.width,_avatarConnector.frame.size.height);
+
 }
 
 @end
