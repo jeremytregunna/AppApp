@@ -16,7 +16,7 @@
 #import "MFSideMenu.h"
 #import "NSObject+SDExtensions.h"
 #import "NSDictionary+SDExtensions.h"
-#import "NSDate+Helper.h"
+//#import "NSDate+Helper.h"
 
 
 @interface ANBaseStreamController ()
@@ -39,6 +39,10 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                            target:self
                                                                                            action:@selector(newPostAction:)];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:
+                                     [[UIImage imageNamed:@"statusCellBackground"]
+                                      resizableImageWithCapInsets:UIEdgeInsetsZero]];
     
     // setup refresh/load more
     
@@ -141,8 +145,8 @@
     cell.status = statusText;
     cell.statusTextLabel.delegate = self;
     
-    NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
-    cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
+    //NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
+    //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
     
     //detect usernames
     NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]

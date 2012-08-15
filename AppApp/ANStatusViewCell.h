@@ -18,7 +18,12 @@ extern CGFloat const ANStatusViewCellAvatarHeight;
 extern CGFloat const ANStatusViewCellAvatarWidth;
 
 @interface ANStatusViewCell : UITableViewCell <TTTAttributedLabelDelegate>
-
+{
+    CALayer* _leftBorder;
+    CALayer* _bottomBorder;
+    CALayer* _topBorder;
+    CALayer* _avatarConnector;
+}
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *created_at;
@@ -28,5 +33,6 @@ extern CGFloat const ANStatusViewCellAvatarWidth;
 @property (nonatomic, readonly) SDImageView *avatarView;
 @property (nonatomic, readonly) UIButton *showUserButton;
 @property (nonatomic, readonly) TTTAttributedLabel *statusTextLabel;
+@property (nonatomic, readonly) UIView* postView;
 
 @end
