@@ -113,7 +113,7 @@
 		<key>getUserMentionsSince</key>
 		<dict>
 			<key>routeFormat</key>
-			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;before_id={before_id}</string>
+			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;since_id={since_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>
