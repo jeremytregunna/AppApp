@@ -124,7 +124,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id };
     
-    [self performRequestWithMethod:@"getGlobalStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getGlobalStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getGlobalStreamBeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -136,7 +136,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id };
     
-    [self performRequestWithMethod:@"getGlobalStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getGlobalStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserStream:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -160,7 +160,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id };
     
-    [self performRequestWithMethod:@"getUserStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserStreamBeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -172,7 +172,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id };
     
-    [self performRequestWithMethod:@"getUserStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserPosts:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -196,7 +196,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"since_id" : since_id };
     
-    [self performRequestWithMethod:@"getUserPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserPosts:(NSString *)ID BeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -208,7 +208,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"before_id" : before_id };
     
-    [self performRequestWithMethod:@"getUserPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserPosts:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -247,7 +247,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"since_id" : since_id };
     
-    [self performRequestWithMethod:@"getUserMentions" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserMentionsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserMentions:(NSString *)ID BeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -259,7 +259,7 @@
     
     NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"before_id" : before_id };
     
-    [self performRequestWithMethod:@"getUserMentions" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    [self performRequestWithMethod:@"getUserMentionsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
 - (void)getUserMentions:(SDWebServiceUICompletionBlock)uiCompletionBlock
