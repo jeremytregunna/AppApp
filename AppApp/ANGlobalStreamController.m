@@ -33,50 +33,15 @@
         
         // get newest posts
         [[ANAPICall sharedAppAPI] getGlobalStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-            [self _updateTopWithData:dataObject];            
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];
         }];
     } else {
         [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
-            [self _updateTopWithData:dataObject];
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];            
         }];
     }
-}
-
-// Will update top of table, and data from data object
-- (void)_updateTopWithData:(id)dataObject
-{
-    // begin updates on table
-    [self.tableView beginUpdates];
-    
-    // get start indexpath
-    NSUInteger startIndexPathRow = 0;
-    NSUInteger endIndexPathRow = [dataObject count];
-    
-    // add data
-    NSMutableIndexSet *indexSets = [NSMutableIndexSet indexSet];
-    for (NSUInteger i = 0; i < [dataObject count]; i++) {
-        [indexSets addIndex:i];
-    }
-    
-    if (!streamData) {
-        streamData = [NSMutableArray array];
-    }
-    
-    [streamData insertObjects:dataObject atIndexes:indexSets];
-    
-    // initialize indexpaths
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[dataObject count]];
-    
-    // create array of index paths
-    while (startIndexPathRow < endIndexPathRow) {
-        [indexPaths addObject:[NSIndexPath indexPathForRow:startIndexPathRow inSection:0]];
-        startIndexPathRow++;
-    }
-    
-    // insert rows
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
-    [self refreshCompleted];
 }
 
 - (void)addItemsOnBottom
@@ -89,34 +54,7 @@
         
         // fetch old data
         [[ANAPICall sharedAppAPI] getGlobalStreamBeforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-
-            // verify object
-            if ([dataObject isKindOfClass:[NSArray class]])
-            {
-                // begin updates on table
-                [self.tableView beginUpdates];
-
-                // get start indexpath
-                NSUInteger startIndexPathRow = [streamData count];
-                NSUInteger endIndexPathRow = [dataObject count] + startIndexPathRow;
-                
-                // add data
-                [streamData addObjectsFromArray:dataObject];
-                
-                // initialize indexpaths
-                NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[dataObject count]];
-                
-                // create array of index paths
-                while (startIndexPathRow < endIndexPathRow) {
-                    [indexPaths addObject:[NSIndexPath indexPathForRow:startIndexPathRow inSection:0]];
-                    startIndexPathRow++;
-                }
-
-                // insert rows
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-            }
-            
+            [self updateBottomWithData:dataObject];
             [self loadMoreCompleted];
         }];        
     } else {
