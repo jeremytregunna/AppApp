@@ -77,6 +77,31 @@
 
 #pragma mark -
 
+/* 
+ workaround to a bug.  will investigate more soon.
+ 
+ the tap doesn't get triggered unless its in the first line's worth of control height.
+ 
+ */
+ 
+- (BOOL)canTapAtPoint:(CGPoint)point;
+{
+    CGPoint theLocation = point;
+    theLocation.x -= self.insets.left;
+    theLocation.y -= self.insets.top;
+    
+    NSRange theRange;
+    NSDictionary *theAttributes = [self attributesAtPoint:theLocation effectiveRange:&theRange];
+    NSString *theType = [theAttributes objectForKey:@"ANPostLabelAttributeType"];
+    NSString *theValue = [theAttributes objectForKey:@"ANPostLabelAttributeValue"];
+    
+    if (theValue && theType)
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)tap:(UITapGestureRecognizer *)inGestureRecognizer
 {
     CGPoint theLocation = [inGestureRecognizer locationInView:self];

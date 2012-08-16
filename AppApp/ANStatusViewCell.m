@@ -175,12 +175,31 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     }
 }
 
+/*
+ workaround to a bug.  will investigate more soon.
+ 
+ the tap doesn't get triggered unless its in the first line's worth of control height.
+ 
+ */
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *result = [super hitTest:point withEvent:event];
     CGRect statusFrame = statusTextLabel.frame;
     if (CGRectContainsPoint(statusFrame, point))
-        return statusTextLabel;
+    {
+        CGPoint newPoint = [self convertPoint:point toView:statusTextLabel];
+        if ([statusTextLabel canTapAtPoint:newPoint])
+             return statusTextLabel;
+    }
+
+    if (result == statusTextLabel)
+    {
+        CGPoint newPoint = [self convertPoint:point toView:statusTextLabel];
+        if ([statusTextLabel canTapAtPoint:newPoint])
+            return statusTextLabel;
+        else
+            return self;
+    }
     return result;
 }
 

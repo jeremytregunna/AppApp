@@ -53,7 +53,7 @@
     detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
     //detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
     //detailCell.postLabel.delegate = self;
-    detailCell.postLabel.text = [postData stringForKey:@"text"];
+    detailCell.postLabel.postData = postData;
     detailCell.nameLabel.text = [postData stringForKeyPath:@"user.name"];
     detailCell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [postData stringForKeyPath:@"user.username"]];
     detailCell.userImageView.imageURL = [postData stringForKeyPath:@"user.avatar_image.url"];

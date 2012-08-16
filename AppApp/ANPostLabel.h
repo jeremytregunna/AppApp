@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSDictionary *postData;
 @property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSRange, NSString *, NSString *type);
 
+- (BOOL)canTapAtPoint:(CGPoint)point;
+
 @end
