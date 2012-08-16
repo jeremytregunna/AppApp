@@ -28,10 +28,18 @@
 {
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
-    [[ANAPICall sharedAppAPI] getUserMentions:^(id dataObject, NSError *error) {
-        [self updateTopWithData:dataObject];
-        [self refreshCompleted];
-    }];
+    if ([streamData count] > 0) {
+        id firstPost = [streamData objectAtIndex:0];
+        [[ANAPICall sharedAppAPI] getUserMentions:[ANAPICall sharedAppAPI].userID SincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];
+        }];
+    } else {
+        [[ANAPICall sharedAppAPI] getUserMentions:^(id dataObject, NSError *error) {
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];
+        }];
+    }
 }
 
 - (void)addItemsOnBottom
