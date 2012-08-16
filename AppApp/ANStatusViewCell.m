@@ -8,6 +8,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ANStatusViewCell.h"
 #import "NSDictionary+SDExtensions.h"
+#import "NSDate+SDExtensions.h"
+#import "NSDate+ANExtensions.h"
 
 CGFloat const ANStatusViewCellTopMargin = 10.0;
 CGFloat const ANStatusViewCellBottomMargin = 10.0;
@@ -46,7 +48,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
         // future avatar
         avatarView = [[SDImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-        avatarView.backgroundColor = [UIColor grayColor];
+        avatarView.backgroundColor = [UIColor clearColor];
         avatarView.layer.borderWidth = 1.0;
         avatarView.layer.borderColor = [borderColor CGColor];
         [self.contentView addSubview: avatarView];
@@ -93,6 +95,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(185, 10, 55, 15)];
         created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         created_atTextLabel.backgroundColor = postColor;
+        created_atTextLabel.textColor = [UIColor grayColor];
         created_atTextLabel.textAlignment = UITextAlignmentRight;
         [self.postView addSubview: created_atTextLabel];
         
@@ -161,14 +164,18 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         NSString *username = [self.postData stringForKeyPath:@"user.username"];
         usernameTextLabel.text = username;
         
-        NSString *createdAt = [self.postData stringForKey:@"created_at"];
-        created_atTextLabel.text = createdAt;
+        NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
+        created_atTextLabel.text = [createdAt stringInterval];
         
-        /*NSString *
-    if(self.avatar) {
-        avatarView.image = self.avatar;
-        avatarView.backgroundColor = [UIColor clearColor];*/
+        NSString *avatarURL = [self.postData stringForKeyPath:@"user.avatar_image.url"];
+        avatarView.imageURL = avatarURL;
     }
+}
+
+- (void)prepareForReuse
+{
+    avatarView.image = [UIImage imageNamed:@"avatarPlaceholder.png"];
+    avatarView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -177,13 +184,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
     // Configure the view for the selected state
 }
-
-/*- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
-    }
-}*/
 
 -(void)setHighlighted:(BOOL)selected
 {
@@ -194,6 +194,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         self.postView.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
     }
 }
+
 -(void)layoutSubviews {
     // size the post views according to the height of the cell
     self.postView.frame = CGRectMake(self.postView.frame.origin.x,self.postView.frame.origin.y,

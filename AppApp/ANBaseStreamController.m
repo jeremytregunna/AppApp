@@ -140,42 +140,15 @@
     if (cell == nil) {
         cell = [[ANStatusViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }    
-    //TODO: move data into objects.
+
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
-    NSString *statusText = [statusDict objectForKey:@"text"];
-    NSString *avatarURL = [[[statusDict objectForKey:@"user" ] objectForKey:@"avatar_image"] objectForKey:@"url"];
     
     cell.postData = statusDict;
-    //cell.statusTextLabel.delegate = self;
-    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
-    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
-                                    constrainedToSize:maxStatusLabelSize
-                                        lineBreakMode: UILineBreakModeWordWrap];
-    CGRect frame = cell.statusTextLabel.frame;
-    frame.size.height = statusLabelSize.height;
-    cell.statusTextLabel.frame = frame;
-    //NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
-    //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
-    
-    //detect usernames
-    /*NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]
-                          objectForKey:@"entities"] objectForKey:@"mentions"];
-    for(NSDictionary* mention in mentions) {
-        NSRange indicies = NSMakeRange([[mention objectForKey:@"pos"] integerValue],
-                                       [[mention objectForKey:@"len"] integerValue]);
-        [cell.statusTextLabel addLinkToURL:[NSURL URLWithString:
-                                            [NSString stringWithFormat:@"username://%@",
-                                             [mention objectForKey:@"id"]]] withRange:indicies];
-        
-        
-    }*/
 
-    
-    [cell.avatarView  setImageURL:avatarURL
-                    withPlaceholderImage:[UIImage imageNamed:@"placeholderAvatar.png"]];
     // TODO: i know this is janky.  fix it.
     cell.showUserButton.tag = indexPath.row;
     // END JANKY.
+
     [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
