@@ -25,11 +25,54 @@
 {
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
-    [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
-        streamData = [NSMutableArray arrayWithArray:dataObject];
-        [self.tableView reloadData];
-        [self refreshCompleted];
-    }];
+    
+    if ([streamData count] > 0) {
+        id firstPost = [streamData objectAtIndex:0];
+        
+        [[ANAPICall sharedAppAPI] getGlobalStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
+            [self _updateTopWithData:dataObject];            
+        }];
+    } else {
+        [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
+            [self _updateTopWithData:dataObject];
+        }];
+    }
+}
+
+- (void)_updateTopWithData:(id)dataObject
+{
+    // begin updates on table
+    [self.tableView beginUpdates];
+    
+    // get start indexpath
+    NSUInteger startIndexPathRow = 0;
+    NSUInteger endIndexPathRow = [dataObject count];
+    
+    // add data
+    NSMutableIndexSet *indexSets = [NSMutableIndexSet indexSet];
+    for (NSUInteger i = 0; i < [dataObject count]; i++) {
+        [indexSets addIndex:i];
+    }
+    
+    if (!streamData) {
+        streamData = [NSMutableArray array];
+    }
+    
+    [streamData insertObjects:dataObject atIndexes:indexSets];
+    
+    // initialize indexpaths
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[dataObject count]];
+    
+    // create array of index paths
+    while (startIndexPathRow < endIndexPathRow) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:startIndexPathRow inSection:0]];
+        startIndexPathRow++;
+    }
+    
+    // insert rows
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+    [self refreshCompleted];
 }
 
 - (void)addItemsOnBottom
