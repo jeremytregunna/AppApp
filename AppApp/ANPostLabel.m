@@ -41,6 +41,11 @@
     return(self);
 }
 
+- (void)dealloc
+{
+    [self removeGestureRecognizer:tapRecognizer];
+}
+
 - (void)setText:(NSAttributedString *)inText
 {
     if (self.text != inText)
@@ -55,7 +60,10 @@
             }
         }];
         linkRanges = [theRanges copy];
-        
+
+        [self removeGestureRecognizer:tapRecognizer];
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        [self addGestureRecognizer:tapRecognizer];
         tapRecognizer.enabled = linkRanges.count > 0;
     }
 }

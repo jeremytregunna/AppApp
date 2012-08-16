@@ -40,6 +40,8 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self)
     {
+        self.clipsToBounds = YES;
+        
         //turn this off for custom highlighting in setSelected
         self.selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,0)];
         self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
@@ -107,6 +109,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         //statusTextLabel.numberOfLines = 0;
         statusTextLabel.textColor = textColor;
         statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        statusTextLabel.clipsToBounds = YES;
         
         // set the link style
         /*NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
@@ -121,8 +124,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     }
     return self;
 }
-
-
 
 -(void) dealloc
 {
@@ -172,6 +173,15 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         
         statusTextLabel.enabled = YES;
     }
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *result = [super hitTest:point withEvent:event];
+    CGRect statusFrame = statusTextLabel.frame;
+    if (CGRectContainsPoint(statusFrame, point))
+        return statusTextLabel;
+    return result;
 }
 
 - (void)prepareForReuse
