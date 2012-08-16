@@ -10,6 +10,6 @@
 
 @interface ANPostLabel : CLinkingCoreTextLabel
 
-@property (nonatomic, strong) NSString *postText;
+@property (nonatomic, strong) NSDictionary *postData;
 
 @end

@@ -43,6 +43,21 @@
 		9253EBD515D624F90047C153 /* ANStatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9253EBD415D624F90047C153 /* ANStatusViewCell.m */; };
 		CA13EF1B15D9EFF6005359E3 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1915D9EFF6005359E3 /* check.png */; };
 		CA13EF1C15D9EFF6005359E3 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1A15D9EFF6005359E3 /* check@2x.png */; };
+		CA13EF9C15DBCCDF005359E3 /* CCoreTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8415DBCCDF005359E3 /* CCoreTextAttachment.m */; };
+		CA13EF9D15DBCCDF005359E3 /* CCoreTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8615DBCCDF005359E3 /* CCoreTextLabel.m */; };
+		CA13EF9E15DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8815DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.m */; };
+		CA13EF9F15DBCCDF005359E3 /* CCoreTextRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8A15DBCCDF005359E3 /* CCoreTextRenderer.m */; };
+		CA13EFA015DBCCDF005359E3 /* CLinkingCoreTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8C15DBCCDF005359E3 /* CLinkingCoreTextLabel.m */; };
+		CA13EFA115DBCCDF005359E3 /* CMarkupValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8E15DBCCDF005359E3 /* CMarkupValueTransformer.m */; };
+		CA13EFA215DBCCDF005359E3 /* CSimpleHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9015DBCCDF005359E3 /* CSimpleHTMLParser.m */; };
+		CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF9115DBCCDF005359E3 /* MissingImage.png */; };
+		CA13EFA415DBCCDF005359E3 /* NSAttributedString_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9315DBCCDF005359E3 /* NSAttributedString_Extensions.m */; };
+		CA13EFA515DBCCDF005359E3 /* NSScanner_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9515DBCCDF005359E3 /* NSScanner_HTMLExtensions.m */; };
+		CA13EFA615DBCCDF005359E3 /* NSString_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9715DBCCDF005359E3 /* NSString_HTMLExtensions.m */; };
+		CA13EFA715DBCCDF005359E3 /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9915DBCCDF005359E3 /* UIColor+Hex.m */; };
+		CA13EFA815DBCCDF005359E3 /* UIFont_CoreTextExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF9B15DBCCDF005359E3 /* UIFont_CoreTextExtensions.m */; };
+		CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */; };
+		CA13EFB615DBEB42005359E3 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CA13EFB515DBEB42005359E3 /* libicucore.dylib */; };
 		CA5863CA15D8B2210044BA4A /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863C815D8B2210044BA4A /* reply.png */; };
 		CA5863CB15D8B2210044BA4A /* reply@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863C915D8B2210044BA4A /* reply@2x.png */; };
 		CA5863CF15D8BF5C0044BA4A /* repost.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863CD15D8BF5C0044BA4A /* repost.png */; };
@@ -164,6 +179,34 @@
 		9253EBD415D624F90047C153 /* ANStatusViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANStatusViewCell.m; sourceTree = "<group>"; };
 		CA13EF1915D9EFF6005359E3 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		CA13EF1A15D9EFF6005359E3 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
+		CA13EF8315DBCCDF005359E3 /* CCoreTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextAttachment.h; sourceTree = "<group>"; };
+		CA13EF8415DBCCDF005359E3 /* CCoreTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextAttachment.m; sourceTree = "<group>"; };
+		CA13EF8515DBCCDF005359E3 /* CCoreTextLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextLabel.h; sourceTree = "<group>"; };
+		CA13EF8615DBCCDF005359E3 /* CCoreTextLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextLabel.m; sourceTree = "<group>"; };
+		CA13EF8715DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextLabel_HTMLExtensions.h; sourceTree = "<group>"; };
+		CA13EF8815DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextLabel_HTMLExtensions.m; sourceTree = "<group>"; };
+		CA13EF8915DBCCDF005359E3 /* CCoreTextRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextRenderer.h; sourceTree = "<group>"; };
+		CA13EF8A15DBCCDF005359E3 /* CCoreTextRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextRenderer.m; sourceTree = "<group>"; };
+		CA13EF8B15DBCCDF005359E3 /* CLinkingCoreTextLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLinkingCoreTextLabel.h; sourceTree = "<group>"; };
+		CA13EF8C15DBCCDF005359E3 /* CLinkingCoreTextLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLinkingCoreTextLabel.m; sourceTree = "<group>"; };
+		CA13EF8D15DBCCDF005359E3 /* CMarkupValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMarkupValueTransformer.h; sourceTree = "<group>"; };
+		CA13EF8E15DBCCDF005359E3 /* CMarkupValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMarkupValueTransformer.m; sourceTree = "<group>"; };
+		CA13EF8F15DBCCDF005359E3 /* CSimpleHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSimpleHTMLParser.h; sourceTree = "<group>"; };
+		CA13EF9015DBCCDF005359E3 /* CSimpleHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSimpleHTMLParser.m; sourceTree = "<group>"; };
+		CA13EF9115DBCCDF005359E3 /* MissingImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MissingImage.png; sourceTree = "<group>"; };
+		CA13EF9215DBCCDF005359E3 /* NSAttributedString_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAttributedString_Extensions.h; sourceTree = "<group>"; };
+		CA13EF9315DBCCDF005359E3 /* NSAttributedString_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAttributedString_Extensions.m; sourceTree = "<group>"; };
+		CA13EF9415DBCCDF005359E3 /* NSScanner_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSScanner_HTMLExtensions.h; sourceTree = "<group>"; };
+		CA13EF9515DBCCDF005359E3 /* NSScanner_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSScanner_HTMLExtensions.m; sourceTree = "<group>"; };
+		CA13EF9615DBCCDF005359E3 /* NSString_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_HTMLExtensions.h; sourceTree = "<group>"; };
+		CA13EF9715DBCCDF005359E3 /* NSString_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_HTMLExtensions.m; sourceTree = "<group>"; };
+		CA13EF9815DBCCDF005359E3 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		CA13EF9915DBCCDF005359E3 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
+		CA13EF9A15DBCCDF005359E3 /* UIFont_CoreTextExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFont_CoreTextExtensions.h; sourceTree = "<group>"; };
+		CA13EF9B15DBCCDF005359E3 /* UIFont_CoreTextExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFont_CoreTextExtensions.m; sourceTree = "<group>"; };
+		CA13EFAB15DBCD02005359E3 /* ANPostLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANPostLabel.h; sourceTree = "<group>"; };
+		CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPostLabel.m; sourceTree = "<group>"; };
+		CA13EFB515DBEB42005359E3 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CA5863C815D8B2210044BA4A /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
 		CA5863C915D8B2210044BA4A /* reply@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reply@2x.png"; sourceTree = "<group>"; };
 		CA5863CD15D8BF5C0044BA4A /* repost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repost.png; sourceTree = "<group>"; };
@@ -269,6 +312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA13EFB615DBEB42005359E3 /* libicucore.dylib in Frameworks */,
 				0067488015D9EACC00065DFF /* CoreText.framework in Frameworks */,
 				CACA6BDE15D8244A00AE5D40 /* CoreImage.framework in Frameworks */,
 				CACA6BD415D7978F00AE5D40 /* QuartzCore.framework in Frameworks */,
@@ -347,6 +391,7 @@
 		00B473FF15D38E3C00F767CE = {
 			isa = PBXGroup;
 			children = (
+				CA13EFB515DBEB42005359E3 /* libicucore.dylib */,
 				FD3EB17015DB5670005BF189 /* Assets */,
 				0067483115D8473100065DFF /* Images */,
 				CAD8D8DF15D706E7007FC765 /* Externals */,
@@ -385,6 +430,7 @@
 		00B4741415D38E3C00F767CE /* AppApp */ = {
 			isa = PBXGroup;
 			children = (
+				CA13EFAA15DBCCEB005359E3 /* Controls */,
 				0067482815D8406C00065DFF /* Post Detail */,
 				CACA6BCC15D7831D00AE5D40 /* User Information */,
 				CAD8D9A515D770ED007FC765 /* Side Menu */,
@@ -461,6 +507,47 @@
 			name = "Post Status";
 			sourceTree = "<group>";
 		};
+		CA13EF8215DBCCDF005359E3 /* CoreTextToy */ = {
+			isa = PBXGroup;
+			children = (
+				CA13EF8315DBCCDF005359E3 /* CCoreTextAttachment.h */,
+				CA13EF8415DBCCDF005359E3 /* CCoreTextAttachment.m */,
+				CA13EF8515DBCCDF005359E3 /* CCoreTextLabel.h */,
+				CA13EF8615DBCCDF005359E3 /* CCoreTextLabel.m */,
+				CA13EF8715DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.h */,
+				CA13EF8815DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.m */,
+				CA13EF8915DBCCDF005359E3 /* CCoreTextRenderer.h */,
+				CA13EF8A15DBCCDF005359E3 /* CCoreTextRenderer.m */,
+				CA13EF8B15DBCCDF005359E3 /* CLinkingCoreTextLabel.h */,
+				CA13EF8C15DBCCDF005359E3 /* CLinkingCoreTextLabel.m */,
+				CA13EF8D15DBCCDF005359E3 /* CMarkupValueTransformer.h */,
+				CA13EF8E15DBCCDF005359E3 /* CMarkupValueTransformer.m */,
+				CA13EF8F15DBCCDF005359E3 /* CSimpleHTMLParser.h */,
+				CA13EF9015DBCCDF005359E3 /* CSimpleHTMLParser.m */,
+				CA13EF9115DBCCDF005359E3 /* MissingImage.png */,
+				CA13EF9215DBCCDF005359E3 /* NSAttributedString_Extensions.h */,
+				CA13EF9315DBCCDF005359E3 /* NSAttributedString_Extensions.m */,
+				CA13EF9415DBCCDF005359E3 /* NSScanner_HTMLExtensions.h */,
+				CA13EF9515DBCCDF005359E3 /* NSScanner_HTMLExtensions.m */,
+				CA13EF9615DBCCDF005359E3 /* NSString_HTMLExtensions.h */,
+				CA13EF9715DBCCDF005359E3 /* NSString_HTMLExtensions.m */,
+				CA13EF9815DBCCDF005359E3 /* UIColor+Hex.h */,
+				CA13EF9915DBCCDF005359E3 /* UIColor+Hex.m */,
+				CA13EF9A15DBCCDF005359E3 /* UIFont_CoreTextExtensions.h */,
+				CA13EF9B15DBCCDF005359E3 /* UIFont_CoreTextExtensions.m */,
+			);
+			path = CoreTextToy;
+			sourceTree = "<group>";
+		};
+		CA13EFAA15DBCCEB005359E3 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				CA13EFAB15DBCD02005359E3 /* ANPostLabel.h */,
+				CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */,
+			);
+			name = Controls;
+			sourceTree = "<group>";
+		};
 		CACA6BCC15D7831D00AE5D40 /* User Information */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +567,7 @@
 		CAD8D8DF15D706E7007FC765 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				CA13EF8215DBCCDF005359E3 /* CoreTextToy */,
 				0067488A15D9F79100065DFF /* TTTAttributedLabel */,
 				CAD8D99515D7709C007FC765 /* MFSideMenu */,
 				0053C6BC15D76A36000F36FA /* TestFlightSDK1.0 */,
@@ -775,6 +863,7 @@
 				FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */,
 				FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */,
 				FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */,
+				CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,6 +916,19 @@
 				0067488D15D9F79100065DFF /* TTTAttributedLabel.m in Sources */,
 				FD3EB0D515DA341C005BF189 /* ANConstants.m in Sources */,
 				FD3EB15D15DB48EE005BF189 /* ANSideMenuCell.m in Sources */,
+				CA13EF9C15DBCCDF005359E3 /* CCoreTextAttachment.m in Sources */,
+				CA13EF9D15DBCCDF005359E3 /* CCoreTextLabel.m in Sources */,
+				CA13EF9E15DBCCDF005359E3 /* CCoreTextLabel_HTMLExtensions.m in Sources */,
+				CA13EF9F15DBCCDF005359E3 /* CCoreTextRenderer.m in Sources */,
+				CA13EFA015DBCCDF005359E3 /* CLinkingCoreTextLabel.m in Sources */,
+				CA13EFA115DBCCDF005359E3 /* CMarkupValueTransformer.m in Sources */,
+				CA13EFA215DBCCDF005359E3 /* CSimpleHTMLParser.m in Sources */,
+				CA13EFA415DBCCDF005359E3 /* NSAttributedString_Extensions.m in Sources */,
+				CA13EFA515DBCCDF005359E3 /* NSScanner_HTMLExtensions.m in Sources */,
+				CA13EFA615DBCCDF005359E3 /* NSString_HTMLExtensions.m in Sources */,
+				CA13EFA715DBCCDF005359E3 /* UIColor+Hex.m in Sources */,
+				CA13EFA815DBCCDF005359E3 /* UIFont_CoreTextExtensions.m in Sources */,
+				CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,7 +42,8 @@ static void *kMarkupValueTransformerKey;
 - (void)setMarkup:(NSString *)inMarkup
     {
     NSError *theError = NULL;
-    NSAttributedString *theAttributedString = [self.markupValueTransformer transformedValue:inMarkup error:&theError];
+        CMarkupValueTransformer *transformer = self.markupValueTransformer;
+    NSAttributedString *theAttributedString = [transformer transformedValue:inMarkup error:&theError];
     NSAssert1(theAttributedString != NULL, @"Could not transform HTML into attributed string: %@", theError);
     self.text = theAttributedString;
     }

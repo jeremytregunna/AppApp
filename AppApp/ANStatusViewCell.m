@@ -31,7 +31,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @end
 
 @implementation ANStatusViewCell
-@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel, created_at, postView;
+@synthesize postData, avatar, username, showUserButton, avatarView, statusTextLabel, created_at, postView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -97,19 +97,19 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         [self.postView addSubview: created_atTextLabel];
         
         // status label
-        statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 27, 230, 100)];
-        statusTextLabel.dataDetectorTypes = UIDataDetectorTypeAll;
+        statusTextLabel = [[ANPostLabel alloc] initWithFrame:CGRectMake(10, 27, 230, 100)];
+        //statusTextLabel.dataDetectorTypes = UIDataDetectorTypeAll;
         statusTextLabel.lineBreakMode = UILineBreakModeWordWrap;
         statusTextLabel.backgroundColor = postColor;
-        statusTextLabel.numberOfLines = 0;
+        //statusTextLabel.numberOfLines = 0;
         statusTextLabel.textColor = textColor;
         statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         
         // set the link style
-        NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
+        /*NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
         statusTextLabel.linkAttributes = linkAttributes;
         [linkAttributes setValue:(id)[[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0]
-                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];*/
        
         [self.postView addSubview: statusTextLabel];
         
@@ -128,7 +128,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)registerObservers
 {
-    [self addObserver:self forKeyPath:@"status" options:0 context:0];
+    [self addObserver:self forKeyPath:@"postData" options:0 context:0];
     [self addObserver:self forKeyPath:@"username" options:0 context:0];
     [self addObserver:self forKeyPath:@"created_at" options:0 context:0];
 
@@ -136,7 +136,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)unregisterObservers
 {
-    [self removeObserver:self forKeyPath:@"status"];
+    [self removeObserver:self forKeyPath:@"postData"];
     [self removeObserver:self forKeyPath:@"username"];
     [self removeObserver:self forKeyPath:@"created_at"];
 
@@ -144,12 +144,12 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"status"]) {
-        [statusTextLabel setText: self.status];
+    if([keyPath isEqualToString:@"postData"]) {
+        statusTextLabel.postData = self.postData;
         
         // handle frame resize
         CGSize maxStatusLabelSize = CGSizeMake(240,100);
-        CGSize statusLabelSize = [self.status sizeWithFont: statusTextLabel.font
+        CGSize statusLabelSize = [[self.postData objectForKey:@"text"] sizeWithFont: statusTextLabel.font
                                               constrainedToSize:maxStatusLabelSize
                                               lineBreakMode: statusTextLabel.lineBreakMode];
     
@@ -178,12 +178,12 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     // Configure the view for the selected state
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+/*- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
-}
+}*/
 
 -(void)setHighlighted:(BOOL)selected
 {

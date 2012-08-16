@@ -72,6 +72,11 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    self.tableView.delegate = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -143,8 +148,8 @@
     
     if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
     cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
-    cell.status = statusText;
-    cell.statusTextLabel.delegate = self;
+    cell.postData = statusDict;
+    //cell.statusTextLabel.delegate = self;
     CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
     CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
                                     constrainedToSize:maxStatusLabelSize
@@ -156,7 +161,7 @@
     //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
     
     //detect usernames
-    NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]
+    /*NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]
                           objectForKey:@"entities"] objectForKey:@"mentions"];
     for(NSDictionary* mention in mentions) {
         NSRange indicies = NSMakeRange([[mention objectForKey:@"pos"] integerValue],
@@ -166,7 +171,7 @@
                                              [mention objectForKey:@"id"]]] withRange:indicies];
         
         
-    }
+    }*/
 
     
     [cell.avatarView  setImageURL:avatarURL
