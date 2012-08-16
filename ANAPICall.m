@@ -139,6 +139,42 @@
     [self performRequestWithMethod:@"getGlobalStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
+- (void)getTaggedPosts:(NSString*)hashtag withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+{
+    [self readTokenFromDefaults];
+    
+    if (!accessToken)
+        return;
+    
+    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"hashtag" : hashtag};
+    
+    [self performRequestWithMethod:@"getTaggedPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+}
+
+- (void)getTaggedPosts:(NSString*)hashtag sincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+{
+    [self readTokenFromDefaults];
+    
+    if (!accessToken)
+        return;
+    
+    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id, @"hashtag" : hashtag };
+    
+    [self performRequestWithMethod:@"getTaggedPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+}
+
+- (void)getTaggedPosts:(NSString*)hashtag beforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+{
+    [self readTokenFromDefaults];
+    
+    if (!accessToken)
+        return;
+    
+    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id, @"hashtag" : hashtag };
+    
+    [self performRequestWithMethod:@"getTaggedPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+}
+
 - (void)getUserStream:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
     [self readTokenFromDefaults];
