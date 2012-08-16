@@ -16,5 +16,6 @@
 @synthesize usernameLabel;
 @synthesize replyButton;
 @synthesize repostButton;
+@synthesize userButton;
 
 @end
