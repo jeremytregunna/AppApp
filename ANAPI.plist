@@ -68,10 +68,38 @@
 			<key>method</key>
 			<string>GET</string>
 		</dict>
+		<key>getGlobalStreamSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>stream/0/posts/stream/global?access_token={accessToken}&amp;since_id={since_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getGlobalStreamBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>stream/0/posts/stream/global?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
 		<key>getUserStream</key>
 		<dict>
 			<key>routeFormat</key>
 			<string>/stream/0/posts/stream?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserStreamSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/stream?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserStreamBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/stream?access_token={accessToken}&amp;before_id={before_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>
@@ -82,10 +110,38 @@
 			<key>method</key>
 			<string>GET</string>
 		</dict>
+		<key>getUserMentionsSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserMentionsBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
 		<key>getUserPosts</key>
 		<dict>
 			<key>routeFormat</key>
 			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserPostsSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserPostsBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}&amp;before_id={before_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>
