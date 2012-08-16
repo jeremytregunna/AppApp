@@ -26,9 +26,12 @@
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
     
+    // Check if already items in stream
     if ([streamData count] > 0) {
+        // grab first post
         id firstPost = [streamData objectAtIndex:0];
         
+        // get newest posts
         [[ANAPICall sharedAppAPI] getGlobalStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
             [self _updateTopWithData:dataObject];            
         }];
@@ -39,6 +42,7 @@
     }
 }
 
+// Will update top of table, and data from data object
 - (void)_updateTopWithData:(id)dataObject
 {
     // begin updates on table
