@@ -23,5 +23,6 @@
 @property (nonatomic, readonly) NSString *sideMenuImageName;
 
 - (BOOL)refresh;
-
+- (void)updateTopWithData:(id)dataObject;
+- (void)updateBottomWithData:(id)dataObject;
 @end
