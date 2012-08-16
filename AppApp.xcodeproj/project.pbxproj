@@ -59,6 +59,7 @@
 		CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */; };
 		CA13EFB615DBEB42005359E3 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CA13EFB515DBEB42005359E3 /* libicucore.dylib */; };
 		CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA2BEE0B15DCE91E00DD2D3A /* NSDate+ANExtensions.m */; };
+		CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA2BEE1215DCF1FA00DD2D3A /* ANHashtagStreamController.m */; };
 		CA5863CA15D8B2210044BA4A /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863C815D8B2210044BA4A /* reply.png */; };
 		CA5863CB15D8B2210044BA4A /* reply@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863C915D8B2210044BA4A /* reply@2x.png */; };
 		CA5863CF15D8BF5C0044BA4A /* repost.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5863CD15D8BF5C0044BA4A /* repost.png */; };
@@ -210,6 +211,8 @@
 		CA13EFB515DBEB42005359E3 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CA2BEE0A15DCE91E00DD2D3A /* NSDate+ANExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ANExtensions.h"; sourceTree = "<group>"; };
 		CA2BEE0B15DCE91E00DD2D3A /* NSDate+ANExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ANExtensions.m"; sourceTree = "<group>"; };
+		CA2BEE1115DCF1FA00DD2D3A /* ANHashtagStreamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANHashtagStreamController.h; sourceTree = "<group>"; };
+		CA2BEE1215DCF1FA00DD2D3A /* ANHashtagStreamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANHashtagStreamController.m; sourceTree = "<group>"; };
 		CA5863C815D8B2210044BA4A /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
 		CA5863C915D8B2210044BA4A /* reply@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reply@2x.png"; sourceTree = "<group>"; };
 		CA5863CD15D8BF5C0044BA4A /* repost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repost.png; sourceTree = "<group>"; };
@@ -699,6 +702,8 @@
 				00ECA11C15D7409200178F8A /* ANUserPostsController.m */,
 				00ECA11E15D7409200178F8A /* ANUserMentionsController.h */,
 				00ECA11B15D7409200178F8A /* ANUserMentionsController.m */,
+				CA2BEE1115DCF1FA00DD2D3A /* ANHashtagStreamController.h */,
+				CA2BEE1215DCF1FA00DD2D3A /* ANHashtagStreamController.m */,
 			);
 			name = "Stream Controllers";
 			sourceTree = "<group>";
@@ -943,6 +948,7 @@
 				CA13EFA815DBCCDF005359E3 /* UIFont_CoreTextExtensions.m in Sources */,
 				CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */,
 				CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */,
+				CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
