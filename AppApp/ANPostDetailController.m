@@ -51,13 +51,13 @@
     detailCell = [ANPostDetailCell loadFromNib];
     detailCell.contentView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
-    detailCell.postLabel.delegate = self;
+    //detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
+    //detailCell.postLabel.delegate = self;
     detailCell.postLabel.text = [postData stringForKey:@"text"];
     detailCell.nameLabel.text = [postData stringForKeyPath:@"user.name"];
     detailCell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [postData stringForKeyPath:@"user.username"]];
     detailCell.userImageView.imageURL = [postData stringForKeyPath:@"user.avatar_image.url"];
-    [detailCell.postLabel adjustHeightToFit:9999.0]; // hopefully unlimited in height...
+    //[detailCell.postLabel adjustHeightToFit:9999.0]; // hopefully unlimited in height...
 
     // now get that and set the header height..
     CGFloat defaultViewHeight = 221; // seen in the nib.
