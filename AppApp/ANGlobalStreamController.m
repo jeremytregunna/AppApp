@@ -25,24 +25,41 @@
 {
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
-    [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
-        streamData = [NSMutableArray arrayWithArray:dataObject];
-        [self.tableView reloadData];
-        [self refreshCompleted];
-    }];
+    
+    // Check if already items in stream
+    if ([streamData count] > 0) {
+        // grab first post
+        id firstPost = [streamData objectAtIndex:0];
+        
+        // get newest posts
+        [[ANAPICall sharedAppAPI] getGlobalStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];
+        }];
+    } else {
+        [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
+            [self updateTopWithData:dataObject];
+            [self refreshCompleted];            
+        }];
+    }
 }
 
 - (void)addItemsOnBottom
 {
-    //    [self.tableView reloadData];
-    //
-    //    if (items.count > 50)
-    //        self.canLoadMore = NO; // signal that there won't be any more items to load
-    //    else
-    //        self.canLoadMore = YES;
+    // grab the last post
+    id lastPost = [streamData lastObject];
     
-    // Inform STableViewController that we have finished loading more items
-    [self loadMoreCompleted];
+    // if we have a post
+    if (lastPost) {
+        
+        // fetch old data
+        [[ANAPICall sharedAppAPI] getGlobalStreamBeforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
+            [self updateBottomWithData:dataObject];
+            [self loadMoreCompleted];
+        }];        
+    } else {
+        [self loadMoreCompleted];
+    }
 }
 
 @end

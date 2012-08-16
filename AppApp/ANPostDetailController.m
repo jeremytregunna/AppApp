@@ -15,6 +15,14 @@
 #import "NSDictionary+SDExtensions.h"
 #import "UILabel+SDExtensions.h"
 
+#import "ANUserViewController.h"
+
+@interface ANPostDetailController ()
+
+- (IBAction)userAction:(id)sender;
+
+@end
+
 @implementation ANPostDetailController
 {
     NSDictionary *postData;
@@ -60,6 +68,13 @@
 
     [detailCell.replyButton addTarget:self action:@selector(newPostAction:) forControlEvents:UIControlEventTouchUpInside];
     [detailCell.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    [detailCell.userButton addTarget:self action:@selector(userAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    detailCell = nil;
 }
 
 - (NSString *)usersMentioned
@@ -83,6 +98,8 @@
     return result;
 }
 
+#pragma mark - Button Actions
+
 - (IBAction)newPostAction:(id)sender
 {
     NSString *replyToID = [postData stringForKey:@"id"];
@@ -101,6 +118,16 @@
     [self presentModalViewController:postView animated:YES];
     postView.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
 }
+
+- (IBAction)userAction:(id)sender
+{
+    NSLog(@"here");
+    NSDictionary *user = [postData objectForKey:@"user"];
+    ANUserViewController *vc = [[ANUserViewController alloc] initWithUserDictionary:user];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - 
 
 - (NSString *)sideMenuTitle
 {

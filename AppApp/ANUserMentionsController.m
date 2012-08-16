@@ -29,23 +29,27 @@
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
     [[ANAPICall sharedAppAPI] getUserMentions:^(id dataObject, NSError *error) {
-        streamData = [NSMutableArray arrayWithArray:dataObject];
-        [self.tableView reloadData];
+        [self updateTopWithData:dataObject];
         [self refreshCompleted];
     }];
 }
 
 - (void)addItemsOnBottom
 {
-    //    [self.tableView reloadData];
-    //
-    //    if (items.count > 50)
-    //        self.canLoadMore = NO; // signal that there won't be any more items to load
-    //    else
-    //        self.canLoadMore = YES;
+    // grab the last post
+    id lastPost = [streamData lastObject];
     
-    // Inform STableViewController that we have finished loading more items
-    [self loadMoreCompleted];
+    // if we have a post
+    if (lastPost) {
+        
+        // fetch old data
+        [[ANAPICall sharedAppAPI] getUserMentionsBeforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
+            [self updateBottomWithData:dataObject];
+            [self loadMoreCompleted];
+        }];
+    } else {
+        [self loadMoreCompleted];
+    }
 }
 
 @end
