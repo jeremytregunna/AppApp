@@ -133,12 +133,55 @@
     return height;
 }
 
+#pragma mark - TTTAttributedLabel delgate
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    if([[url scheme]isEqualToString:@"username"]) {
+        NSString *userID = [url host];
+        [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+            NSDictionary *userData = dataObject;
+            ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+            [self.navigationController pushViewController:userViewController animated:YES];
+        }];
+        
+    } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ANStatusViewCell";
     ANStatusViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ANStatusViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.statusTextLabel.tapHandler = ^BOOL (NSRange range, NSString *type, NSString *value) {
+            BOOL result = NO;
+            if ([type isEqualToString:@"hashtag"])
+            {
+                // do something
+            }
+            else
+            if ([type isEqualToString:@"name"])
+            {
+                NSString *userID = value;
+                [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+                    NSDictionary *userData = dataObject;
+                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                    [self.navigationController pushViewController:userViewController animated:YES];
+                }];
+            }
+            else
+            if ([type isEqualToString:@"link"])
+            {
+                NSURL *url = [NSURL URLWithString:value];
+                if ([[UIApplication sharedApplication] canOpenURL:url])
+                    [[UIApplication sharedApplication] openURL:url];
+            }
+            return result;
+        };
     }    
 
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
@@ -413,22 +456,5 @@
         [self.tableView endUpdates];
     }
 }
-
-#pragma mark - TTTAttributedLabel delgate
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if([[url scheme]isEqualToString:@"username"]) {
-        NSString *userID = [url host];
-        [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-            NSDictionary *userData = dataObject;
-            ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-            [self.navigationController pushViewController:userViewController animated:YES];
-        }];
-        
-    } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
-    }
-}
-
 
 @end

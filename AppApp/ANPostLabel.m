@@ -64,7 +64,7 @@
 {
     [super setEnabled:inEnabled];
     
-    tapRecognizer.enabled = inEnabled && linkRanges.count > 0;
+    tapRecognizer.enabled = inEnabled;
 }
 
 #pragma mark -
@@ -78,7 +78,7 @@
     NSRange theRange;
     NSDictionary *theAttributes = [self attributesAtPoint:theLocation effectiveRange:&theRange];
     NSString *theType = [theAttributes objectForKey:@"ANPostLabelAttributeType"];
-    NSString *theValue = [theAttributes objectForKey:@"ANPostLabelAttibuteValue"];
+    NSString *theValue = [theAttributes objectForKey:@"ANPostLabelAttributeValue"];
 
     if (theValue && theType)
     {
@@ -125,7 +125,7 @@
     
     [self addAttributes:hashtags key:@"name" type:@"hashtag" attributedString:postString];
     [self addAttributes:links key:@"url" type:@"link" attributedString:postString];
-    [self addAttributes:mentions key:@"name" type:@"name" attributedString:postString];
+    [self addAttributes:mentions key:@"id" type:@"name" attributedString:postString];
     
     self.text = postString;
 }

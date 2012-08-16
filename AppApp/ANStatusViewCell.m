@@ -169,6 +169,8 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         
         NSString *avatarURL = [self.postData stringForKeyPath:@"user.avatar_image.url"];
         avatarView.imageURL = avatarURL;
+        
+        statusTextLabel.enabled = YES;
     }
 }
 
@@ -176,6 +178,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 {
     avatarView.image = [UIImage imageNamed:@"avatarPlaceholder.png"];
     avatarView.backgroundColor = [UIColor clearColor];
+    statusTextLabel.enabled = NO;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
