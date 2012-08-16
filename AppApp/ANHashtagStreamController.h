@@ -10,4 +10,6 @@
 
 @interface ANHashtagStreamController : ANBaseStreamController
 
+- (id)initWithHashtag:(NSString *)aHashtag;
+
 @end

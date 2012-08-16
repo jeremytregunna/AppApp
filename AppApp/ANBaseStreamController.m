@@ -12,6 +12,7 @@
 #import "ANStreamHeaderView.h"
 #import "ANUserViewController.h"
 #import "ANPostDetailController.h"
+#import "ANHashtagStreamController.h"
 
 #import "MFSideMenu.h"
 #import "NSObject+SDExtensions.h"
@@ -161,7 +162,9 @@
             BOOL result = NO;
             if ([type isEqualToString:@"hashtag"])
             {
-                // do something
+                NSString *hashtag = value;
+                ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
+                [self.navigationController pushViewController:hashtagController animated:YES];
             }
             else
             if ([type isEqualToString:@"name"])
