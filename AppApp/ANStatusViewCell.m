@@ -7,6 +7,7 @@
 //
 #import <QuartzCore/QuartzCore.h>
 #import "ANStatusViewCell.h"
+#import "NSDictionary+SDExtensions.h"
 
 CGFloat const ANStatusViewCellTopMargin = 10.0;
 CGFloat const ANStatusViewCellBottomMargin = 10.0;
@@ -22,7 +23,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     UILabel *usernameTextLabel;
     UILabel *created_atTextLabel;
     UIView *postView;
-
 }
 
 - (void)registerObservers;
@@ -31,7 +31,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @end
 
 @implementation ANStatusViewCell
-@synthesize postData, avatar, username, showUserButton, avatarView, statusTextLabel, created_at, postView;
+@synthesize postData, showUserButton, avatarView, statusTextLabel, postView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -144,7 +144,8 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"postData"]) {
+    if([keyPath isEqualToString:@"postData"])
+    {
         statusTextLabel.postData = self.postData;
         
         // handle frame resize
@@ -156,19 +157,18 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         CGRect statusLabelNewFrame = statusTextLabel.frame;
         statusLabelNewFrame.size.height = statusLabelSize.height;
         statusTextLabel.frame = statusLabelNewFrame;
-    } else if([keyPath isEqualToString:@"username"]) {
-        [usernameTextLabel setText: self.username];
-    }
-    else if([keyPath isEqualToString:@"created_at"]) {
-        [created_atTextLabel setText: self.created_at];
-    }
-    else if([keyPath isEqualToString:@"avatar"])
-{
+        
+        NSString *username = [self.postData stringForKeyPath:@"user.username"];
+        usernameTextLabel.text = username;
+        
+        NSString *createdAt = [self.postData stringForKey:@"created_at"];
+        created_atTextLabel.text = createdAt;
+        
+        /*NSString *
     if(self.avatar) {
         avatarView.image = self.avatar;
-        avatarView.backgroundColor = [UIColor clearColor];
+        avatarView.backgroundColor = [UIColor clearColor];*/
     }
-}
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

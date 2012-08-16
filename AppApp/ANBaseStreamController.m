@@ -144,10 +144,7 @@
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
     NSString *statusText = [statusDict objectForKey:@"text"];
     NSString *avatarURL = [[[statusDict objectForKey:@"user" ] objectForKey:@"avatar_image"] objectForKey:@"url"];
-
     
-    if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
-    cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
     cell.postData = statusDict;
     //cell.statusTextLabel.delegate = self;
     CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);

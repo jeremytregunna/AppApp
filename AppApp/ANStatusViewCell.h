@@ -24,12 +24,7 @@ extern CGFloat const ANStatusViewCellAvatarWidth;
     CALayer* _topBorder;
     CALayer* _avatarConnector;
 }
-@property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSDictionary *postData;
-@property (nonatomic, strong) NSString *created_at;
-
-@property (nonatomic, strong) UIImage  *avatar;
-
 @property (nonatomic, readonly) SDImageView *avatarView;
 @property (nonatomic, readonly) UIButton *showUserButton;
 @property (nonatomic, readonly) ANPostLabel *statusTextLabel;

@@ -6,10 +6,11 @@
 //  Copyright (c) 2012 Sneakyness. All rights reserved.
 //
 
-#import "CLinkingCoreTextLabel.h"
+#import "CCoreTextLabel.h"
 
-@interface ANPostLabel : CLinkingCoreTextLabel
+@interface ANPostLabel : CCoreTextLabel
 
 @property (nonatomic, strong) NSDictionary *postData;
+@property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSRange, NSString *, NSString *type);
 
 @end

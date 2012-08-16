@@ -15,13 +15,78 @@
 
 @implementation ANPostLabel
 {
+    NSArray *linkRanges;
+    UITapGestureRecognizer *tapRecognizer;
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
+    if ((self = [super initWithFrame:frame]) != NULL)
+    {
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        tapRecognizer.enabled = NO;
+        [self addGestureRecognizer:tapRecognizer];
+    }
+    return(self);
+}
+
+- (id)initWithCoder:(NSCoder *)inCoder
+{
+    if ((self = [super initWithCoder:inCoder]) != NULL)
+    {
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        tapRecognizer.enabled = NO;
+        [self addGestureRecognizer:tapRecognizer];
+    }
+    return(self);
+}
+
+- (void)setText:(NSAttributedString *)inText
+{
+    if (self.text != inText)
+    {
+        [super setText:inText];
+        
+        NSMutableArray *theRanges = [NSMutableArray array];
+        [self.text enumerateAttribute:kMarkupLinkAttributeName inRange:(NSRange){ .length = self.text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+            if (value != NULL)
+            {
+                [theRanges addObject:[NSValue valueWithRange:range]];
+            }
+        }];
+        linkRanges = [theRanges copy];
+        
+        tapRecognizer.enabled = linkRanges.count > 0;
+    }
+}
+
+- (void)setEnabled:(BOOL)inEnabled
+{
+    [super setEnabled:inEnabled];
     
-    return self;
+    tapRecognizer.enabled = inEnabled && linkRanges.count > 0;
+}
+
+#pragma mark -
+
+- (void)tap:(UITapGestureRecognizer *)inGestureRecognizer
+{
+    CGPoint theLocation = [inGestureRecognizer locationInView:self];
+    theLocation.x -= self.insets.left;
+    theLocation.y -= self.insets.top;
+    
+    NSRange theRange;
+    NSDictionary *theAttributes = [self attributesAtPoint:theLocation effectiveRange:&theRange];
+    NSString *theType = [theAttributes objectForKey:@"ANPostLabelAttributeType"];
+    NSString *theValue = [theAttributes objectForKey:@"ANPostLabelAttibuteValue"];
+
+    if (theValue && theType)
+    {
+        if (self.tapHandler != NULL)
+        {
+            self.tapHandler(theRange, theType, theValue);
+        }
+    }
 }
 
 - (void)addAttributes:(NSArray *)items key:(NSString *)key type:(NSString *)type attributedString:(NSMutableAttributedString *)attrString
@@ -45,9 +110,13 @@
 
 - (void)setPostData:(NSDictionary *)postData
 {
+    // example of deleted post id: 70201
+    
     _postData = postData;
     
     NSString *text = [_postData stringForKey:@"text"];
+    if (!text || [text length] == 0)
+        text = @"[deleted post]";
     NSMutableAttributedString *postString = [[NSMutableAttributedString alloc] initWithString:text];
     
     NSArray *hashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
@@ -59,29 +128,6 @@
     [self addAttributes:mentions key:@"name" type:@"name" attributedString:postString];
     
     self.text = postString;
-}
-
-- (void)tap:(UITapGestureRecognizer *)inGestureRecognizer
-{
-    CGPoint theLocation = [inGestureRecognizer locationInView:self];
-    theLocation.x -= self.insets.left;
-    theLocation.y -= self.insets.top;
-    
-    NSRange theRange;
-    NSDictionary *theAttributes = [self attributesAtPoint:theLocation effectiveRange:&theRange];
-    NSString *type = [theAttributes objectForKey:@"ANPostLabelAttributeType"];
-    NSString *value = [theAttributes objectForKey:@"ANPostLabelAttibuteValue"];
-    
-    NSURL *link = nil;
-    if ([type isEqualToString:@"hashtags"])
-        
-    if (theLink != NULL)
-    {
-        if (self.URLHandler != NULL)
-        {
-            self.URLHandler(theRange, theLink);
-        }
-    }
 }
 
 @end
