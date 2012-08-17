@@ -126,7 +126,6 @@
 		FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */; };
 		FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */; };
 		FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47915DB723A005BF189 /* barbuttonBg.png */; };
-		FDBC8F8C15DE0849002C2964 /* ANRoundedNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */; };
 		FDBC8F9015DE1573002C2964 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC8F8E15DE1573002C2964 /* overlay.png */; };
 		FDBC8F9115DE1573002C2964 /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC8F8F15DE1573002C2964 /* overlay@2x.png */; };
 /* End PBXBuildFile section */
@@ -314,8 +313,6 @@
 		FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbarBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barbuttonBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47915DB723A005BF189 /* barbuttonBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barbuttonBg.png; sourceTree = "<group>"; };
-		FDBC8F8A15DE0849002C2964 /* ANRoundedNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRoundedNavigationController.h; sourceTree = "<group>"; };
-		FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRoundedNavigationController.m; sourceTree = "<group>"; };
 		FDBC8F8E15DE1573002C2964 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		FDBC8F8F15DE1573002C2964 /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -460,8 +457,6 @@
 				FD3EB0D315DA341C005BF189 /* ANConstants.h */,
 				FD3EB0D415DA341C005BF189 /* ANConstants.m */,
 				00B4741515D38E3C00F767CE /* Supporting Files */,
-				FDBC8F8A15DE0849002C2964 /* ANRoundedNavigationController.h */,
-				FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */,
 			);
 			path = AppApp;
 			sourceTree = "<group>";

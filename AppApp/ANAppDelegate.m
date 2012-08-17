@@ -11,7 +11,6 @@
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
-#import "ANRoundedNavigationController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ANAppDelegate
@@ -78,7 +77,7 @@ static ANAppDelegate *sharedInstance = nil;
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
     // Add overlay for rounded corners
-    UIImage *overlayImg = [[UIImage imageNamed:@"overlay.png"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:5.0f];
+    UIImage *overlayImg = [UIImage imageNamed:@"overlay.png"];
     CALayer *overlay = [CALayer layer];
     overlay.frame = self.window.rootViewController.view.frame;
     overlay.contents = (id)overlayImg.CGImage;
