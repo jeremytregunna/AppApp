@@ -398,4 +398,31 @@
     [self performRequestWithMethod:@"unfollowUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
+- (void)muteUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+{
+    [self readTokenFromDefaults];
+    if (!accessToken)
+        return;
+    
+    // App.net guys (? Alex K. and Mathew Phillips) say we should put accessToken in the headers, like so:
+    // "Authorization: Bearer " + access_token
+    
+    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
+    
+    [self performRequestWithMethod:@"muteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+}
+
+- (void)unmuteUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+{
+    [self readTokenFromDefaults];
+    if (!accessToken)
+        return;
+    
+    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
+    
+    [self performRequestWithMethod:@"unmuteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+}
+
+
+
 @end

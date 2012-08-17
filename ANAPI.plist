@@ -22,6 +22,22 @@
 			<key>routeFormat</key>
 			<string>stream/0/users/{user_id}/follow?access_token={accessToken}</string>
 		</dict>
+		<key>muteUser</key>
+		<dict>
+			<key>method</key>
+			<string>POST</string>
+			<key>routeFormat</key>
+			<string>stream/0/users/{user_id}/mute</string>
+			<key>postFormat</key>
+			<string>access_token={accessToken}</string>
+		</dict>
+		<key>unmuteUser</key>
+		<dict>
+			<key>method</key>
+			<string>DELETE</string>
+			<key>routeFormat</key>
+			<string>stream/0/users/{user_id}/mute?access_token={accessToken}</string>
+		</dict>
 		<key>getUserFollowers</key>
 		<dict>
 			<key>method</key>
