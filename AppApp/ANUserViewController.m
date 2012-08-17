@@ -74,6 +74,9 @@
 
 - (void)configureFromUserData
 {
+    
+    NSLog(@"%@",[userData valueForKeyPath:@"follows_you"] );
+    
     userImageView.imageURL = [userData valueForKeyPath:@"avatar_image.url"];
     coverImageView.imageURL = [userData valueForKeyPath:@"cover_image.url"];
     
@@ -258,7 +261,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -290,7 +293,13 @@
             cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.following"];// api always returns 0.
         }
             break;
-            
+        case 3:
+        {
+            cell.textLabel.text = @"Follows You";
+            cell.detailTextLabel.text = [userData valueForKeyPath:@"follows_you"] ? @"YES" : @"NO";
+        }
+            break;
+        
         default:
             break;
     }
