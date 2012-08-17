@@ -50,9 +50,9 @@ static ANAppDelegate *sharedInstance = nil;
         NSLog(@"bacon");
     }
     
-    // if we don't have an access token - display auth.
-    // probably should move back to calling Safari.
-    if (![[ANAPICall sharedAppAPI] hasAccessToken])
+    // if we don't have an access token or it's not a valid token, display auth.
+    // probably should move back to calling Safari. <-- disagree, this looks fine. -- jedi
+    if (![[ANAPICall sharedAppAPI] hasAccessToken] || ![[ANAPICall sharedAppAPI] isAccessTokenValid])
     {
         AuthViewController *authView = [[AuthViewController alloc] init];
         [self.window.rootViewController presentModalViewController:authView animated:YES];
