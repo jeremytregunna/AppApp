@@ -126,6 +126,9 @@
 		FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */; };
 		FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */; };
 		FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47915DB723A005BF189 /* barbuttonBg.png */; };
+		FDBC8F8C15DE0849002C2964 /* ANRoundedNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */; };
+		FDBC8F9015DE1573002C2964 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC8F8E15DE1573002C2964 /* overlay.png */; };
+		FDBC8F9115DE1573002C2964 /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC8F8F15DE1573002C2964 /* overlay@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -311,6 +314,10 @@
 		FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbarBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barbuttonBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47915DB723A005BF189 /* barbuttonBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barbuttonBg.png; sourceTree = "<group>"; };
+		FDBC8F8A15DE0849002C2964 /* ANRoundedNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRoundedNavigationController.h; sourceTree = "<group>"; };
+		FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRoundedNavigationController.m; sourceTree = "<group>"; };
+		FDBC8F8E15DE1573002C2964 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
+		FDBC8F8F15DE1573002C2964 /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +388,8 @@
 				0067483415D8473100065DFF /* grayline@2x.png */,
 				0067483515D8473100065DFF /* postarrow.png */,
 				0067483615D8473100065DFF /* postarrow@2x.png */,
+				FDBC8F8E15DE1573002C2964 /* overlay.png */,
+				FDBC8F8F15DE1573002C2964 /* overlay@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -451,6 +460,8 @@
 				FD3EB0D315DA341C005BF189 /* ANConstants.h */,
 				FD3EB0D415DA341C005BF189 /* ANConstants.m */,
 				00B4741515D38E3C00F767CE /* Supporting Files */,
+				FDBC8F8A15DE0849002C2964 /* ANRoundedNavigationController.h */,
+				FDBC8F8B15DE0849002C2964 /* ANRoundedNavigationController.m */,
 			);
 			path = AppApp;
 			sourceTree = "<group>";
@@ -882,6 +893,8 @@
 				FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */,
 				FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */,
 				CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */,
+				FDBC8F9015DE1573002C2964 /* overlay.png in Resources */,
+				FDBC8F9115DE1573002C2964 /* overlay@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,6 +962,7 @@
 				CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */,
 				CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */,
 				CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */,
+				FDBC8F8C15DE0849002C2964 /* ANRoundedNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

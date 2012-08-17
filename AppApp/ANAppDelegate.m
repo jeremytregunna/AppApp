@@ -11,6 +11,8 @@
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
+#import "ANRoundedNavigationController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ANAppDelegate
 
@@ -74,6 +76,17 @@ static ANAppDelegate *sharedInstance = nil;
     
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    
+    // Add overlay for rounded corners
+    UIImage *overlayImg = [[UIImage imageNamed:@"overlay.png"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:5.0f];
+    CALayer *overlay = [CALayer layer];
+    overlay.frame = self.window.rootViewController.view.frame;
+    overlay.contents = (id)overlayImg.CGImage;
+    overlay.zPosition = 1;
+    [self.window.layer addSublayer:overlay];
+    
+    // Set up navigation bar rounded corners
+    ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];
 }
 
 // https://[your registered redirect URI]/#access_token=[user access token]
@@ -125,6 +138,29 @@ static ANAppDelegate *sharedInstance = nil;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (CAShapeLayer *)_navigationBarShapeLayer
+{
+    CGFloat minx = 0.0f, midx = 320/2, maxx = 320;
+    CGFloat miny = 0.0f, maxy = 80.0f;
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, minx, maxy);
+    CGPathAddArcToPoint(path, NULL, minx, miny, midx, miny, 3.0f);
+    CGPathAddArcToPoint(path, NULL, maxx, miny, maxx, maxy, 3.0f);
+    CGPathAddLineToPoint(path, NULL, maxx, maxy);
+    
+    // Close the path
+    CGPathCloseSubpath(path);
+    
+    // Fill & stroke the path
+    CAShapeLayer *newShapeLayer = [[CAShapeLayer alloc] init];
+    newShapeLayer.path = path;
+    newShapeLayer.fillColor = [[UIColor greenColor] colorWithAlphaComponent:1.f].CGColor;
+    CFRelease(path);
+    
+    return newShapeLayer;
 }
 
 @end
