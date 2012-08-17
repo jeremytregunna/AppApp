@@ -261,7 +261,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 4;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -293,11 +293,12 @@
             cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.following"];// api always returns 0.
         }
             break;
-        case 3:
+        /*case 3:
         {
+            // TODO: check back when this isn't broken.
             cell.textLabel.text = @"Follows You";
-            cell.detailTextLabel.text = [userData valueForKeyPath:@"follows_you"] ? @"YES" : @"NO";
-        }
+            cell.detailTextLabel.text = [userData valueForKeyPath:@"is_following"] ? @"NO" : @"YES";
+        }*/
             break;
         
         default:
