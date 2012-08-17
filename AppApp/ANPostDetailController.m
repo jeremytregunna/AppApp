@@ -116,7 +116,7 @@
 
     ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
     [self presentModalViewController:postView animated:YES];
-    postView.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
+    postView.postText = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
 }
 
 - (IBAction)userAction:(id)sender

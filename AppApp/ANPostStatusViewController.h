@@ -14,6 +14,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *characterCountLabel;
 @property (nonatomic, retain) IBOutlet UITextView *postTextView;
 @property (nonatomic, retain) IBOutlet UIView *groupView;
+@property (nonatomic, retain) NSString *postText;
 
 - (id)init;
 - (id)initWithReplyToID:(NSString *)aReplyToID;
