@@ -153,7 +153,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusTextLabel.postData = self.postData;
         
         // handle frame resize
-        CGSize maxStatusLabelSize = CGSizeMake(240,100);
+        CGSize maxStatusLabelSize = CGSizeMake(240,120);
         CGSize statusLabelSize = [[self.postData objectForKey:@"text"] sizeWithFont: statusTextLabel.font
                                               constrainedToSize:maxStatusLabelSize
                                               lineBreakMode: statusTextLabel.lineBreakMode];
