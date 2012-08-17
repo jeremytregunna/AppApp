@@ -145,6 +145,18 @@
     return result;
 }
 
+- (BOOL)doesThisUserFollowMe
+{
+    BOOL result = [userData boolForKey:@"follows_you"];
+    return result;
+}
+
+- (BOOL)doIMuteThisUser
+{
+    BOOL result = [userData boolForKey:@"you_muted"];
+    return result;
+}
+
 - (void)fetchFollowData
 {
     // TODO: we're doing this here so we can get a users followers/following count.
