@@ -41,7 +41,6 @@
 		922F80D415D5A0890049F194 /* ANPostStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80D215D5A0890049F194 /* ANPostStatusViewController.m */; };
 		922F80D515D5A0890049F194 /* ANPostStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 922F80D315D5A0890049F194 /* ANPostStatusViewController.xib */; };
 		9253EBD515D624F90047C153 /* ANStatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9253EBD415D624F90047C153 /* ANStatusViewCell.m */; };
-		92BF5F8315DE0D37000BE3B0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BF5F8215DE0D37000BE3B0 /* Reachability.m */; };
 		CA13EF1B15D9EFF6005359E3 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1915D9EFF6005359E3 /* check.png */; };
 		CA13EF1C15D9EFF6005359E3 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1A15D9EFF6005359E3 /* check@2x.png */; };
 		CA13EF9C15DBCCDF005359E3 /* CCoreTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8415DBCCDF005359E3 /* CCoreTextAttachment.m */; };
@@ -180,8 +179,6 @@
 		922F80D315D5A0890049F194 /* ANPostStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ANPostStatusViewController.xib; sourceTree = "<group>"; };
 		9253EBD315D624F90047C153 /* ANStatusViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANStatusViewCell.h; sourceTree = "<group>"; };
 		9253EBD415D624F90047C153 /* ANStatusViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANStatusViewCell.m; sourceTree = "<group>"; };
-		92BF5F8115DE0D37000BE3B0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		92BF5F8215DE0D37000BE3B0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CA13EF1915D9EFF6005359E3 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		CA13EF1A15D9EFF6005359E3 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		CA13EF8315DBCCDF005359E3 /* CCoreTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextAttachment.h; sourceTree = "<group>"; };
@@ -517,15 +514,6 @@
 			name = "Post Status";
 			sourceTree = "<group>";
 		};
-		92BF5F8515DE0D3C000BE3B0 /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				92BF5F8115DE0D37000BE3B0 /* Reachability.h */,
-				92BF5F8215DE0D37000BE3B0 /* Reachability.m */,
-			);
-			name = Reachability;
-			sourceTree = "<group>";
-		};
 		CA13EF8215DBCCDF005359E3 /* CoreTextToy */ = {
 			isa = PBXGroup;
 			children = (
@@ -595,7 +583,6 @@
 		CAD8D8DF15D706E7007FC765 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				92BF5F8515DE0D3C000BE3B0 /* Reachability */,
 				CA13EF8215DBCCDF005359E3 /* CoreTextToy */,
 				0067488A15D9F79100065DFF /* TTTAttributedLabel */,
 				CAD8D99515D7709C007FC765 /* MFSideMenu */,
@@ -962,7 +949,6 @@
 				CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */,
 				CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */,
 				CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */,
-				92BF5F8315DE0D37000BE3B0 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
