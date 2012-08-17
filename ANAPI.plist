@@ -38,6 +38,13 @@
 			<key>routeFormat</key>
 			<string>stream/0/users/{user_id}/mute?access_token={accessToken}</string>
 		</dict>
+		<key>getMutedUsers</key>
+		<dict>
+			<key>method</key>
+			<string>GET</string>
+			<key>routeFormat</key>
+			<string>/stream/0/users/me/muted?access_token={accessToken}</string>
+		</dict>
 		<key>getUserFollowers</key>
 		<dict>
 			<key>method</key>
