@@ -11,6 +11,7 @@
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ANAppDelegate
 
@@ -74,6 +75,9 @@ static ANAppDelegate *sharedInstance = nil;
     
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    
+    // Set up navigation bar rounded corners
+    ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];
 }
 
 // https://[your registered redirect URI]/#access_token=[user access token]
@@ -125,6 +129,29 @@ static ANAppDelegate *sharedInstance = nil;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (CAShapeLayer *)_navigationBarShapeLayer
+{
+    CGFloat minx = 0.0f, midx = CGRectGetWidth(self.window.frame)/2.0f, maxx = CGRectGetWidth(self.window.frame);
+    CGFloat miny = 0.0f, maxy = 60.0f;
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, minx, maxy);
+    CGPathAddArcToPoint(path, NULL, minx, miny, midx, miny, 2.0f);
+    CGPathAddArcToPoint(path, NULL, maxx, miny, maxx, maxy, 2.0f);
+    CGPathAddLineToPoint(path, NULL, maxx, maxy);
+    
+    // Close the path
+    CGPathCloseSubpath(path);
+    
+    // Fill & stroke the path
+    CAShapeLayer *newShapeLayer = [[CAShapeLayer alloc] init];
+    newShapeLayer.path = path;
+    newShapeLayer.fillColor = [[UIColor greenColor] colorWithAlphaComponent:1.f].CGColor;
+    CFRelease(path);
+    
+    return newShapeLayer;
 }
 
 @end
