@@ -17,6 +17,8 @@
 {
 @protected
     NSMutableArray *streamData;
+    NSIndexPath *currentSelection;
+    UIView* currentToolbarView;
 }
 
 @property (nonatomic, readonly) NSString *sideMenuTitle;

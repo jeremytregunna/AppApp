@@ -64,6 +64,7 @@
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
+    
 }
 
 - (void)viewDidUnload
@@ -131,6 +132,9 @@
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
     
+    if ((currentSelection) && (indexPath.row == currentSelection.row)) {
+        height += 40;
+    }
     return height;
 }
 
@@ -149,7 +153,6 @@
         [[UIApplication sharedApplication] openURL:url];
     }
 }
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -243,17 +246,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    
-    NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
-    ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
-    [self.navigationController pushViewController:detailController animated:YES];
-    
-     /*<#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    if (currentToolbarView) {
+        [currentToolbarView removeFromSuperview];
+    }
+    currentSelection = indexPath;
+    ANStatusViewCell *currentCell = (ANStatusViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [tableView beginUpdates];
+    UIView *statusCellToolbarView = [[UIView alloc] initWithFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+    statusCellToolbarView.backgroundColor = [UIColor redColor];
+    UIImageView *actions = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"streamactions.png"]];
+    [statusCellToolbarView addSubview:actions];
+    [currentCell addSubview:statusCellToolbarView];
+    currentToolbarView = statusCellToolbarView;
+    [tableView endUpdates];
 }
 
 #pragma mark - Gesture Handling
