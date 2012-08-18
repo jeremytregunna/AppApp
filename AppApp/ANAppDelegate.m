@@ -76,14 +76,6 @@ static ANAppDelegate *sharedInstance = nil;
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
-    // Add overlay for rounded corners
-    UIImage *overlayImg = [UIImage imageNamed:@"overlay.png"];
-    CALayer *overlay = [CALayer layer];
-    overlay.frame = self.window.rootViewController.view.frame;
-    overlay.contents = (id)overlayImg.CGImage;
-    overlay.zPosition = 1;
-    [self.window.layer addSublayer:overlay];
-    
     // Set up navigation bar rounded corners
     ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];
 }
@@ -141,13 +133,13 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (CAShapeLayer *)_navigationBarShapeLayer
 {
-    CGFloat minx = 0.0f, midx = 320/2, maxx = 320;
+    CGFloat minx = 0.0f, midx = CGRectGetWidth(self.window.frame)/2.0f, maxx = CGRectGetWidth(self.window.frame);
     CGFloat miny = 0.0f, maxy = 80.0f;
     
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, minx, maxy);
-    CGPathAddArcToPoint(path, NULL, minx, miny, midx, miny, 3.0f);
-    CGPathAddArcToPoint(path, NULL, maxx, miny, maxx, maxy, 3.0f);
+    CGPathAddArcToPoint(path, NULL, minx, miny, midx, miny, 2.0f);
+    CGPathAddArcToPoint(path, NULL, maxx, miny, maxx, maxy, 2.0f);
     CGPathAddLineToPoint(path, NULL, maxx, maxy);
     
     // Close the path
