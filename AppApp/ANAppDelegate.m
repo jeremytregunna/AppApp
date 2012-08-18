@@ -134,7 +134,7 @@ static ANAppDelegate *sharedInstance = nil;
 - (CAShapeLayer *)_navigationBarShapeLayer
 {
     CGFloat minx = 0.0f, midx = CGRectGetWidth(self.window.frame)/2.0f, maxx = CGRectGetWidth(self.window.frame);
-    CGFloat miny = 0.0f, maxy = 80.0f;
+    CGFloat miny = 0.0f, maxy = 60.0f;
     
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, minx, maxy);
