@@ -226,6 +226,10 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
         NSTimeInterval delayInSeconds = .5;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+
+            // Select the cell
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] animated:NO scrollPosition:UITableViewScrollPositionNone];
+
             ANHashtagStreamController *hashTagController = [[ANHashtagStreamController alloc] initWithHashtag:hashTag];
             NSArray *controllers = [NSArray arrayWithObject:hashTagController];
 //            [self updateOnlyCurrentTableViewToScrollToTop:hashTagController];
