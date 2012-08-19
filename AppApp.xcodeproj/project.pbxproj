@@ -1013,7 +1013,6 @@
 				CAFC0AAB15E0BFDA00B5E55E /* postBottom@2x.png in Resources */,
 				CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */,
 				CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */,
-				CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */,
 				FD19B59D15E0610500A3A532 /* sideMenuSearchBg.png in Resources */,
 				FD19B59E15E0610500A3A532 /* sideMenuSearchBg@2x.png in Resources */,
 				FD19B5A115E0643200A3A532 /* sidemenu_magnifyglass_icon@2x.png in Resources */,
