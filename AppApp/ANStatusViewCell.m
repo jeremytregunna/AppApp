@@ -48,6 +48,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         
         UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
+        UIColor *highlightedTextColor = [UIColor purpleColor];
         // future avatar
         avatarView = [[SDImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         avatarView.backgroundColor = [UIColor clearColor];
@@ -91,12 +92,14 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         usernameTextLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
         usernameTextLabel.backgroundColor = postColor;
         usernameTextLabel.textColor = textColor;
+        usernameTextLabel.highlightedTextColor = highlightedTextColor;
         [self.postView addSubview: usernameTextLabel];
         
         //created_atTextLabel
         created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(185, 10, 55, 15)];
         created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         created_atTextLabel.backgroundColor = postColor;
+        created_atTextLabel.highlightedTextColor = highlightedTextColor;
         created_atTextLabel.textColor = [UIColor grayColor];
         created_atTextLabel.textAlignment = UITextAlignmentRight;
         [self.postView addSubview: created_atTextLabel];
@@ -108,6 +111,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusTextLabel.backgroundColor = postColor;
         //statusTextLabel.numberOfLines = 0;
         statusTextLabel.textColor = textColor;
+        statusTextLabel.highlightedTextColor = highlightedTextColor;
         statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         statusTextLabel.clipsToBounds = YES;
         
