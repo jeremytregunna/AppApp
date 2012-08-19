@@ -169,7 +169,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:[userArray objectAtIndex:indexPath.row]];
+    NSDictionary *userObject = nil;
+
+    if (self.isFiltered) {
+        userObject = [self.filteredUsers objectAtIndex:indexPath.row];
+    } else {
+        userObject = [userArray objectAtIndex:indexPath.row];
+    }
+    
+    ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:userObject];
     [self.navigationController pushViewController:userController animated:YES];
 }
 
