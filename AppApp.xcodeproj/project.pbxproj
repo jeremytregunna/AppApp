@@ -992,7 +992,6 @@
 				2239C20A15E062E500020AF1 /* following@2x.png in Resources */,
 				2239C20B15E062E500020AF1 /* mutualFollow.png in Resources */,
 				2239C20C15E062E500020AF1 /* mutualFollow@2x.png in Resources */,
-				CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */,
 				FD19B59D15E0610500A3A532 /* sideMenuSearchBg.png in Resources */,
 				FD19B59E15E0610500A3A532 /* sideMenuSearchBg@2x.png in Resources */,
 				FD19B5A115E0643200A3A532 /* sidemenu_magnifyglass_icon@2x.png in Resources */,
