@@ -15,7 +15,14 @@
 
 + (ANAPICall *)sharedAppAPI;
 
+/* access token methods. */
+
+// check to answer whether we have a valid token for a session.
 - (BOOL)hasAccessToken;
+
+// validates whether the token is valid by requesting info about our user.
+- (BOOL)isAccessTokenValid;
+
 
 - (void)makePostWithText:(NSString*)text uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;
 - (void)makePostWithText:(NSString*)text replyToPostID:(NSString *)postID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;

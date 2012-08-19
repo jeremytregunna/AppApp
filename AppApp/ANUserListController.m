@@ -109,8 +109,18 @@
     cell.userImageView.imageURL = [userObject stringForKeyPath:@"avatar_image.url"];
     
     // seems like we should use is_following here instead, but this one shows the correct results.
-    BOOL following = [userObject boolForKey:@"is_follower"];
-    cell.checkImage.hidden = !following;
+    BOOL follower = [userObject boolForKey:@"follows_you"];
+    BOOL following = [userObject boolForKey:@"you_follow"];
+    
+    if (follower && following) {
+        cell.followStatusImage.image = [UIImage imageNamed:@"mutualFollow"];
+    } else if (follower) {
+        cell.followStatusImage.image = [UIImage imageNamed:@"follower"];
+    } else if (following) {
+        cell.followStatusImage.image = [UIImage imageNamed:@"following"];
+    } else {
+        cell.followStatusImage.image = nil;
+    }
     
     return cell;
 }
@@ -159,7 +169,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:[userArray objectAtIndex:indexPath.row]];
+    NSDictionary *userObject = nil;
+
+    if (self.isFiltered) {
+        userObject = [self.filteredUsers objectAtIndex:indexPath.row];
+    } else {
+        userObject = [userArray objectAtIndex:indexPath.row];
+    }
+    
+    ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:userObject];
     [self.navigationController pushViewController:userController animated:YES];
 }
 
