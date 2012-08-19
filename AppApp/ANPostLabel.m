@@ -71,6 +71,8 @@
     {
         NSUInteger pos = [item unsignedIntegerForKey:@"pos"];
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
+        if (pos + len >= attrString.length - 1)
+            len = (attrString.length - 1) - pos;
         NSString *keyValue = [item stringForKey:key];
         NSRange range = { .location = pos, .length = len };
         
