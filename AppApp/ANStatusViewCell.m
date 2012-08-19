@@ -12,7 +12,7 @@
 #import "NSDate+ANExtensions.h"
 
 CGFloat const ANStatusViewCellTopMargin = 10.0;
-CGFloat const ANStatusViewCellBottomMargin = 10.0;
+CGFloat const ANStatusViewCellBottomMargin = 15.0;
 CGFloat const ANStatusViewCellLeftMargin = 10.0;
 CGFloat const ANStatusViewCellUsernameTextHeight = 15.0;
 CGFloat const ANStatusViewCellAvatarHeight = 50.0;

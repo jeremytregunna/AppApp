@@ -124,11 +124,11 @@
     ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
     tempLabel.postData = postData;
     
-    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
     CGSize statusLabelSize = [tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
+    
     
     return height;
 }
