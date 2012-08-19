@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet SDImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *checkImage;
+@property (weak, nonatomic) IBOutlet UIImageView *followStatusImage;
 
 @end
