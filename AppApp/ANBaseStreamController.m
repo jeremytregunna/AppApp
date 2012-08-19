@@ -25,6 +25,7 @@
 @end
 
 @implementation ANBaseStreamController
+@synthesize currentToolbarView;
 
 - (void)viewDidLoad
 {
@@ -56,15 +57,46 @@
     UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDetails:)];
     [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     
-    UISwipeGestureRecognizer *menuRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
-    [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    UISwipeGestureRecognizer *toolnbarRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToToolbar:)];
+    [toolnbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     
     [self.tableView addGestureRecognizer:detailsRecognizer];
-    [self.tableView addGestureRecognizer:menuRecognizer];
+    [self.tableView addGestureRecognizer:toolnbarRecognizer];
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
+        
+    if (!currentToolbarView) {
+        self.currentToolbarView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.currentToolbarView.backgroundColor = [UIColor darkGrayColor];
+        
+        UIImageView *background = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"toolbarbg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0]];
+        background.frame = CGRectMake(0,0,260,40);
+        
+        UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnReply setTitle:@"Reply" forState:UIControlStateNormal];
+        [btnReply setFrame:CGRectMake(10,5,50,30)];
+        [btnReply.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
+     
+        UIButton *btnReplyAll = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnReplyAll setTitle:@"Reply All" forState:UIControlStateNormal];
+        [btnReplyAll setFrame:CGRectMake(65,5,60,30)];
+        [btnReplyAll.titleLabel setFont:[UIFont systemFontOfSize:12]];
+
+        UIButton *btnProfile = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnProfile setTitle:@"Profile" forState:UIControlStateNormal];
+        [btnProfile setFrame:CGRectMake(130,5,60,30)];
+        [btnProfile.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        
+        [self.currentToolbarView addSubview:background];
+        [self.currentToolbarView addSubview:btnReply];
+        [self.currentToolbarView addSubview:btnReplyAll];
+        [self.currentToolbarView addSubview:btnProfile];
+    }
     
+    toolbarIsVisible = false;
+    currentSelection = nil;
+    newSelection = nil;
 }
 
 - (void)viewDidUnload
@@ -132,7 +164,8 @@
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
     
-    if ((currentSelection) && (indexPath.row == currentSelection.row)) {
+    if ((currentSelection) && (currentSelection.row == indexPath.row))
+    {
         height += 40;
     }
     return height;
@@ -246,19 +279,29 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (currentToolbarView) {
-        [currentToolbarView removeFromSuperview];
+    // Navigation logic may go here. Create and push another view controller.
+    
+    NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
+    ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
+    [self.navigationController pushViewController:detailController animated:YES];
+    
+    /*<#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (toolbarIsVisible) {
+        [self.currentToolbarView removeFromSuperview];
+        toolbarIsVisible = false;
+        currentSelection = nil;
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
     }
-    currentSelection = indexPath;
-    ANStatusViewCell *currentCell = (ANStatusViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [tableView beginUpdates];
-    UIView *statusCellToolbarView = [[UIView alloc] initWithFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
-    statusCellToolbarView.backgroundColor = [UIColor redColor];
-    UIImageView *actions = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"streamactions.png"]];
-    [statusCellToolbarView addSubview:actions];
-    [currentCell addSubview:statusCellToolbarView];
-    currentToolbarView = statusCellToolbarView;
-    [tableView endUpdates];
+    [super scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - Gesture Handling
@@ -271,6 +314,38 @@
     NSLog(@"SWIPE TO DETAILS %@!", [streamData objectAtIndex: [indexPath row]]);
 }
 
+- (void)swipeToToolbar:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    
+    CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+    ANStatusViewCell *currentCell = (ANStatusViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+
+    newSelection = indexPath;
+    
+    if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
+        if (!toolbarIsVisible) {
+            [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+            [currentCell addSubview:self.currentToolbarView];
+            toolbarIsVisible = true;
+            currentSelection = indexPath;
+        } else {
+            [self.currentToolbarView removeFromSuperview];
+            toolbarIsVisible = false;
+            currentSelection = nil;
+        }
+    } else { // user swiped on new cell
+        [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+        [currentCell addSubview:self.currentToolbarView];
+        toolbarIsVisible = true;
+        currentSelection = indexPath;
+    }
+        
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+// TODO: @ralf: The following method can likely be completely removed
 - (void)swipeToSideMenu:(UISwipeGestureRecognizer *)gestureRecognizer
 {
     //CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];

@@ -41,7 +41,9 @@
 		922F80D415D5A0890049F194 /* ANPostStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80D215D5A0890049F194 /* ANPostStatusViewController.m */; };
 		922F80D515D5A0890049F194 /* ANPostStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 922F80D315D5A0890049F194 /* ANPostStatusViewController.xib */; };
 		9253EBD515D624F90047C153 /* ANStatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9253EBD415D624F90047C153 /* ANStatusViewCell.m */; };
-		AEAB86B815E0026700DE4813 /* streamactions.png in Resources */ = {isa = PBXBuildFile; fileRef = AEAB86B715E0026700DE4813 /* streamactions.png */; };
+		AEB6F97415E121F600EEA9ED /* actionBarConversation.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB6F97215E121F600EEA9ED /* actionBarConversation.png */; };
+		AEB6F97515E121F600EEA9ED /* actionBarConversation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB6F97315E121F600EEA9ED /* actionBarConversation@2x.png */; };
+		AEB6F97715E1347A00EEA9ED /* toolbarbg.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB6F97615E1347A00EEA9ED /* toolbarbg.png */; };
 		CA13EF1B15D9EFF6005359E3 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1915D9EFF6005359E3 /* check.png */; };
 		CA13EF1C15D9EFF6005359E3 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA13EF1A15D9EFF6005359E3 /* check@2x.png */; };
 		CA13EF9C15DBCCDF005359E3 /* CCoreTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EF8415DBCCDF005359E3 /* CCoreTextAttachment.m */; };
@@ -180,7 +182,9 @@
 		922F80D315D5A0890049F194 /* ANPostStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ANPostStatusViewController.xib; sourceTree = "<group>"; };
 		9253EBD315D624F90047C153 /* ANStatusViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANStatusViewCell.h; sourceTree = "<group>"; };
 		9253EBD415D624F90047C153 /* ANStatusViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANStatusViewCell.m; sourceTree = "<group>"; };
-		AEAB86B715E0026700DE4813 /* streamactions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = streamactions.png; sourceTree = "<group>"; };
+		AEB6F97215E121F600EEA9ED /* actionBarConversation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actionBarConversation.png; sourceTree = "<group>"; };
+		AEB6F97315E121F600EEA9ED /* actionBarConversation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionBarConversation@2x.png"; sourceTree = "<group>"; };
+		AEB6F97615E1347A00EEA9ED /* toolbarbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbarbg.png; sourceTree = "<group>"; };
 		CA13EF1915D9EFF6005359E3 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		CA13EF1A15D9EFF6005359E3 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		CA13EF8315DBCCDF005359E3 /* CCoreTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextAttachment.h; sourceTree = "<group>"; };
@@ -362,7 +366,7 @@
 		0067483115D8473100065DFF /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				AEAB86B715E0026700DE4813 /* streamactions.png */,
+				AEB6F97115E121C900EEA9ED /* Stream Cell Toolbar */,
 				FD3EB16115DB4995005BF189 /* Side Menu */,
 				FD3EB47115DB6A98005BF189 /* Navigation Bar */,
 				1F6EAAF715DB54F600892268 /* statusCellBackground.png */,
@@ -515,6 +519,17 @@
 				922F80D315D5A0890049F194 /* ANPostStatusViewController.xib */,
 			);
 			name = "Post Status";
+			sourceTree = "<group>";
+		};
+		AEB6F97115E121C900EEA9ED /* Stream Cell Toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				AEB6F97615E1347A00EEA9ED /* toolbarbg.png */,
+				AEB6F97215E121F600EEA9ED /* actionBarConversation.png */,
+				AEB6F97315E121F600EEA9ED /* actionBarConversation@2x.png */,
+			);
+			name = "Stream Cell Toolbar";
+			path = StreamCellToolbar;
 			sourceTree = "<group>";
 		};
 		CA13EF8215DBCCDF005359E3 /* CoreTextToy */ = {
@@ -885,7 +900,9 @@
 				FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */,
 				FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */,
 				CA13EFA315DBCCDF005359E3 /* MissingImage.png in Resources */,
-				AEAB86B815E0026700DE4813 /* streamactions.png in Resources */,
+				AEB6F97415E121F600EEA9ED /* actionBarConversation.png in Resources */,
+				AEB6F97515E121F600EEA9ED /* actionBarConversation@2x.png in Resources */,
+				AEB6F97715E1347A00EEA9ED /* toolbarbg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
