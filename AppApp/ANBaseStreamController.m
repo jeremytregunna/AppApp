@@ -120,13 +120,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSString *statusText =[[streamData objectAtIndex: [indexPath row]] objectForKey:@"text"];
-    if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
+    NSDictionary *postData = [streamData objectAtIndex:[indexPath row]];
+    ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
+    tempLabel.postData = postData;
     
     CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
-    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
-                                    constrainedToSize:maxStatusLabelSize
-                                        lineBreakMode: UILineBreakModeWordWrap];
+    CGSize statusLabelSize = [tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
@@ -134,7 +133,7 @@
     return height;
 }
 
-#pragma mark - TTTAttributedLabel delgate
+/*#pragma mark - TTTAttributedLabel delgate
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     if([[url scheme]isEqualToString:@"username"]) {
@@ -148,7 +147,7 @@
     } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
-}
+}*/
 
 
 
@@ -158,7 +157,7 @@
     ANStatusViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ANStatusViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.statusTextLabel.tapHandler = ^BOOL (NSRange range, NSString *type, NSString *value) {
+        cell.statusTextLabel.tapHandler = ^BOOL (NSString *type, NSString *value) {
             BOOL result = NO;
             if ([type isEqualToString:@"hashtag"])
             {
