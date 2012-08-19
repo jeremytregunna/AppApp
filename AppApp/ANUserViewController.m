@@ -28,6 +28,7 @@
     NSDictionary *userData;
     NSArray *followersList;
     NSArray *followingList;
+    NSArray *mutedList;
     
     CGFloat initialCoverImageYOffset;
 
@@ -172,6 +173,15 @@
 
         [self.tableView reloadData];
     }];
+    
+    if ([self isThisUserMe:userID])
+    {
+        [[ANAPICall sharedAppAPI] getMutedUsers:^(id dataObject, NSError *error) {
+            mutedList = (NSArray *)dataObject;
+            
+            [self.tableView reloadData];
+        }];
+    }
 }
 
 - (void)followAction:(id)sender
@@ -273,7 +283,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -287,22 +297,71 @@
     switch (indexPath.row) {
         case 0:
         {
+            NSUInteger postCount = [userData unsignedIntegerForKeyPath:@"counts.posts"];
             cell.textLabel.text = @"Posts";
-            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.posts"];// api always returns 0.
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", postCount];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            if (postCount > 0)
+            {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
         }
             break;
             
         case 1:
         {
             cell.textLabel.text = @"Followers";
-            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.followers"];// api always returns 0.
+            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.followers"];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            if (followersList && followersList.count > 0)
+            {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", followersList.count];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
         }
             break;
 
         case 2:
         {
             cell.textLabel.text = @"Following";
-            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.following"];// api always returns 0.
+            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.following"];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            if (followingList && followingList.count > 0)
+            {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", followingList.count];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+        }
+            break;
+            
+        case 3:
+        {
+            cell.textLabel.text = @"Muted";
+            cell.detailTextLabel.text = @"?";
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            if ([self isThisUserMe:userID])
+            {
+                if (mutedList)
+                {
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", mutedList.count];
+                    if (mutedList.count > 0)
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+            }
+            else
+            {
+                BOOL youMuted = [userData boolForKey:@"you_muted"];
+                if (youMuted)
+                {
+                    cell.detailTextLabel.text = @"Yes";
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
+                else
+                {
+                    cell.detailTextLabel.text = @"No";
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                }
+            }
         }
             break;
         /*case 3:
@@ -316,8 +375,6 @@
         default:
             break;
     }
-    
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
@@ -333,23 +390,66 @@
     switch (indexPath.row) {
         case 0:
             controller = [[ANUserPostsController alloc] initWithUserID:userID];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
             
         case 1:
+            if (!followersList)
+                break;
             controller = [[ANUserListController alloc] initWithUserArray:followersList];
             controller.title = @"Followers";
+            [self.navigationController pushViewController:controller animated:YES];
             break;
             
         case 2:
+            if (!followingList)
+                break;
             controller = [[ANUserListController alloc] initWithUserArray:followingList];
             controller.title = @"Following";
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+            
+        case 3:
+        {
+            if ([self isThisUserMe:userID])
+            {
+                if (!mutedList)
+                    break;
+                controller = [[ANUserListController alloc] initWithUserArray:mutedList];
+                controller.title = @"Muted";
+                [self.navigationController pushViewController:controller animated:YES];
+            }
+            else
+            {
+                BOOL youMuted = [userData boolForKey:@"you_muted"];
+                if (youMuted)
+                {
+                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.detailTextLabel.text = @"No";
+                    [[ANAPICall sharedAppAPI] unmuteUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+                        // ...
+                    }];
+                }
+                else
+                {
+                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    cell.detailTextLabel.text = @"Yes";
+                    [[ANAPICall sharedAppAPI] muteUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+                        // ...
+                    }];
+                }
+
+            }
+        }
             break;
             
         default:
             break;
     }
 
-    if (controller)
+    /*if (controller)
         [self.navigationController pushViewController:controller animated:YES];
     else
     {
@@ -357,7 +457,7 @@
         [alert show];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+    }*/
 }
 
 #pragma mark - 

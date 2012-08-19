@@ -478,7 +478,7 @@
     [self performRequestWithMethod:@"unmuteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
-- (void)getMutedUsers:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
+- (void)getMutedUsers:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
     [self readTokenFromDefaults];
     
