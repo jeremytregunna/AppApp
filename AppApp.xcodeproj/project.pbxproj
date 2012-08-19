@@ -136,7 +136,6 @@
 		FD3EB47615DB6AA3005BF189 /* navbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */; };
 		FD3EB47815DB6F7D005BF189 /* barbuttonBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */; };
 		FD3EB47A15DB723A005BF189 /* barbuttonBg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD3EB47915DB723A005BF189 /* barbuttonBg.png */; };
-		FD5A6E1715E0C9D90056CC82 /* barbuttonBackBg.png in Resources */ = {isa = PBXBuildFile; fileRef = FD5A6E1615E0C9D90056CC82 /* barbuttonBackBg.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -376,7 +375,6 @@
 		FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbarBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barbuttonBg@2x.png"; sourceTree = "<group>"; };
 		FD3EB47915DB723A005BF189 /* barbuttonBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barbuttonBg.png; sourceTree = "<group>"; };
-		FD5A6E1615E0C9D90056CC82 /* barbuttonBackBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barbuttonBackBg.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -846,7 +844,6 @@
 		FD3EB47115DB6A98005BF189 /* Navigation Bar */ = {
 			isa = PBXGroup;
 			children = (
-				FD5A6E1615E0C9D90056CC82 /* barbuttonBackBg.png */,
 				FD3EB47315DB6AA3005BF189 /* navbarBg.png */,
 				FD3EB47415DB6AA3005BF189 /* navbarBg@2x.png */,
 				FD3EB47715DB6F7D005BF189 /* barbuttonBg@2x.png */,
@@ -1027,7 +1024,6 @@
 				FD19B5DA15E0916700A3A532 /* sidemenuHashTagX.png in Resources */,
 				FD19B5DB15E0916700A3A532 /* sidemenuHashTagX@2x.png in Resources */,
 				FD19B5E015E0951C00A3A532 /* ANSideMenuHashTagCell.xib in Resources */,
-				FD5A6E1715E0C9D90056CC82 /* barbuttonBackBg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
