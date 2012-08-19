@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDImageView.h"
+#import "ANImageView.h"
 #import "ANPostLabel.h"
 
 extern CGFloat const ANStatusViewCellTopMargin;
@@ -25,7 +25,7 @@ extern CGFloat const ANStatusViewCellAvatarWidth;
     CALayer* _avatarConnector;
 }
 @property (nonatomic, strong) NSDictionary *postData;
-@property (nonatomic, readonly) SDImageView *avatarView;
+@property (nonatomic, readonly) ANImageView *avatarView;
 @property (nonatomic, readonly) UIButton *showUserButton;
 @property (nonatomic, readonly) ANPostLabel *statusTextLabel;
 @property (nonatomic, readonly) UIView* postView;

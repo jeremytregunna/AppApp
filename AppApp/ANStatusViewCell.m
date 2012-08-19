@@ -21,7 +21,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @interface ANStatusViewCell()
 {
     UIButton *showUserButton;
-    SDImageView *avatarView;
+    ANImageView *avatarView;
     UILabel *usernameTextLabel;
     UILabel *created_atTextLabel;
     UIView *postView;
@@ -50,7 +50,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
         UIColor *highlightedTextColor = [UIColor purpleColor];
         // future avatar
-        avatarView = [[SDImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        avatarView = [[ANImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         avatarView.backgroundColor = [UIColor clearColor];
         avatarView.layer.borderWidth = 1.0;
         avatarView.layer.borderColor = [borderColor CGColor];

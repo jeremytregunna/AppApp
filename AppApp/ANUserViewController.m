@@ -31,8 +31,8 @@
     
     CGFloat initialCoverImageYOffset;
 
-    __weak IBOutlet SDImageView *userImageView;
-    __weak IBOutlet SDImageView *coverImageView;
+    __weak IBOutlet ANImageView *userImageView;
+    __weak IBOutlet ANImageView *coverImageView;
     __weak IBOutlet UILabel *nameLabel;
     __weak IBOutlet UILabel *usernameLabel;
     __weak IBOutlet UILabel *bioLabel;

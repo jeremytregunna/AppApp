@@ -69,6 +69,7 @@
 		CACA6BE115D841EE00AE5D40 /* UIAlertView+SDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CACA6BE015D841EE00AE5D40 /* UIAlertView+SDExtensions.m */; };
 		CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648BF15E0C2ED0081E981 /* photoIcon.png */; };
 		CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */; };
+		CAD648C515E0C7AE0081E981 /* ANImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD648C415E0C7AE0081E981 /* ANImageView.m */; };
 		CAD8D8AB15D6E59F007FC765 /* ANAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = CAD8D8AA15D6E59F007FC765 /* ANAPI.plist */; };
 		CAD8D8C915D6E9F2007FC765 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8D8C815D6E9F2007FC765 /* SystemConfiguration.framework */; };
 		CAD8D8CB15D6EA05007FC765 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8D8CA15D6EA05007FC765 /* Security.framework */; };
@@ -263,6 +264,8 @@
 		CACA6BE015D841EE00AE5D40 /* UIAlertView+SDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+SDExtensions.m"; sourceTree = "<group>"; };
 		CAD648BF15E0C2ED0081E981 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoIcon.png; sourceTree = "<group>"; };
 		CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photoIcon@2x.png"; sourceTree = "<group>"; };
+		CAD648C315E0C7AE0081E981 /* ANImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageView.h; sourceTree = "<group>"; };
+		CAD648C415E0C7AE0081E981 /* ANImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANImageView.m; sourceTree = "<group>"; };
 		CAD8D8AA15D6E59F007FC765 /* ANAPI.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ANAPI.plist; sourceTree = "<group>"; };
 		CAD8D8C815D6E9F2007FC765 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CAD8D8CA15D6EA05007FC765 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -554,6 +557,8 @@
 				CAFC0A7E15E0572B00B5E55E /* ANPostLinkButton.m */,
 				CA13EFAB15DBCD02005359E3 /* ANPostLabel.h */,
 				CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */,
+				CAD648C315E0C7AE0081E981 /* ANImageView.h */,
+				CAD648C415E0C7AE0081E981 /* ANImageView.m */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -1018,6 +1023,7 @@
 				CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */,
 				CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */,
 				CAFC0A7F15E0572B00B5E55E /* ANPostLinkButton.m in Sources */,
+				CAD648C515E0C7AE0081E981 /* ANImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
