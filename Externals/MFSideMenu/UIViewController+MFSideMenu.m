@@ -25,8 +25,10 @@ static char menuStateKey;
 - (void) toggleSideMenuPressed:(id)sender {
     if(self.navigationController.menuState == MFSideMenuStateVisible) {
         [self.navigationController setMenuState:MFSideMenuStateHidden];
+        [[MFSideMenuManager sharedManager].sideMenuController viewWillDisappear:YES];        
     } else {
         [self.navigationController setMenuState:MFSideMenuStateVisible];
+        [[MFSideMenuManager sharedManager].sideMenuController viewWillAppear:YES];
     }
 }
 
@@ -90,6 +92,12 @@ static char menuStateKey;
             
             // disable user interaction on the current view controller
             controller.visibleViewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
+            
+            if (self.menuState == MFSideMenuStateHidden) {
+                [[MFSideMenuManager sharedManager].sideMenuController viewDidDisappear:YES];
+            } else {
+                [[MFSideMenuManager sharedManager].sideMenuController viewDidAppear:YES];
+            }
         }
     }
 }
