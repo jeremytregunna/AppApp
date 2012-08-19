@@ -12,7 +12,7 @@
 @synthesize userImageView;
 @synthesize nameLabel;
 @synthesize usernameLabel;
-@synthesize checkImage;
+@synthesize followStatusImage;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
