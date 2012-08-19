@@ -228,7 +228,7 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             ANHashtagStreamController *hashTagController = [[ANHashtagStreamController alloc] initWithHashtag:hashTag];
             NSArray *controllers = [NSArray arrayWithObject:hashTagController];
-            [self updateOnlyCurrentTableViewToScrollToTop:hashTagController];
+//            [self updateOnlyCurrentTableViewToScrollToTop:hashTagController];
             [MFSideMenuManager sharedManager].navigationController.viewControllers = controllers;
             [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
         });
