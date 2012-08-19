@@ -67,6 +67,8 @@
 		CACA6BDB15D8152E00AE5D40 /* UILabel+SDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CACA6BDA15D8152E00AE5D40 /* UILabel+SDExtensions.m */; };
 		CACA6BDE15D8244A00AE5D40 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACA6BDD15D8244A00AE5D40 /* CoreImage.framework */; };
 		CACA6BE115D841EE00AE5D40 /* UIAlertView+SDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CACA6BE015D841EE00AE5D40 /* UIAlertView+SDExtensions.m */; };
+		CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648BF15E0C2ED0081E981 /* photoIcon.png */; };
+		CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */; };
 		CAD8D8AB15D6E59F007FC765 /* ANAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = CAD8D8AA15D6E59F007FC765 /* ANAPI.plist */; };
 		CAD8D8C915D6E9F2007FC765 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8D8C815D6E9F2007FC765 /* SystemConfiguration.framework */; };
 		CAD8D8CB15D6EA05007FC765 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8D8CA15D6EA05007FC765 /* Security.framework */; };
@@ -259,6 +261,8 @@
 		CACA6BDD15D8244A00AE5D40 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		CACA6BDF15D841EE00AE5D40 /* UIAlertView+SDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+SDExtensions.h"; sourceTree = "<group>"; };
 		CACA6BE015D841EE00AE5D40 /* UIAlertView+SDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+SDExtensions.m"; sourceTree = "<group>"; };
+		CAD648BF15E0C2ED0081E981 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoIcon.png; sourceTree = "<group>"; };
+		CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photoIcon@2x.png"; sourceTree = "<group>"; };
 		CAD8D8AA15D6E59F007FC765 /* ANAPI.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ANAPI.plist; sourceTree = "<group>"; };
 		CAD8D8C815D6E9F2007FC765 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CAD8D8CA15D6EA05007FC765 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -416,6 +420,8 @@
 				0067483615D8473100065DFF /* postarrow@2x.png */,
 				CAFC0AA815E0BFDA00B5E55E /* postBottom.png */,
 				CAFC0AA915E0BFDA00B5E55E /* postBottom@2x.png */,
+				CAD648BF15E0C2ED0081E981 /* photoIcon.png */,
+				CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -955,6 +961,8 @@
 				2239C20C15E062E500020AF1 /* mutualFollow@2x.png in Resources */,
 				CAFC0AAA15E0BFDA00B5E55E /* postBottom.png in Resources */,
 				CAFC0AAB15E0BFDA00B5E55E /* postBottom@2x.png in Resources */,
+				CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */,
+				CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
