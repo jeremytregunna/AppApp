@@ -19,10 +19,20 @@
     if ((self = [super initWithFrame:frame]) != NULL)
     {
         self.delegate = self;
-        self.drawDebugFrames = YES;
+        _enableLinks = YES;
+        //self.drawDebugFrames = YES;
         self.userInteractionEnabled = YES;
     }
     return(self);
+}
+
+- (void)setEnableLinks:(BOOL)enableLinks
+{
+    if (enableLinks == _enableLinks)
+        return;
+    
+    _enableLinks = enableLinks;
+    [self relayoutText];
 }
 
 - (void)executeTapHandler:(id)sender
@@ -33,6 +43,8 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForLink:(NSURL *)url identifier:(NSString *)identifier frame:(CGRect)frame;
 {
+    if (!_enableLinks)
+        return nil;
     // we're misusing an NSURL here, but i want to modify DTCoreText as little as possible.
     // soon, i hope to do this right and submit a patch.  just trying to get things working again.  -- BKS
     NSString *value = (NSString *)url;

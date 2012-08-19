@@ -11,6 +11,7 @@
 @interface ANPostLabel : DTAttributedTextContentView<DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) NSDictionary *postData;
+@property (nonatomic, assign) BOOL enableLinks;
 @property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSString *type, NSString *value);
 
 @end
