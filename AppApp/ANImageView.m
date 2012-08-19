@@ -9,12 +9,42 @@
 #import "ANImageView.h"
 
 @implementation ANImageView
+{
+    NSUInteger width;
+    NSUInteger height;
+}
+
++ (UIImage*)imageWithImage:(UIImage*)sourceImage scaledToWidth:(CGFloat)width
+{
+    CGFloat oldWidth = sourceImage.size.width;
+    CGFloat scaleFactor = width / oldWidth;
+    
+    CGFloat newHeight = sourceImage.size.height * scaleFactor;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
+    [sourceImage drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+- (void)setImage:(UIImage *)image
+{
+    CGSize size = image.size;
+    // we really prefer width to anything else..
+    if (size.width != width)
+    {
+        image = [ANImageView imageWithImage:image scaledToWidth:width];
+    }
+    [super setImage:image];
+}
 
 - (void)setImageURL:(NSString *)value
 {
     CGSize size = self.bounds.size;
-    NSUInteger width = size.width;
-    NSUInteger height = size.height;
+    width = size.width;
+    height = size.height;
     NSMutableString *sizedValue = [value mutableCopy];
     if (size.width > 0 && size.height > 0)
     {

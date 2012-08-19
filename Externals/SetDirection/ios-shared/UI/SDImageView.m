@@ -17,13 +17,18 @@
 
 @synthesize imageURL;
 
+- (void)modifyRequest:(NSMutableURLRequest *)request
+{
+    // .. subclasses can override this.
+}
+
 - (void)setImageURL:(NSString *)value
 {
     imageURL = value;
     if (urlConnection)
         [urlConnection cancel];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:value]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:value]];
     urlConnection = [SDURLConnection sendAsynchronousRequest:request shouldCache:YES withResponseHandler:^(SDURLConnection *connection, NSURLResponse *response, NSData *responseData, NSError *error) {
         UIImage *newImage = [UIImage imageWithData:responseData];
         dispatch_async(dispatch_get_main_queue(), ^{
