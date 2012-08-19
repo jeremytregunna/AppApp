@@ -27,7 +27,24 @@ static ANAppDelegate *sharedInstance = nil;
 {
     self = [super init];
     sharedInstance = self;
+    [NSURLCache setSharedURLCache:[self cacheInstance]];
     return self;
+}
+
+#pragma mark - Cache
+
+- (NSURLCache *)cacheInstance
+{
+	NSURLCache *appCache;
+	NSUInteger memoryCapacity = 1024 * 1024; // 1 megabytish.
+	NSUInteger diskCapacity = 1024 * 1024 * 20; // 20 megabytish.
+    
+    // setup our cache to actually store shit to disk like a boss.
+    
+    // also, currently, no webservices are going to disk.  only image fetches.
+    appCache = [[NSURLCache alloc] initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:@"Cache.db"];
+    
+	return appCache;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

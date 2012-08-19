@@ -22,6 +22,12 @@
     // .. subclasses can override this.
 }
 
+- (UIImage *)modifiedImage:(UIImage *)image forResponse:(NSURLResponse *)response
+{
+    // must be thred-safe!!
+    return image;
+}
+
 - (void)setImageURL:(NSString *)value
 {
     imageURL = value;
@@ -29,10 +35,12 @@
         [urlConnection cancel];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:value]];
+    [self modifyRequest:request];
     urlConnection = [SDURLConnection sendAsynchronousRequest:request shouldCache:YES withResponseHandler:^(SDURLConnection *connection, NSURLResponse *response, NSData *responseData, NSError *error) {
         UIImage *newImage = [UIImage imageWithData:responseData];
+        UIImage *modifiedImage = [self modifiedImage:newImage forResponse:response];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.image = newImage;
+            self.image = modifiedImage;
             self.backgroundColor = [UIColor clearColor];
             urlConnection = nil;
         });
