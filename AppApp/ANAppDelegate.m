@@ -11,6 +11,7 @@
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ANAppDelegate
 
@@ -26,7 +27,24 @@ static ANAppDelegate *sharedInstance = nil;
 {
     self = [super init];
     sharedInstance = self;
+    [NSURLCache setSharedURLCache:[self cacheInstance]];
     return self;
+}
+
+#pragma mark - Cache
+
+- (NSURLCache *)cacheInstance
+{
+	NSURLCache *appCache;
+	NSUInteger memoryCapacity = 1024 * 1024; // 1 megabytish.
+	NSUInteger diskCapacity = 1024 * 1024 * 20; // 20 megabytish.
+    
+    // setup our cache to actually store shit to disk like a boss.
+    
+    // also, currently, no webservices are going to disk.  only image fetches.
+    appCache = [[NSURLCache alloc] initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:@"Cache.db"];
+    
+	return appCache;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -50,9 +68,9 @@ static ANAppDelegate *sharedInstance = nil;
         NSLog(@"bacon");
     }
     
-    // if we don't have an access token - display auth.
-    // probably should move back to calling Safari.
-    if (![[ANAPICall sharedAppAPI] hasAccessToken])
+    // if we don't have an access token or it's not a valid token, display auth.
+    // probably should move back to calling Safari. <-- disagree, this looks fine. -- jedi
+    if (![[ANAPICall sharedAppAPI] hasAccessToken] || ![[ANAPICall sharedAppAPI] isAccessTokenValid])
     {
         AuthViewController *authView = [[AuthViewController alloc] init];
         [self.window.rootViewController presentModalViewController:authView animated:YES];
@@ -74,6 +92,11 @@ static ANAppDelegate *sharedInstance = nil;
     
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont:[UIFont fontWithName:@"Ubuntu-Medium" size:12.0f]} forState:UIControlStateNormal];
+    
+    // Set up navigation bar rounded corners
+    ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];
 }
 
 // https://[your registered redirect URI]/#access_token=[user access token]
@@ -125,6 +148,29 @@ static ANAppDelegate *sharedInstance = nil;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (CAShapeLayer *)_navigationBarShapeLayer
+{
+    CGFloat minx = 0.0f, midx = CGRectGetWidth(self.window.frame)/2.0f, maxx = CGRectGetWidth(self.window.frame);
+    CGFloat miny = 0.0f, maxy = 60.0f;
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, minx, maxy);
+    CGPathAddArcToPoint(path, NULL, minx, miny, midx, miny, 2.0f);
+    CGPathAddArcToPoint(path, NULL, maxx, miny, maxx, maxy, 2.0f);
+    CGPathAddLineToPoint(path, NULL, maxx, maxy);
+    
+    // Close the path
+    CGPathCloseSubpath(path);
+    
+    // Fill & stroke the path
+    CAShapeLayer *newShapeLayer = [[CAShapeLayer alloc] init];
+    newShapeLayer.path = path;
+    newShapeLayer.fillColor = [[UIColor greenColor] colorWithAlphaComponent:1.f].CGColor;
+    CFRelease(path);
+    
+    return newShapeLayer;
 }
 
 @end

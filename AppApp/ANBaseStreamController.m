@@ -12,6 +12,7 @@
 #import "ANStreamHeaderView.h"
 #import "ANUserViewController.h"
 #import "ANPostDetailController.h"
+#import "ANHashtagStreamController.h"
 
 #import "MFSideMenu.h"
 #import "NSObject+SDExtensions.h"
@@ -72,6 +73,11 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    self.tableView.delegate = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -114,19 +120,36 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSString *statusText =[[streamData objectAtIndex: [indexPath row]] objectForKey:@"text"];
-    if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
+    NSDictionary *postData = [streamData objectAtIndex:[indexPath row]];
+    ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
+    tempLabel.postData = postData;
     
-    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
-    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
-                                    constrainedToSize:maxStatusLabelSize
-                                        lineBreakMode: UILineBreakModeWordWrap];
+    CGSize statusLabelSize = [tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
     
+    
     return height;
 }
+
+/*#pragma mark - TTTAttributedLabel delgate
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    if([[url scheme]isEqualToString:@"username"]) {
+        NSString *userID = [url host];
+        [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+            NSDictionary *userData = dataObject;
+            ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+            [self.navigationController pushViewController:userViewController animated:YES];
+        }];
+        
+    } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}*/
+
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -134,46 +157,43 @@
     ANStatusViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ANStatusViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.statusTextLabel.tapHandler = ^BOOL (NSString *type, NSString *value) {
+            BOOL result = NO;
+            if ([type isEqualToString:@"hashtag"])
+            {
+                NSString *hashtag = value;
+                ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
+                [self.navigationController pushViewController:hashtagController animated:YES];
+            }
+            else
+            if ([type isEqualToString:@"name"])
+            {
+                NSString *userID = value;
+                [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+                    NSDictionary *userData = dataObject;
+                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                    [self.navigationController pushViewController:userViewController animated:YES];
+                }];
+            }
+            else
+            if ([type isEqualToString:@"link"])
+            {
+                NSURL *url = [NSURL URLWithString:value];
+                if ([[UIApplication sharedApplication] canOpenURL:url])
+                    [[UIApplication sharedApplication] openURL:url];
+            }
+            return result;
+        };
     }    
-    //TODO: move data into objects.
+
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
-    NSString *statusText = [statusDict objectForKey:@"text"];
-    NSString *avatarURL = [[[statusDict objectForKey:@"user" ] objectForKey:@"avatar_image"] objectForKey:@"url"];
+    
+    cell.postData = statusDict;
 
-    
-    if(statusText == (id)[NSNull null] || statusText.length == 0 ) { statusText = @"null"; }
-    cell.username = [[[streamData objectAtIndex: [indexPath row]] objectForKey:@"user"] objectForKey:@"username"];
-    cell.status = statusText;
-    cell.statusTextLabel.delegate = self;
-    CGSize maxStatusLabelSize = CGSizeMake(230,HUGE_VALF);
-    CGSize statusLabelSize = [statusText sizeWithFont: [UIFont fontWithName:@"Helvetica" size:12.0f]
-                                    constrainedToSize:maxStatusLabelSize
-                                        lineBreakMode: UILineBreakModeWordWrap];
-    CGRect frame = cell.statusTextLabel.frame;
-    frame.size.height = statusLabelSize.height;
-    cell.statusTextLabel.frame = frame;
-    //NSDate *createdAt =[NSDate dateFromString:[statusDict objectForKey:@"created_at"]];
-    //cell.created_at = [NSDate stringForDisplayFromDate:createdAt];
-    
-    //detect usernames
-    NSArray* mentions = [[[streamData objectAtIndex: [indexPath row]]
-                          objectForKey:@"entities"] objectForKey:@"mentions"];
-    for(NSDictionary* mention in mentions) {
-        NSRange indicies = NSMakeRange([[mention objectForKey:@"pos"] integerValue],
-                                       [[mention objectForKey:@"len"] integerValue]);
-        [cell.statusTextLabel addLinkToURL:[NSURL URLWithString:
-                                            [NSString stringWithFormat:@"username://%@",
-                                             [mention objectForKey:@"id"]]] withRange:indicies];
-        
-        
-    }
-
-    
-    [cell.avatarView  setImageURL:avatarURL
-                    withPlaceholderImage:[UIImage imageNamed:@"placeholderAvatar.png"]];
     // TODO: i know this is janky.  fix it.
     cell.showUserButton.tag = indexPath.row;
     // END JANKY.
+
     [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
@@ -367,21 +387,76 @@
     //[self loadMoreCompleted];
 }
 
-#pragma mark - TTTAttributedLabel delgate
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+#pragma mark -
+#pragma mark Data/UI Updates
+// Will update top of table, and data from data object
+- (void)updateTopWithData:(id)dataObject
 {
-    if([[url scheme]isEqualToString:@"username"]) {
-        NSString *userID = [url host];
-        [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-            NSDictionary *userData = dataObject;
-            ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-            [self.navigationController pushViewController:userViewController animated:YES];
-        }];
+    // verify object
+    if ([dataObject isKindOfClass:[NSArray class]])
+    {
+        // begin updates on table
+        [self.tableView beginUpdates];
         
-    } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
+        // get start indexpath
+        NSUInteger startIndexPathRow = 0;
+        NSUInteger endIndexPathRow = [dataObject count];
+        
+        // add data
+        NSMutableIndexSet *indexSets = [NSMutableIndexSet indexSet];
+        for (NSUInteger i = 0; i < [dataObject count]; i++) {
+            [indexSets addIndex:i];
+        }
+        
+        if (!streamData) {
+            streamData = [NSMutableArray array];
+        }
+        
+        [streamData insertObjects:dataObject atIndexes:indexSets];
+        
+        // initialize indexpaths
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[dataObject count]];
+        
+        // create array of index paths
+        while (startIndexPathRow < endIndexPathRow) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:startIndexPathRow inSection:0]];
+            startIndexPathRow++;
+        }
+        
+        // insert rows
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
     }
 }
 
+- (void)updateBottomWithData:(id)dataObject
+{
+    // verify object
+    if ([dataObject isKindOfClass:[NSArray class]])
+    {
+        // begin updates on table
+        [self.tableView beginUpdates];
+        
+        // get start indexpath
+        NSUInteger startIndexPathRow = [streamData count];
+        NSUInteger endIndexPathRow = [dataObject count] + startIndexPathRow;
+        
+        // add data
+        [streamData addObjectsFromArray:dataObject];
+        
+        // initialize indexpaths
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[dataObject count]];
+        
+        // create array of index paths
+        while (startIndexPathRow < endIndexPathRow) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:startIndexPathRow inSection:0]];
+            startIndexPathRow++;
+        }
+        
+        // insert rows
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+}
 
 @end

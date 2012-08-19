@@ -21,7 +21,7 @@
     NSString *replyToID;
 }
 
-@synthesize postTextView, characterCountLabel, postButton, groupView;
+@synthesize postText, postTextView, characterCountLabel, postButton, groupView;
 
 - (id)init
 {
@@ -57,11 +57,21 @@
 -(void) registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharCountLabel:) name:UITextViewTextDidChangeNotification object:nil];
+    [self addObserver:self forKeyPath:@"postText" options:0 context:0];
 }
 
 -(void) unregisterForNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
+    [self removeObserver:self forKeyPath:@"postText"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"postText"]) {
+        postTextView.text = self.postText;
+        [self updateCharCountLabel:nil];
+    } 
 }
 
 

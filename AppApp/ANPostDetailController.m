@@ -51,13 +51,13 @@
     detailCell = [ANPostDetailCell loadFromNib];
     detailCell.contentView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
-    detailCell.postLabel.delegate = self;
-    detailCell.postLabel.text = [postData stringForKey:@"text"];
+    //detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
+    //detailCell.postLabel.delegate = self;
+    detailCell.postLabel.postData = postData;
     detailCell.nameLabel.text = [postData stringForKeyPath:@"user.name"];
     detailCell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [postData stringForKeyPath:@"user.username"]];
     detailCell.userImageView.imageURL = [postData stringForKeyPath:@"user.avatar_image.url"];
-    [detailCell.postLabel adjustHeightToFit:9999.0]; // hopefully unlimited in height...
+    //[detailCell.postLabel adjustHeightToFit:9999.0]; // hopefully unlimited in height...
 
     // now get that and set the header height..
     CGFloat defaultViewHeight = 221; // seen in the nib.
@@ -116,7 +116,7 @@
 
     ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
     [self presentModalViewController:postView animated:YES];
-    postView.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
+    postView.postText = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
 }
 
 - (IBAction)userAction:(id)sender
@@ -229,11 +229,11 @@
     [self loadMoreCompleted];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+/*- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
-}
+}*/
 
 @end

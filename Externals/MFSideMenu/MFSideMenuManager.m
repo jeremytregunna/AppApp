@@ -53,7 +53,10 @@
                                              selector:@selector(flipViewAccordingToStatusBarOrientation:) 
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification 
                                                object:nil];
-    
+    controller.view.layer.shouldRasterize = YES;
+    controller.view.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    CGPathRef path = [UIBezierPath bezierPathWithRect:controller.view.bounds].CGPath;
+    controller.view.layer.shadowPath = path;
     controller.view.layer.shadowOpacity = 0.75f;
     controller.view.layer.shadowRadius = 10.0f;
     controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -186,6 +189,7 @@
         
         if(self.navigationController.menuState == MFSideMenuStateHidden) {
             if(finalX > viewWidth/2) {
+                [self.sideMenuController viewWillAppear:NO];
                 [self.navigationController setMenuState:MFSideMenuStateVisible];
             } else {
                 [UIView beginAnimations:nil context:NULL];
@@ -194,6 +198,7 @@
             }
         } else if(self.navigationController.menuState == MFSideMenuStateVisible) {
             if(finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) {
+                [self.sideMenuController viewWillDisappear:NO];
                 [self.navigationController setMenuState:MFSideMenuStateHidden];
             } else {
                 [UIView beginAnimations:nil context:NULL];
@@ -259,6 +264,10 @@
         [self.navigationController setMenuState:MFSideMenuStateHidden];
     }
     
+    CGPathRef path = [UIBezierPath bezierPathWithRect:self.navigationController.view.bounds].CGPath;
+    self.navigationController.view.layer.shadowPath = path;
+    self.navigationController.view.layer.shouldRasterize = YES;
+    self.navigationController.view.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.navigationController.view.layer.shadowOpacity = 0.75f;
     self.navigationController.view.layer.shadowRadius = 10.0f;
     self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;

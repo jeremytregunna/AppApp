@@ -22,6 +22,29 @@
 			<key>routeFormat</key>
 			<string>stream/0/users/{user_id}/follow?access_token={accessToken}</string>
 		</dict>
+		<key>muteUser</key>
+		<dict>
+			<key>method</key>
+			<string>POST</string>
+			<key>routeFormat</key>
+			<string>stream/0/users/{user_id}/mute</string>
+			<key>postFormat</key>
+			<string>access_token={accessToken}</string>
+		</dict>
+		<key>unmuteUser</key>
+		<dict>
+			<key>method</key>
+			<string>DELETE</string>
+			<key>routeFormat</key>
+			<string>stream/0/users/{user_id}/mute?access_token={accessToken}</string>
+		</dict>
+		<key>getMutedUsers</key>
+		<dict>
+			<key>method</key>
+			<string>GET</string>
+			<key>routeFormat</key>
+			<string>/stream/0/users/me/muted?access_token={accessToken}</string>
+		</dict>
 		<key>getUserFollowers</key>
 		<dict>
 			<key>method</key>
@@ -68,10 +91,38 @@
 			<key>method</key>
 			<string>GET</string>
 		</dict>
+		<key>getGlobalStreamSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>stream/0/posts/stream/global?access_token={accessToken}&amp;since_id={since_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getGlobalStreamBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>stream/0/posts/stream/global?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
 		<key>getUserStream</key>
 		<dict>
 			<key>routeFormat</key>
 			<string>/stream/0/posts/stream?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserStreamSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/stream?access_token={accessToken}&amp;since_id={since_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserStreamBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/stream?access_token={accessToken}&amp;before_id={before_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>
@@ -82,10 +133,38 @@
 			<key>method</key>
 			<string>GET</string>
 		</dict>
+		<key>getUserMentionsSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;since_id={since_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserMentionsBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/mentions?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
 		<key>getUserPosts</key>
 		<dict>
 			<key>routeFormat</key>
 			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserPostsSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}&amp;before_id={before_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getUserPostsBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/users/{user_id}/posts?access_token={accessToken}&amp;before_id={before_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>
@@ -100,6 +179,27 @@
 		<dict>
 			<key>routeFormat</key>
 			<string>/stream/0/users/me?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getTaggedPosts</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/tag/{hashtag}?access_token={accessToken}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getTaggedPostsSince</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/tag/{hashtag}?access_token={accessToken}&amp;since_id={since_id}</string>
+			<key>method</key>
+			<string>GET</string>
+		</dict>
+		<key>getTaggedPostsBefore</key>
+		<dict>
+			<key>routeFormat</key>
+			<string>/stream/0/posts/tag/{hashtag}?access_token={accessToken}&amp;before_id={before_id}</string>
 			<key>method</key>
 			<string>GET</string>
 		</dict>

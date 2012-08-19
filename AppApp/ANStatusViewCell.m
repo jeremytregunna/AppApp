@@ -7,9 +7,12 @@
 //
 #import <QuartzCore/QuartzCore.h>
 #import "ANStatusViewCell.h"
+#import "NSDictionary+SDExtensions.h"
+#import "NSDate+SDExtensions.h"
+#import "NSDate+ANExtensions.h"
 
 CGFloat const ANStatusViewCellTopMargin = 10.0;
-CGFloat const ANStatusViewCellBottomMargin = 10.0;
+CGFloat const ANStatusViewCellBottomMargin = 15.0;
 CGFloat const ANStatusViewCellLeftMargin = 10.0;
 CGFloat const ANStatusViewCellUsernameTextHeight = 15.0;
 CGFloat const ANStatusViewCellAvatarHeight = 50.0;
@@ -18,11 +21,10 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @interface ANStatusViewCell()
 {
     UIButton *showUserButton;
-    SDImageView *avatarView;
+    ANImageView *avatarView;
     UILabel *usernameTextLabel;
     UILabel *created_atTextLabel;
     UIView *postView;
-
 }
 
 - (void)registerObservers;
@@ -31,22 +33,25 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 @end
 
 @implementation ANStatusViewCell
-@synthesize status, avatar, username, showUserButton, avatarView, statusTextLabel, created_at, postView;
+@synthesize postData, showUserButton, avatarView, statusTextLabel, postView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self)
     {
+        self.clipsToBounds = YES;
+        
         //turn this off for custom highlighting in setSelected
         self.selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,0)];
         self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
         
         UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
+        UIColor *highlightedTextColor = [UIColor purpleColor];
         // future avatar
-        avatarView = [[SDImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-        avatarView.backgroundColor = [UIColor grayColor];
+        avatarView = [[ANImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        avatarView.backgroundColor = [UIColor clearColor];
         avatarView.layer.borderWidth = 1.0;
         avatarView.layer.borderColor = [borderColor CGColor];
         [self.contentView addSubview: avatarView];
@@ -58,6 +63,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         UIColor *postColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
         postView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,100)];
         postView.alpha = 1.0;
+        postView.clipsToBounds = YES;
         self.postView.backgroundColor = postColor;
         
         _leftBorder = [[CALayer alloc] init];
@@ -87,39 +93,38 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         usernameTextLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
         usernameTextLabel.backgroundColor = postColor;
         usernameTextLabel.textColor = textColor;
+        usernameTextLabel.highlightedTextColor = highlightedTextColor;
         [self.postView addSubview: usernameTextLabel];
         
         //created_atTextLabel
         created_atTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(185, 10, 55, 15)];
         created_atTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         created_atTextLabel.backgroundColor = postColor;
+        created_atTextLabel.highlightedTextColor = highlightedTextColor;
+        created_atTextLabel.textColor = [UIColor grayColor];
         created_atTextLabel.textAlignment = UITextAlignmentRight;
         [self.postView addSubview: created_atTextLabel];
         
         // status label
-        statusTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 27, 230, 100)];
-        statusTextLabel.dataDetectorTypes = UIDataDetectorTypeAll;
-        statusTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+        statusTextLabel = [[ANPostLabel alloc] initWithFrame:CGRectMake(80, 27, 230, 100)];
         statusTextLabel.backgroundColor = postColor;
-        statusTextLabel.numberOfLines = 0;
-        statusTextLabel.textColor = textColor;
-        statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        //statusTextLabel.textColor = textColor;
+        //statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        statusTextLabel.clipsToBounds = YES;
         
         // set the link style
-        NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
+        /*NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
         statusTextLabel.linkAttributes = linkAttributes;
         [linkAttributes setValue:(id)[[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0]
-                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];*/
        
-        [self.postView addSubview: statusTextLabel];
+        [self addSubview: statusTextLabel];
         
         // register observers
         [self registerObservers];
     }
     return self;
 }
-
-
 
 -(void) dealloc
 {
@@ -128,7 +133,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)registerObservers
 {
-    [self addObserver:self forKeyPath:@"status" options:0 context:0];
+    [self addObserver:self forKeyPath:@"postData" options:0 context:0];
     [self addObserver:self forKeyPath:@"username" options:0 context:0];
     [self addObserver:self forKeyPath:@"created_at" options:0 context:0];
 
@@ -136,39 +141,47 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
 
 - (void)unregisterObservers
 {
-    [self removeObserver:self forKeyPath:@"status"];
+    [self removeObserver:self forKeyPath:@"postData"];
     [self removeObserver:self forKeyPath:@"username"];
     [self removeObserver:self forKeyPath:@"created_at"];
-
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"status"]) {
-        [statusTextLabel setText: self.status];
+    if([keyPath isEqualToString:@"postData"])
+    {
+        statusTextLabel.postData = self.postData;
         
         // handle frame resize
-        CGSize maxStatusLabelSize = CGSizeMake(240,100);
-        CGSize statusLabelSize = [self.status sizeWithFont: statusTextLabel.font
+        /*CGSize maxStatusLabelSize = CGSizeMake(240,120);
+        CGSize statusLabelSize = [[self.postData objectForKey:@"text"] sizeWithFont: statusTextLabel.font
                                               constrainedToSize:maxStatusLabelSize
                                               lineBreakMode: statusTextLabel.lineBreakMode];
     
         CGRect statusLabelNewFrame = statusTextLabel.frame;
         statusLabelNewFrame.size.height = statusLabelSize.height;
+        statusTextLabel.frame = statusLabelNewFrame;*/
+        
+        CGSize size = [statusTextLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
+        CGRect statusLabelNewFrame = statusTextLabel.frame;
+        statusLabelNewFrame.size = size;
         statusTextLabel.frame = statusLabelNewFrame;
-    } else if([keyPath isEqualToString:@"username"]) {
-        [usernameTextLabel setText: self.username];
-    }
-    else if([keyPath isEqualToString:@"created_at"]) {
-        [created_atTextLabel setText: self.created_at];
-    }
-    else if([keyPath isEqualToString:@"avatar"])
-{
-    if(self.avatar) {
-        avatarView.image = self.avatar;
-        avatarView.backgroundColor = [UIColor clearColor];
+        
+        NSString *username = [self.postData stringForKeyPath:@"user.username"];
+        usernameTextLabel.text = username;
+        
+        NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
+        created_atTextLabel.text = [createdAt stringInterval];
+        
+        NSString *avatarURL = [self.postData stringForKeyPath:@"user.avatar_image.url"];
+        avatarView.imageURL = avatarURL;
     }
 }
+
+- (void)prepareForReuse
+{
+    avatarView.image = [UIImage imageNamed:@"avatarPlaceholder.png"];
+    avatarView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -176,13 +189,6 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-}
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
-    }
 }
 
 -(void)setHighlighted:(BOOL)selected
@@ -194,6 +200,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         self.postView.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
     }
 }
+
 -(void)layoutSubviews {
     // size the post views according to the height of the cell
     self.postView.frame = CGRectMake(self.postView.frame.origin.x,self.postView.frame.origin.y,

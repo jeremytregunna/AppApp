@@ -11,9 +11,8 @@
 #import "ANAPICall.h"
 #import "ANViewControllerProtocol.h"
 #import "ANStatusViewCell.h"
-#import "TTTAttributedLabel.h"
 
-@interface ANBaseStreamController : STableViewController<ANViewControllerProtocol,TTTAttributedLabelDelegate>
+@interface ANBaseStreamController : STableViewController<ANViewControllerProtocol>
 {
 @protected
     NSMutableArray *streamData;
@@ -23,5 +22,6 @@
 @property (nonatomic, readonly) NSString *sideMenuImageName;
 
 - (BOOL)refresh;
-
+- (void)updateTopWithData:(id)dataObject;
+- (void)updateBottomWithData:(id)dataObject;
 @end

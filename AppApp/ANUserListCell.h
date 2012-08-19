@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDImageView.h"
+#import "ANImageView.h"
 
 @interface ANUserListCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet SDImageView *userImageView;
+@property (weak, nonatomic) IBOutlet ANImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *checkImage;
+@property (weak, nonatomic) IBOutlet UIImageView *followStatusImage;
 
 @end
