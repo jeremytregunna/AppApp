@@ -189,6 +189,7 @@
         
         if(self.navigationController.menuState == MFSideMenuStateHidden) {
             if(finalX > viewWidth/2) {
+                [self.sideMenuController viewWillAppear:NO];
                 [self.navigationController setMenuState:MFSideMenuStateVisible];
             } else {
                 [UIView beginAnimations:nil context:NULL];
@@ -197,6 +198,7 @@
             }
         } else if(self.navigationController.menuState == MFSideMenuStateVisible) {
             if(finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) {
+                [self.sideMenuController viewWillDisappear:NO];
                 [self.navigationController setMenuState:MFSideMenuStateHidden];
             } else {
                 [UIView beginAnimations:nil context:NULL];
