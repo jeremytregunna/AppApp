@@ -92,6 +92,8 @@ static ANAppDelegate *sharedInstance = nil;
     
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont:[UIFont fontWithName:@"Ubuntu-Medium" size:12.0f]} forState:UIControlStateNormal];
     
     // Set up navigation bar rounded corners
     ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];

@@ -6,7 +6,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ANSideMenuController : UITableViewController
+#import "ANSideMenuHashTagCell.h"
+
+@interface ANSideMenuController : UITableViewController <UITextFieldDelegate, ANSideMenuHashTagCellDelegate>
 
 @property (nonatomic, readonly) NSArray *navigationArray;
 
