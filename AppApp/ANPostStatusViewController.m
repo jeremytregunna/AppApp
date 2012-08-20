@@ -225,6 +225,7 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take photo", @"Choose from library", nil];
     [actionSheet showInView:self.view];
 }
+
 #pragma mark - Helpers
 
 - (NSString *)usersMentionedInPostData
