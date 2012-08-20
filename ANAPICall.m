@@ -7,6 +7,8 @@
 //
 
 #import "ANAPICall.h"
+#import "ANConstants.h"
+#import "UIImage+SDExtensions.h"
 
 @interface ANAPICall()
 {
@@ -490,6 +492,20 @@
     [self performRequestWithMethod:@"getMutedUsers" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
 }
 
+#pragma mark - Imgur upload
 
+- (void)uploadImage:(UIImage *)image caption:(NSString *)caption uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;
+{
+    // this one is speshul.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // should do a image resize here too.
+        NSString *imageData = [image base64forImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSDictionary *replacements = @{ @"apiKey" : kImgurAPIKey, @"caption" : caption, @"base64image" : imageData };
+            
+            [self performRequestWithMethod:@"imgurPhotoUpload" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+        });
+    });
+}
 
 @end

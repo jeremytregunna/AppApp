@@ -117,6 +117,7 @@
 		CAD8D9A315D7709C007FC765 /* MFSideMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD8D99C15D7709C007FC765 /* MFSideMenuManager.m */; };
 		CAD8D9A415D7709C007FC765 /* UIViewController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD8D99E15D7709C007FC765 /* UIViewController+MFSideMenu.m */; };
 		CAD8D9A815D77113007FC765 /* ANSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD8D9A715D77113007FC765 /* ANSideMenuController.m */; };
+		CAEBB95115E21DEE008274C9 /* UIImage+SDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEBB95015E21DEE008274C9 /* UIImage+SDExtensions.m */; };
 		CAFC0A7815E04CC400B5E55E /* libDTCoreText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA96DE7415E04905006A8E40 /* libDTCoreText.a */; };
 		CAFC0A7F15E0572B00B5E55E /* ANPostLinkButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CAFC0A7E15E0572B00B5E55E /* ANPostLinkButton.m */; };
 		CAFC0AAA15E0BFDA00B5E55E /* postBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = CAFC0AA815E0BFDA00B5E55E /* postBottom.png */; };
@@ -364,6 +365,8 @@
 		CAD8D99E15D7709C007FC765 /* UIViewController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenu.m"; sourceTree = "<group>"; };
 		CAD8D9A615D77113007FC765 /* ANSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANSideMenuController.h; sourceTree = "<group>"; };
 		CAD8D9A715D77113007FC765 /* ANSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANSideMenuController.m; sourceTree = "<group>"; };
+		CAEBB94F15E21DEE008274C9 /* UIImage+SDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SDExtensions.h"; sourceTree = "<group>"; };
+		CAEBB95015E21DEE008274C9 /* UIImage+SDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SDExtensions.m"; sourceTree = "<group>"; };
 		CAFC0A7D15E0572B00B5E55E /* ANPostLinkButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANPostLinkButton.h; sourceTree = "<group>"; };
 		CAFC0A7E15E0572B00B5E55E /* ANPostLinkButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPostLinkButton.m; sourceTree = "<group>"; };
 		CAFC0AA815E0BFDA00B5E55E /* postBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postBottom.png; sourceTree = "<group>"; };
@@ -764,6 +767,8 @@
 				CAD8D8F815D706E7007FC765 /* SDImageView.m */,
 				CACA6BD915D8152E00AE5D40 /* UILabel+SDExtensions.h */,
 				CACA6BDA15D8152E00AE5D40 /* UILabel+SDExtensions.m */,
+				CAEBB94F15E21DEE008274C9 /* UIImage+SDExtensions.h */,
+				CAEBB95015E21DEE008274C9 /* UIImage+SDExtensions.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1143,6 +1148,7 @@
 				FD19B5A915E069E800A3A532 /* ANSideMenuSearchCell.m in Sources */,
 				FD19B5B015E07B0100A3A532 /* ANSearchTextField.m in Sources */,
 				FD19B5DE15E092F300A3A532 /* ANSideMenuHashTagCell.m in Sources */,
+				CAEBB95115E21DEE008274C9 /* UIImage+SDExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
