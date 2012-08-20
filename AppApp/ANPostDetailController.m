@@ -77,34 +77,6 @@
     detailCell = nil;
 }
 
-/*  TODO: Remove this method entirely as it belongs into ANPostStatusViewController
-    I've added 
-    
-    - (NSString *)usersMentionedInPostData:(NSDictionary *)postData;
- 
-    there but kept usersMentioned here to not break too much at this time. Ultimately, it should go. (@ralf)
-*/
-- (NSString *)usersMentioned
-{
-    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
-
-    NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];
-    NSMutableString *result = [NSMutableString stringWithFormat:@"@%@ ", posterUsername];
-    
-    for (NSDictionary *mention in mentions)
-    {
-        // skip ourselves if its a reply to us.
-        NSString *userID = [mention stringForKey:@"id"];
-        if (![userID isEqualToString:[ANAPICall sharedAppAPI].userID])
-        {
-            NSString *name = [mention stringForKey:@"name"];
-            [result appendFormat:@"@%@ ", name];
-        }
-    }
-    
-    return result;
-}
-
 #pragma mark - Button Actions
 
 - (IBAction)newPostAction:(id)sender
