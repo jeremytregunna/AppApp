@@ -54,14 +54,15 @@
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.011 green:0.486 blue:0.682 alpha:1];
     
     // add gestures
-    UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDetails:)];
+    /*
+    UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
     [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    
-    UISwipeGestureRecognizer *toolnbarRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToToolbar:)];
-    [toolnbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-    
     [self.tableView addGestureRecognizer:detailsRecognizer];
-    [self.tableView addGestureRecognizer:toolnbarRecognizer];
+     */
+    
+    UISwipeGestureRecognizer *toolbarRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDetails:)];
+    [toolbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self.tableView addGestureRecognizer:toolbarRecognizer];
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
@@ -84,14 +85,15 @@
         UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
-        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        [btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
         
         [btnRepost setFrame:CGRectMake(105,12,18,21)];
 
         UIImage *btnConversationImg = [UIImage imageNamed:@"actionbar_conversation.png"];
         self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.btnConversation addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
         [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
-        [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+        [self.btnConversation setImage:btnConversationImg forState:UIControlStateHighlighted];
 
         [self.btnConversation setFrame:CGRectMake(175,12,22,21)];
         
@@ -268,27 +270,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (toolbarIsVisible)
-    {
-        [self hideToolbar];
-        currentSelection = nil;
-        [self.tableView beginUpdates];
-        [self.tableView endUpdates];
-        // get out, we don't want to jump to the next post, just hide the toolbar.
-        return;
-    }
-    
-    // Navigation logic may go here. Create and push another view controller.
-    
-    NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
-    ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
-    [self.navigationController pushViewController:detailController animated:YES];
-    
-    /*<#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    [self toggleToolbarAtIndexPath:indexPath];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -310,7 +292,9 @@
     CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
     
-    NSLog(@"SWIPE TO DETAILS %@!", [streamData objectAtIndex: [indexPath row]]);
+    NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
+    ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
+    [self.navigationController pushViewController:detailController animated:YES];
 }
 
 - (void)swipeToToolbar:(UISwipeGestureRecognizer *)gestureRecognizer
@@ -337,7 +321,6 @@
     } else { // user swiped on new cell
         [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
         self.currentToolbarView.tag = indexPath.row;
-        NSLog(@"Tag: %i",  self.currentToolbarView.tag);
         [self toggleToolbarButtonsForIndexPath:indexPath];
         [currentCell addSubview:self.currentToolbarView];
         toolbarIsVisible = true;
@@ -346,6 +329,39 @@
         
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (void)toggleToolbarAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView beginUpdates];
+
+    ANStatusViewCell *currentCell = (ANStatusViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];    
+    newSelection = indexPath;
+    
+    if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
+        if (!toolbarIsVisible) {
+            [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+            self.currentToolbarView.tag = indexPath.row;
+            NSLog(@"Tag: %i",  self.currentToolbarView.tag);
+            [self toggleToolbarButtonsForIndexPath:indexPath];
+            [currentCell addSubview:self.currentToolbarView];
+            toolbarIsVisible = true;
+            currentSelection = indexPath;
+        } else {
+            [self hideToolbar];
+        }
+    } else { // user swiped on new cell
+        [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+        self.currentToolbarView.tag = indexPath.row;
+        [self toggleToolbarButtonsForIndexPath:indexPath];
+        [currentCell addSubview:self.currentToolbarView];
+
+        toolbarIsVisible = true;
+        currentSelection = indexPath;
+    }
+    
+    [self.tableView endUpdates];
+    
 }
 
 - (void)hideToolbar
@@ -575,6 +591,12 @@
     NSDictionary *postData = [streamData objectAtIndex:[[(UIButton *)sender superview] tag]];
     ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
     [self presentModalViewController:postView animated:YES];
+}
+
+- (void)showConversation:(id)sender {
+    NSDictionary *postData = [streamData objectAtIndex:[[(UIButton *)sender superview] tag]];
+    ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
+    [self.navigationController pushViewController:detailController animated:YES];
 }
 
 @end
