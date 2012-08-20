@@ -97,7 +97,7 @@
     frame.size.height = MAX(bioSize.height,25.0);
     bioLabel.frame = frame;
     frame = topCoverView.frame;
-    frame.size.height = MAX(bioSize.height,25.0) + 10.0;
+    frame.size.height = MAX(bioSize.height,30.0) + 10.0;
     topCoverView.frame = frame;
     UIView* tableHeader = self.tableView.tableHeaderView;
     frame = self.tableView.tableHeaderView.frame;
