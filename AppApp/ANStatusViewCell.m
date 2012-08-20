@@ -109,9 +109,9 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusTextLabel.backgroundColor = postColor;
 
         //statusTextLabel.numberOfLines = 0;
-        statusTextLabel.textColor = textColor;
-        statusTextLabel.highlightedTextColor = textColor;
-        statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+        // statusTextLabel.textColor = textColor;
+        // statusTextLabel.highlightedTextColor = textColor;
+        // statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         statusTextLabel.clipsToBounds = YES;
         
         // set the link style
