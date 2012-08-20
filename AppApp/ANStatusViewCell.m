@@ -107,18 +107,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         // status label
         statusTextLabel = [[ANPostLabel alloc] initWithFrame:CGRectMake(80, 27, 230, 100)];
         statusTextLabel.backgroundColor = postColor;
-
-        //statusTextLabel.numberOfLines = 0;
-        // statusTextLabel.textColor = textColor;
-        // statusTextLabel.highlightedTextColor = textColor;
-        // statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         statusTextLabel.clipsToBounds = YES;
-        
-        // set the link style
-        /*NSMutableDictionary *linkAttributes = [[NSMutableDictionary alloc] initWithCapacity:1];
-        statusTextLabel.linkAttributes = linkAttributes;
-        [linkAttributes setValue:(id)[[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0]
-                                                        CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];*/
        
         [self addSubview: statusTextLabel];
         
