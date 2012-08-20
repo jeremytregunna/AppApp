@@ -115,6 +115,7 @@
             NSString *originalText = [postData stringForKey:@"text"];
             NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
             self.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
+            self.postTextView.selectedRange = NSMakeRange(0,0);
             break;
         }
     }
