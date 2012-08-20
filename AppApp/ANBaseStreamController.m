@@ -25,7 +25,7 @@
 @end
 
 @implementation ANBaseStreamController
-@synthesize currentToolbarView;
+@synthesize currentToolbarView, btnConversation;
 
 - (void)viewDidLoad
 {
@@ -89,16 +89,16 @@
         [btnRepost setFrame:CGRectMake(105,12,18,21)];
 
         UIImage *btnConversationImg = [UIImage imageNamed:@"actionbar_conversation.png"];
-        UIButton *btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
-        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+        self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+        [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
 
-        [btnConversation setFrame:CGRectMake(175,12,22,21)];
+        [self.btnConversation setFrame:CGRectMake(175,12,22,21)];
         
         [self.currentToolbarView addSubview:background];
         [self.currentToolbarView addSubview:btnReply];
         [self.currentToolbarView addSubview:btnRepost];
-        [self.currentToolbarView addSubview:btnConversation];
+        [self.currentToolbarView addSubview:self.btnConversation]; // self'ed because we need to be able to hide it on posts without replies (@ralf)
     }
     
     toolbarIsVisible = false;
@@ -333,6 +333,7 @@
         if (!toolbarIsVisible) {
             [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
             self.currentToolbarView.tag = indexPath.row;
+            [self toggleToolbarButtonsForIndexPath:indexPath];
             [currentCell addSubview:self.currentToolbarView];
             toolbarIsVisible = true;
             currentSelection = indexPath;
@@ -344,6 +345,7 @@
     } else { // user swiped on new cell
         [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
         self.currentToolbarView.tag = indexPath.row;
+        [self toggleToolbarButtonsForIndexPath:indexPath];
         [currentCell addSubview:self.currentToolbarView];
         toolbarIsVisible = true;
         currentSelection = indexPath;
@@ -353,7 +355,20 @@
     [self.tableView endUpdates];
 }
 
-// TODO: @ralf: The following method can likely be completely removed
+- (void)toggleToolbarButtonsForIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
+    NSString *numReplies = [postData stringForKeyPath:@"num_replies"];
+    NSString *isReplyTo = [postData stringForKeyPath:@"reply_to"];
+    if (([numReplies isEqualToString:@"0"]) && (!isReplyTo))
+    {
+        self.btnConversation.enabled = NO;
+    } else
+    {
+        self.btnConversation.enabled = YES;
+    }
+}
+
 - (void)swipeToSideMenu:(UISwipeGestureRecognizer *)gestureRecognizer
 {
     //CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
