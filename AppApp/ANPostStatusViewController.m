@@ -184,11 +184,11 @@
 
 #pragma mark -
 #pragma Helpers
-- (NSString *)usersMentionedInPostData:(NSDictionary *)postData
+- (NSString *)usersMentionedInPostData:(NSDictionary *)aPostData
 {
-    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
+    NSString *posterUsername = [aPostData stringForKeyPath:@"user.username"];
     
-    NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];
+    NSArray *mentions = [aPostData arrayForKeyPath:@"entities.mentions"];
     NSMutableString *result = [NSMutableString stringWithFormat:@"@%@ ", posterUsername];
     
     for (NSDictionary *mention in mentions)
