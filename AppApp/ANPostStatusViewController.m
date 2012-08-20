@@ -54,6 +54,7 @@
     if (self) {
         postData = aPostData;
         postMode = aPostMode;
+        replyToID = [postData stringForKeyPath:@"id"];
     }
     return self;
 }
