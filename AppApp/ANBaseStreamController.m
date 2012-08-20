@@ -54,14 +54,12 @@
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.011 green:0.486 blue:0.682 alpha:1];
     
     // add gestures
-    /*
     UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
-    [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.tableView addGestureRecognizer:detailsRecognizer];
-     */
     
     UISwipeGestureRecognizer *toolbarRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDetails:)];
-    [toolbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [toolbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.tableView addGestureRecognizer:toolbarRecognizer];
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
@@ -74,28 +72,27 @@
         UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"actionbar_separator.png"]];
         background.frame = CGRectMake(0,0,260,40);
         
-        UIImage *btnReplyImg = [UIImage imageNamed:@"actionbar_reply.png"];
+        UIImage *btnReplyImg = [UIImage imageNamed:@"actionBar-Reply.png"];
         UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
         [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
-        [btnReply setFrame:CGRectMake(45,12,18,21)];
+        [btnReply setFrame:CGRectMake(45,13,24,16)];
      
-        UIImage *btnRepostImg = [UIImage imageNamed:@"actionbar_repost.png"];
+        UIImage *btnRepostImg = [UIImage imageNamed:@"actionBar-Repost.png"];
         UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
         [btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
         
-        [btnRepost setFrame:CGRectMake(105,12,18,21)];
+        [btnRepost setFrame:CGRectMake(105,13,25,19)];
 
-        UIImage *btnConversationImg = [UIImage imageNamed:@"actionbar_conversation.png"];
+        UIImage *btnConversationImg = [UIImage imageNamed:@"actionBar-Conversation.png"];
         self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.btnConversation addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
         [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
         [self.btnConversation setImage:btnConversationImg forState:UIControlStateHighlighted];
-
-        [self.btnConversation setFrame:CGRectMake(175,12,22,21)];
+        [self.btnConversation setFrame:CGRectMake(175,13,24,22)];
         
         [self.currentToolbarView addSubview:background];
         [self.currentToolbarView addSubview:btnReply];

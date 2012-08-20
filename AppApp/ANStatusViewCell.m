@@ -44,7 +44,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
                 
         UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
-        UIColor *highlightedTextColor = [UIColor purpleColor];
+        UIColor *highlightedTextColor = textColor;
         // future avatar
         avatarView = [[ANImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         avatarView.backgroundColor = [UIColor clearColor];
