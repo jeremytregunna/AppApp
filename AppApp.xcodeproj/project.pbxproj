@@ -1078,9 +1078,6 @@
 				AE49E68C15E25773005FDAB1 /* actionbar_repost@2x.png in Resources */,
 				AE49E68D15E25773005FDAB1 /* actionbar_separator.png in Resources */,
 				AE49E68E15E25773005FDAB1 /* actionbar_separator@2x.png in Resources */,
-				AEB6F97415E121F600EEA9ED /* actionBarConversation.png in Resources */,
-				AEB6F97515E121F600EEA9ED /* actionBarConversation@2x.png in Resources */,
-				AEB6F97715E1347A00EEA9ED /* toolbarbg.png in Resources */,
 				00D035F815E2582400C8B46E /* sidemenu_globalstream_icon.png in Resources */,
 				00D035F915E2582400C8B46E /* sidemenu_globalstream_icon@2x.png in Resources */,
 			);
