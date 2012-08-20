@@ -273,6 +273,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // only do this if its the only vc on the stack.  workaround for the side menu keeping it around.
+    if ([self.navigationController.viewControllers count] == 1)
+        [self fetchDataFromUserID];
     [super viewWillAppear:animated];
 }
 
@@ -507,11 +510,11 @@
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             }
-            cell.textLabel.text = @"Muted";
-            cell.detailTextLabel.text = @"?";
+            cell.detailTextLabel.text = @"";
             cell.accessoryType = UITableViewCellAccessoryNone;
             if ([self isThisUserMe:userID])
             {
+                cell.textLabel.text = @"Muted Users";
                 if (mutedList)
                 {
                     cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", mutedList.count];
@@ -521,6 +524,7 @@
             }
             else
             {
+                cell.textLabel.text = @"Muted User";
                 BOOL youMuted = [userData boolForKey:@"you_muted"];
                 if (youMuted)
                 {
