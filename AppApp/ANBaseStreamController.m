@@ -333,6 +333,7 @@
         if (!toolbarIsVisible) {
             [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
             self.currentToolbarView.tag = indexPath.row;
+            NSLog(@"Tag: %i",  self.currentToolbarView.tag);
             [self toggleToolbarButtonsForIndexPath:indexPath];
             [currentCell addSubview:self.currentToolbarView];
             toolbarIsVisible = true;
@@ -345,6 +346,7 @@
     } else { // user swiped on new cell
         [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
         self.currentToolbarView.tag = indexPath.row;
+        NSLog(@"Tag: %i",  self.currentToolbarView.tag);
         [self toggleToolbarButtonsForIndexPath:indexPath];
         [currentCell addSubview:self.currentToolbarView];
         toolbarIsVisible = true;
@@ -566,13 +568,13 @@
 #pragma mark -
 #pragma mark Action Bar methods
 - (void)replyToFromStream:(id)sender {
-    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    NSDictionary *postData = [streamData objectAtIndex:[[(UIButton *)sender superview] tag]];
     ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeReply];
     [self presentModalViewController:postView animated:YES];
 }
 
 - (void)repostFromStream:(id)sender {
-    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    NSDictionary *postData = [streamData objectAtIndex:[[(UIButton *)sender superview] tag]];
     ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
     [self presentModalViewController:postView animated:YES];
 }
