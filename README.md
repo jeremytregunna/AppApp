@@ -16,6 +16,8 @@ Johnnie Pittman (@jedi on app.net, @dtjedi on twitter, [email](mailto:jpittman@g
 
 Travis Choma (@tc on app.net, @travischoma, [email](mailto:travischoma@gmail.com))
 
+Ralf Rottmann ([@ralf](http://alpha.app.net/ralf) on app.net, [@ralf](http://twitter.com/ralf) on Twitter)
+
 You can find us in the [App.net hipchat](https://www.hipchat.com/garqCaGOZ), on irc.freenode.net in #appnet. You can also buy us beer in person, if you come to Seattle, Portland, Detroit, or San Francisco.
 
 ##### What the font? #####
