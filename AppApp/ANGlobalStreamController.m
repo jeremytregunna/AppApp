@@ -12,12 +12,12 @@
 
 - (NSString *)sideMenuTitle
 {
-    return @"Global Stream";
+    return @"Global";
 }
 
 - (NSString *)sideMenuImageName
 {
-    return @"sidemenu_userstream_icon";
+    return @"sidemenu_globalstream_icon";
 }
 
 

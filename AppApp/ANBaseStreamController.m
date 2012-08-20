@@ -25,6 +25,7 @@
 @end
 
 @implementation ANBaseStreamController
+@synthesize currentToolbarView;
 
 - (void)viewDidLoad
 {
@@ -56,14 +57,53 @@
     UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDetails:)];
     [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     
-    UISwipeGestureRecognizer *menuRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
-    [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    UISwipeGestureRecognizer *toolnbarRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToToolbar:)];
+    [toolnbarRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     
     [self.tableView addGestureRecognizer:detailsRecognizer];
-    [self.tableView addGestureRecognizer:menuRecognizer];
+    [self.tableView addGestureRecognizer:toolnbarRecognizer];
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
+        
+    if (!currentToolbarView) {
+        self.currentToolbarView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.currentToolbarView.backgroundColor = [UIColor colorWithHue:0.574 saturation:0.036 brightness:0.984 alpha:1];
+        
+        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"actionbar_separator.png"]];
+        background.frame = CGRectMake(0,0,260,40);
+        
+        UIImage *btnReplyImg = [UIImage imageNamed:@"actionbar_reply.png"];
+        UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
+        [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
+        [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
+        [btnReply setFrame:CGRectMake(45,12,18,21)];
+     
+        UIImage *btnRepostImg = [UIImage imageNamed:@"actionbar_repost.png"];
+        UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
+        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        
+        [btnRepost setFrame:CGRectMake(105,12,18,21)];
+
+        UIImage *btnConversationImg = [UIImage imageNamed:@"actionbar_conversation.png"];
+        UIButton *btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+
+        [btnConversation setFrame:CGRectMake(175,12,22,21)];
+        
+        [self.currentToolbarView addSubview:background];
+        [self.currentToolbarView addSubview:btnReply];
+        [self.currentToolbarView addSubview:btnRepost];
+        [self.currentToolbarView addSubview:btnConversation];
+    }
+    
+    toolbarIsVisible = false;
+    currentSelection = nil;
+    newSelection = nil;
 }
 
 - (void)viewDidUnload
@@ -129,7 +169,11 @@
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
     
-    
+    if ((currentSelection) && (currentSelection.row == indexPath.row))
+    {
+        height += 40;
+    }
+
     return height;
 }
 
@@ -148,7 +192,6 @@
         [[UIApplication sharedApplication] openURL:url];
     }
 }*/
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,11 +291,23 @@
     ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
     [self.navigationController pushViewController:detailController animated:YES];
     
-     /*<#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+    /*<#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (toolbarIsVisible) {
+        [self.currentToolbarView removeFromSuperview];
+        toolbarIsVisible = false;
+        currentSelection = nil;
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
+    [super scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - Gesture Handling
@@ -265,6 +320,40 @@
     NSLog(@"SWIPE TO DETAILS %@!", [streamData objectAtIndex: [indexPath row]]);
 }
 
+- (void)swipeToToolbar:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    
+    CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+    ANStatusViewCell *currentCell = (ANStatusViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    
+    newSelection = indexPath;
+    
+    if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
+        if (!toolbarIsVisible) {
+            [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+            self.currentToolbarView.tag = indexPath.row;
+            [currentCell addSubview:self.currentToolbarView];
+            toolbarIsVisible = true;
+            currentSelection = indexPath;
+        } else {
+            [self.currentToolbarView removeFromSuperview];
+            toolbarIsVisible = false;
+            currentSelection = nil;
+        }
+    } else { // user swiped on new cell
+        [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+        self.currentToolbarView.tag = indexPath.row;
+        [currentCell addSubview:self.currentToolbarView];
+        toolbarIsVisible = true;
+        currentSelection = indexPath;
+    }
+        
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+// TODO: @ralf: The following method can likely be completely removed
 - (void)swipeToSideMenu:(UISwipeGestureRecognizer *)gestureRecognizer
 {
     //CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
@@ -457,6 +546,20 @@
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }
+}
+
+#pragma mark -
+#pragma mark Action Bar methods
+- (void)replyToFromStream:(id)sender {
+    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeReply];
+    [self presentModalViewController:postView animated:YES];
+}
+
+- (void)repostFromStream:(id)sender {
+    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
+    [self presentModalViewController:postView animated:YES];
 }
 
 @end

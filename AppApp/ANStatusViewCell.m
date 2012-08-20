@@ -41,11 +41,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
     if (self)
     {
         self.clipsToBounds = YES;
-        
-        //turn this off for custom highlighting in setSelected
-        self.selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,0)];
-        self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
-        
+                
         UIColor* borderColor = [UIColor colorWithRed:157.0/255.0 green:167.0/255.0 blue:178.0/255.0 alpha:1.0];
         UIColor* textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
         UIColor *highlightedTextColor = [UIColor purpleColor];
@@ -65,6 +61,9 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         postView.alpha = 1.0;
         postView.clipsToBounds = YES;
         self.postView.backgroundColor = postColor;
+        
+        self.selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(70,0,250,100)];
+        self.selectedBackgroundView.backgroundColor = postColor;
         
         _leftBorder = [[CALayer alloc] init];
         _leftBorder.frame = CGRectMake(0,0,1,self.bounds.size.height);
@@ -108,8 +107,11 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         // status label
         statusTextLabel = [[ANPostLabel alloc] initWithFrame:CGRectMake(80, 27, 230, 100)];
         statusTextLabel.backgroundColor = postColor;
-        //statusTextLabel.textColor = textColor;
-        //statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+
+        //statusTextLabel.numberOfLines = 0;
+        // statusTextLabel.textColor = textColor;
+        // statusTextLabel.highlightedTextColor = textColor;
+        // statusTextLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
         statusTextLabel.clipsToBounds = YES;
         
         // set the link style

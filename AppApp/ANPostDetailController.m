@@ -77,6 +77,13 @@
     detailCell = nil;
 }
 
+/*  TODO: Remove this method entirely as it belongs into ANPostStatusViewController
+    I've added 
+    
+    - (NSString *)usersMentionedInPostData:(NSDictionary *)postData;
+ 
+    there but kept usersMentioned here to not break too much at this time. Ultimately, it should go. (@ralf)
+*/
 - (NSString *)usersMentioned
 {
     NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
@@ -102,21 +109,14 @@
 
 - (IBAction)newPostAction:(id)sender
 {
-    NSString *replyToID = [postData stringForKey:@"id"];
-    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeReply];
     [self presentModalViewController:postView animated:YES];
-    postView.postTextView.text = [self usersMentioned];
 }
 
 - (IBAction)repostAction:(id)sender
 {
-    NSString *replyToID = [postData stringForKey:@"id"];
-    NSString *originalText = [postData stringForKey:@"text"];
-    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
-
-    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
     [self presentModalViewController:postView animated:YES];
-    postView.postText = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
 }
 
 - (IBAction)userAction:(id)sender
