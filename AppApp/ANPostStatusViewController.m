@@ -8,6 +8,7 @@
 
 #import "ANPostStatusViewController.h"
 #import "ANAPICall.h"
+#import "NSDictionary+SDExtensions.h"
 
 @interface ANPostStatusViewController ()
 
@@ -21,13 +22,13 @@
     NSString *replyToID;
 }
 
-@synthesize postText, postTextView, characterCountLabel, postButton, groupView;
+@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData;
 
 - (id)init
 {
     self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
     if (self) {
-        
+        postMode = ANPostModeNew;
     }
     return self;
 }
@@ -37,6 +38,16 @@
     self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
     if (self) {
         replyToID = aReplyToID;
+        postMode = ANPostModeNew; // This is semantically wrong, but we need to prevent that anything is added to the text field until we refactored the calling classes (@ralf)
+    }
+    return self;
+}
+
+- (id)initWithPostData:(NSDictionary *)aPostData postMode:(ANPostMode)aPostMode {
+    self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
+    if (self) {
+        postData = aPostData;
+        postMode = aPostMode;
     }
     return self;
 }
@@ -85,7 +96,22 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [postTextView becomeFirstResponder];
+    switch (postMode) {
+        case ANPostModeNew:
+            break;
+        case ANPostModeReply:
+            self.postTextView.text = [self usersMentionedInPostData:postData];
+            break;
+        case ANPostModeRepost:
+        {
+            NSString *originalText = [postData stringForKey:@"text"];
+            NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
+            self.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
+            break;
+        }
+    }
 }
+
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -156,9 +182,30 @@
     }
 }
 
+#pragma mark -
+#pragma Helpers
+- (NSString *)usersMentionedInPostData:(NSDictionary *)postData
+{
+    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
+    
+    NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];
+    NSMutableString *result = [NSMutableString stringWithFormat:@"@%@ ", posterUsername];
+    
+    for (NSDictionary *mention in mentions)
+    {
+        // skip ourselves if its a reply to us.
+        NSString *userID = [mention stringForKey:@"id"];
+        if (![userID isEqualToString:[ANAPICall sharedAppAPI].userID])
+        {
+            NSString *name = [mention stringForKey:@"name"];
+            [result appendFormat:@"@%@ ", name];
+        }
+    }
+    
+    return result;
+}
 
 #pragma mark - UIKeyboard handling
-
 
 - (void) applyKeyboardSizeChange:(NSNotification *)notification{
     NSDictionary *dict = [notification userInfo];

@@ -75,12 +75,14 @@
         
         UIImage *btnReplyImg = [UIImage imageNamed:@"actionbar_reply.png"];
         UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
         [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
         [btnReply setFrame:CGRectMake(45,12,18,21)];
      
         UIImage *btnRepostImg = [UIImage imageNamed:@"actionbar_repost.png"];
         UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
         [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
         
@@ -324,12 +326,13 @@
     CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
     ANStatusViewCell *currentCell = (ANStatusViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-
+    
     newSelection = indexPath;
     
     if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
         if (!toolbarIsVisible) {
             [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+            self.currentToolbarView.tag = indexPath.row;
             [currentCell addSubview:self.currentToolbarView];
             toolbarIsVisible = true;
             currentSelection = indexPath;
@@ -340,6 +343,7 @@
         }
     } else { // user swiped on new cell
         [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
+        self.currentToolbarView.tag = indexPath.row;
         [currentCell addSubview:self.currentToolbarView];
         toolbarIsVisible = true;
         currentSelection = indexPath;
@@ -542,6 +546,20 @@
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }
+}
+
+#pragma mark -
+#pragma mark Action Bar methods
+- (void)replyToFromStream:(id)sender {
+    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeReply];
+    [self presentModalViewController:postView animated:YES];
+}
+
+- (void)repostFromStream:(id)sender {
+    NSDictionary *postData = [streamData objectAtIndex:[(UIButton *)sender tag]];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
+    [self presentModalViewController:postView animated:YES];
 }
 
 @end
