@@ -285,6 +285,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (toolbarIsVisible) {
+        [self hideToolbar];
+        currentSelection = nil;
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
+    
     // Navigation logic may go here. Create and push another view controller.
     
     NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
@@ -339,9 +346,7 @@
             toolbarIsVisible = true;
             currentSelection = indexPath;
         } else {
-            [self.currentToolbarView removeFromSuperview];
-            toolbarIsVisible = false;
-            currentSelection = nil;
+            [self hideToolbar];
         }
     } else { // user swiped on new cell
         [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
@@ -355,6 +360,13 @@
         
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (void)hideToolbar
+{
+    [self.currentToolbarView removeFromSuperview];
+    toolbarIsVisible = false;
+    currentSelection = nil;
 }
 
 - (void)toggleToolbarButtonsForIndexPath:(NSIndexPath *)indexPath
