@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ANPostStatusViewController : UIViewController
+@interface ANPostStatusViewController : UIViewController<UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic, retain) IBOutlet UILabel *characterCountLabel;

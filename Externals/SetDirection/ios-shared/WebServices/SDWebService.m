@@ -344,7 +344,7 @@
 		if (postParams)
 		{
 			NSMutableString *mutablePost = [[NSMutableString alloc] init];
-			SDLog(@"request post: %@", postParams);
+			//SDLog(@"request post: %@", postParams);
 			NSArray *parameters = [postParams componentsSeparatedByString:@"&"];
 			for (NSString *aParameter in parameters) {
 				NSArray *keyVal = [aParameter componentsSeparatedByString:@"="];

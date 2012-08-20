@@ -6,6 +6,17 @@
 	<string>https://alpha-api.app.net/</string>
 	<key>requests</key>
 	<dict>
+		<key>imgurPhotoUpload</key>
+		<dict>
+			<key>baseURL</key>
+			<string>http://api.imgur.com/</string>
+			<key>method</key>
+			<string>POST</string>
+			<key>routeFormat</key>
+			<string>2/upload.json</string>
+			<key>postFormat</key>
+			<string>key={apiKey}&amp;image={base64image}&amp;caption={caption}&amp;type=base64</string>
+		</dict>
 		<key>followUser</key>
 		<dict>
 			<key>method</key>

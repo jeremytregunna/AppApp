@@ -9,3 +9,4 @@
 #pragma mark - API Constants
 
 extern NSString *const kANAPIClientID;
+extern NSString *const kImgurAPIKey;

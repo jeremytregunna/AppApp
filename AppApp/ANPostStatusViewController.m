@@ -8,6 +8,9 @@
 
 #import "ANPostStatusViewController.h"
 #import "ANAPICall.h"
+#import "SVProgressHUD.h"
+#import "NSDictionary+SDExtensions.h"
+#import "UIAlertView+SDExtensions.h"
 
 @interface ANPostStatusViewController ()
 
@@ -19,6 +22,8 @@
 @implementation ANPostStatusViewController
 {
     NSString *replyToID;
+    UIImage *postImage;
+    __weak IBOutlet UIButton *postImageButton;
 }
 
 @synthesize postText, postTextView, characterCountLabel, postButton, groupView;
@@ -45,6 +50,7 @@
 {
     [super viewDidLoad];
     [self registerForNotifications];
+    postImageButton.hidden = YES;
 }
 
 
@@ -108,6 +114,10 @@
 {
     NSInteger textLength = 256 - [postTextView.text length];
     
+    // account for the imgur url.
+    if (postImage)
+        textLength -= 29;
+    
     // unblock / block post button
     if(textLength > 0 && textLength < 256) {
         postButton.enabled = YES;
@@ -123,6 +133,26 @@
     postTextView.text = textView.text;
 }
 
+- (void)internalPerformADNPost
+{
+    if([postTextView.text length] < 256)
+    {
+        if (replyToID)
+        {
+            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text replyToPostID:replyToID uiCompletionBlock:^(id dataObject, NSError *error) {
+                SDLog(@"post response = %@", dataObject);
+                [SVProgressHUD dismiss];
+            }];
+        }
+        else
+        {
+            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text uiCompletionBlock:^(id dataObject, NSError *error) {
+                SDLog(@"post response = %@", dataObject);
+                [SVProgressHUD dismiss];
+            }];
+        }
+    }
+}
 
 -(IBAction)dismissPostStatusViewController:(id)sender
 {
@@ -133,29 +163,102 @@
 {
     if([postTextView.text length] < 256)
     {
-        
-        // TODO: Disable Text View.
-        // TODO: Activity Indicator.
-        
-        // TODO: Add delegate to API, make sure to dismiss *only* when post goes through.
-        //       ... and add the post to the status listing -- BKS.
-        
-        if (replyToID)
+        if (postImage)
         {
-            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text replyToPostID:replyToID uiCompletionBlock:^(id dataObject, NSError *error) {
-                SDLog(@"post response = %@", dataObject);
-            }];        
+            [SVProgressHUD showWithStatus:@"Uploading image..." maskType:SVProgressHUDMaskTypeBlack];
+            [[ANAPICall sharedAppAPI] uploadImage:postImage caption:@"" uiCompletionBlock:^(id dataObject, NSError *error) {
+                NSString *urlForImage = [dataObject stringForKeyPath:@"upload.links.original"];
+                if (urlForImage)
+                {
+                    NSString *newPostText = [NSString stringWithFormat:@"%@ %@", postTextView.text, urlForImage];
+                    postTextView.text = newPostText;
+
+                    [self internalPerformADNPost];
+                    [self dismissPostStatusViewController:nil];
+                }
+                else
+                {
+                    [UIAlertView alertViewWithTitle:@"Image upload failed" message:@"Sorry, it appears Imgur is down for maintenance or overloaded."];
+                }
+                [SVProgressHUD dismiss];
+            }];
         }
         else
         {
-            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text uiCompletionBlock:^(id dataObject, NSError *error) {
-                SDLog(@"post response = %@", dataObject);
-            }];
+            [SVProgressHUD showWithStatus:@"Posting..." maskType:SVProgressHUDMaskTypeBlack];
+            [self internalPerformADNPost];
+            [self dismissPostStatusViewController:nil];
         }
-        [self dismissPostStatusViewController:nil];
     }
 }
 
+- (IBAction)photoAction:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take photo", @"Choose from library", nil];
+    [actionSheet showInView:self.view];
+}
+
+- (IBAction)hashAction:(id)sender
+{
+    postTextView.text = [NSString stringWithFormat:@"%@#", postTextView.text];
+}
+
+- (IBAction)clearPhotoAction:(id)sender
+{
+}
+
+#pragma mark - Action sheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    
+    switch (buttonIndex)
+    {
+            // take photo
+        case 0:
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            break;
+            
+            // choose photo
+        case 1:
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            break;
+            
+            // cancel = index 2.
+        default:
+            break;
+    }
+    
+    if (buttonIndex < 2)
+    {
+        [self presentModalViewController:picker animated:YES];
+    }
+}
+
+#pragma mark - UIImagePickerController delegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    postImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    if (postImage)
+        postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    if (postImage)
+    {
+        postImageButton.hidden = NO;
+        [postImageButton setImage:postImage forState:UIControlStateNormal];
+        [self updateCharCountLabel:nil];
+    }
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark - UIKeyboard handling
 
@@ -184,5 +287,11 @@
                      completion:NULL];
 }
 
+
+- (void)viewDidUnload
+{
+    postImageButton = nil;
+    [super viewDidUnload];
+}
 
 @end
