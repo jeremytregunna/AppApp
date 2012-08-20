@@ -22,10 +22,15 @@
     storedRequest = request;
 }
 
+- (NSUInteger)scaleFactor
+{
+    return (NSUInteger)[UIScreen mainScreen].scale;
+}
+
 - (UIImage *)modifiedImage:(UIImage *)image forResponse:(NSURLResponse *)response
 {
     // scale the image down based on width.
-    UIImage *resizedImage = [image resizedImageToFitInSize:CGSizeMake(self.bounds.size.width, self.bounds.size.height) scaleIfSmaller:YES];
+    UIImage *resizedImage = [image resizedImageToFitInSize:CGSizeMake(self.bounds.size.width * self.scaleFactor, self.bounds.size.height * self.scaleFactor) scaleIfSmaller:YES];
     
     // since we hate resizing things... lets try an shove it in the cache for next time
     // its requested...
@@ -48,9 +53,9 @@
     if (size.width > 0 && size.height > 0)
     {
         if ([sizedValue rangeOfString:@"?"].location == NSNotFound)
-            [sizedValue appendFormat:@"?w=%u&h=%u", width, height];
+            [sizedValue appendFormat:@"?w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
         else
-            [sizedValue appendFormat:@"&w=%u&h=%u", width, height];
+            [sizedValue appendFormat:@"&w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
         [super setImageURL:sizedValue];
     }
     else
