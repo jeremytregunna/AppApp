@@ -99,10 +99,11 @@
     frame = topCoverView.frame;
     frame.size.height = MAX(bioSize.height,25.0) + 10.0;
     topCoverView.frame = frame;
+    UIView* tableHeader = self.tableView.tableHeaderView;
     frame = self.tableView.tableHeaderView.frame;
     frame.size.height = topCoverView.frame.origin.y + topCoverView.frame.size.height;
     self.tableView.tableHeaderView.frame = frame;
-    
+    self.tableView.tableHeaderView =  tableHeader;
    
     
     if (![self isThisUserMe:userID])
@@ -129,9 +130,9 @@
         userData = (NSDictionary *)dataObject;
         [self configureFromUserData];
         [self fetchFollowData];
-        
         [SVProgressHUD dismiss];
     }];
+    
 }
 
 - (BOOL)isThisUserMe:(NSString *)thisUsersID
@@ -305,45 +306,37 @@
     switch (indexPath.row) {
         case 0:
         {
-            static NSString *CellIdentifier = @"CountCell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            ;
+            static NSString *CountCellIdentifier = @"CountCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CountCellIdentifier];
+            
 
             if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CountCellIdentifier];
                 cell.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,90)];   
                 cell.backgroundView.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
                 
                 // posts counter
                 UILabel *postCount = [[UILabel alloc] initWithFrame:CGRectMake(0,15,0,40)];
-                postCount.text = [userData stringForKeyPath:@"counts.posts"];
+        
                 postCount.textAlignment = UITextAlignmentCenter;
                 postCount.font = [UIFont fontWithName:@"Ubuntu-Bold" size:38.0];
                 postCount.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
                 postCount.backgroundColor = cell.backgroundView.backgroundColor;
                 postCount.shadowColor = [UIColor whiteColor];
+                postCount.tag = 1;
                 postCount.shadowOffset = CGSizeMake(0,1);
-                CGSize size = [postCount.text sizeWithFont:postCount.font];
                 [cell.contentView addSubview:postCount];
-                CGRect frame = postCount.frame;
-                frame.size = size;
-                postCount.frame = frame;
-                CGPoint center = postCount.center;
-                center.x = 52.0;
-                postCount.center = center;
-                
+               
                
                 UILabel *postLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,postCount.frame.size.height+10.0,50,16)];
                 postLabel.text = @"posts";
+                postLabel.tag = 2;
                 postLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
-                size = [postLabel.text sizeWithFont:postLabel.font];
-                frame = postLabel.frame;
+                CGSize size = [postLabel.text sizeWithFont:postLabel.font];
+                CGRect frame = postLabel.frame;
                 frame.size = size;
                 postLabel.frame = frame;
-                
-                center = postLabel.center;
-                center.x = postCount.center.x;
-                postLabel.center = center;
+              
                 postLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
                 postLabel.backgroundColor = cell.backgroundView.backgroundColor;
                 postLabel.shadowColor = [UIColor whiteColor];
@@ -359,14 +352,8 @@
                 followersCount.backgroundColor = cell.backgroundView.backgroundColor;
                 followersCount.shadowColor = [UIColor whiteColor];
                 followersCount.shadowOffset = CGSizeMake(0,1);
-                size = [followersCount.text sizeWithFont:followersCount.font];
+                followersCount.tag = 3;
                 [cell.contentView addSubview:followersCount];
-                frame = followersCount.frame;
-                frame.size = size;
-                followersCount.frame = frame;
-                center = followersCount.center;
-                center.x = 160.0;
-                followersCount.center = center;
                 
                 
                 UILabel *followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,followersCount.frame.size.height+10.0,50,16)];
@@ -376,10 +363,8 @@
                 frame = followersLabel.frame;
                 frame.size = size;
                 followersLabel.frame = frame;
+                followersLabel.tag = 4;
                 
-                center = followersLabel.center;
-                center.x = followersCount.center.x;
-                followersLabel.center = center;
                 followersLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
                 followersLabel.backgroundColor = cell.backgroundView.backgroundColor;
                 followersLabel.shadowColor = [UIColor whiteColor];
@@ -388,34 +373,29 @@
                 
                 //following counter
                 UILabel *followingCount = [[UILabel alloc] initWithFrame:CGRectMake(0,15,0,40)];
-                followingCount.text = [userData stringForKeyPath:@"counts.following"];
+               
                 followingCount.textAlignment = UITextAlignmentCenter;
                 followingCount.font = [UIFont fontWithName:@"Ubuntu-Bold" size:38.0];
                 followingCount.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
                 followingCount.backgroundColor = cell.backgroundView.backgroundColor;
                 followingCount.shadowColor = [UIColor whiteColor];
                 followingCount.shadowOffset = CGSizeMake(0,1);
-                size = [followingCount.text sizeWithFont:followingCount.font];
+                followingCount.tag = 5;
                 [cell.contentView addSubview:followingCount];
-                frame = followingCount.frame;
-                frame.size = size;
-                followingCount.frame = frame;
-                center = followingCount.center;
-                center.x = 268.0;
-                followingCount.center = center;
                 
+              
+       
                 
                 UILabel *followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,postCount.frame.size.height+10.0,50,16)];
                 followingLabel.text = @"following";
                 followingLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+                followingLabel.tag = 6;
                 size = [followingLabel.text sizeWithFont:followingLabel.font];
                 frame = followingLabel.frame;
                 frame.size = size;
                 followingLabel.frame = frame;
                 
-                center = followingLabel.center;
-                center.x = followingCount.center.x;
-                followingLabel.center = center;
+               
                 followingLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
                 followingLabel.backgroundColor = cell.backgroundView.backgroundColor;
                 followingLabel.shadowColor = [UIColor whiteColor];
@@ -450,6 +430,72 @@
                 [button addTarget:self action:@selector(viewFollowing:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:button];
             }
+            
+            UILabel* postCount = (UILabel*)[cell.contentView viewWithTag:1];
+            UILabel* postLabel = (UILabel*)[cell.contentView viewWithTag:2];
+            
+            postCount.text = [userData stringForKeyPath:@"counts.posts"];
+            
+            CGSize size = [postCount.text sizeWithFont:postCount.font];
+            CGRect frame = postCount.frame;
+            frame.size = size;
+            postCount.frame = frame;
+            
+            CGPoint center = postCount.center;
+            center.x = 52.0;
+            postCount.center = center;
+            
+            center = postLabel.center;
+            center.x = postCount.center.x;
+            postLabel.center = center;
+            
+            frame = postLabel.frame;
+            frame.origin.y = postCount.frame.origin.y + postCount.frame.size.height-3.0;
+            postLabel.frame = frame;
+            
+            UILabel* followersCount = (UILabel*)[cell.contentView viewWithTag:3];
+            UILabel* followersLabel = (UILabel*)[cell.contentView viewWithTag:4];
+            followersCount.text = [userData stringForKeyPath:@"counts.followers"];
+            
+            size = [followersCount.text sizeWithFont:followersCount.font];
+            frame = followersCount.frame;
+            frame.size = size;
+            followersCount.frame = frame;
+            
+            center = followersCount.center;
+            center.x = 160.0;
+            followersCount.center = center;
+            
+            center = followersLabel.center;
+            center.x = followersCount.center.x;
+            followersLabel.center = center;
+            
+            frame = followersLabel.frame;
+            frame.origin.y = followersCount.frame.origin.y + followersCount.frame.size.height-3.0;
+            followersLabel.frame = frame;
+            
+            UILabel* followingCount = (UILabel*)[cell.contentView viewWithTag:5];
+            UILabel* followingLabel = (UILabel*)[cell.contentView viewWithTag:6];
+            followingCount.text = [userData stringForKeyPath:@"counts.following"];
+            
+            size = [followingCount.text sizeWithFont:followingCount.font];
+            frame = followingCount.frame;
+            frame.size = size;
+            followingCount.frame = frame;
+            
+            center = followingCount.center;
+            center.x = 268.0;
+            followingCount.center = center;
+            
+            center = followingLabel.center;
+            center.x = followingCount.center.x;
+            followingLabel.center = center;
+            
+            frame = followingLabel.frame;
+            frame.origin.y = followingCount.frame.origin.y + followingCount.frame.size.height-3.0;
+            followingLabel.frame = frame;
+            
+            
             return cell;
         }
             break;
