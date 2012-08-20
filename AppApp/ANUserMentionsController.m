@@ -16,7 +16,7 @@
 
 - (NSString *)sideMenuTitle
 {
-    return @"User Mentions";
+    return @"Mentions";
 }
 
 - (NSString *)sideMenuImageName

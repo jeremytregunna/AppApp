@@ -16,7 +16,7 @@
 
 - (NSString *)sideMenuTitle
 {
-    return @"User Stream";
+    return @"My Stream";
 }
 
 - (NSString *)sideMenuImageName
