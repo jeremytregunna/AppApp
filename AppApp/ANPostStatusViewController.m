@@ -192,6 +192,7 @@
 {
     if([postTextView.text length] < 256)
     {
+        [self.postTextView resignFirstResponder];
         if (postImage)
         {
             [SVProgressHUD showWithStatus:@"Uploading image..." maskType:SVProgressHUDMaskTypeBlack];
@@ -318,7 +319,7 @@
 #pragma mark - UIKeyboard handling
 
 - (void) applyKeyboardSizeChange:(NSNotification *)notification{
-    NSDictionary *dict = [notification userInfo];
+    /*NSDictionary *dict = [notification userInfo];
     NSNumber *animationDuration = [dict valueForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [dict valueForKey:UIKeyboardAnimationCurveUserInfoKey];
     
@@ -338,7 +339,7 @@
                      animations:^{
                          aViewToResize.frame = newFrame;
                      }
-                     completion:NULL];
+                     completion:NULL];*/
 }
 
 
