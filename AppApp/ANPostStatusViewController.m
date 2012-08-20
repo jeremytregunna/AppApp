@@ -9,6 +9,8 @@
 #import "ANPostStatusViewController.h"
 #import "ANAPICall.h"
 #import "NSDictionary+SDExtensions.h"
+#import "SVProgressHUD.h"
+#import "UIAlertView+SDExtensions.h"
 
 @interface ANPostStatusViewController ()
 
@@ -21,6 +23,8 @@
 {
     NSString *replyToID;
     UIImage *postImage;
+    NSDictionary *postData;
+    ANPostMode postMode;
     __weak IBOutlet UIButton *postImageButton;
 }
 
@@ -103,7 +107,7 @@
         case ANPostModeNew:
             break;
         case ANPostModeReply:
-            self.postTextView.text = [self usersMentionedInPostData:postData];
+            self.postTextView.text = [self usersMentionedInPostData];
             break;
         case ANPostModeRepost:
         {
@@ -220,10 +224,13 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take photo", @"Choose from library", nil];
     [actionSheet showInView:self.view];
 }
-#pragma mark -
-#pragma Helpers
-- (NSString *)usersMentionedInPostData:(NSDictionary *)postData
+#pragma mark - Helpers
+
+- (NSString *)usersMentionedInPostData
 {
+    if (!postData)
+        return @"";
+    
     NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
     
     NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];

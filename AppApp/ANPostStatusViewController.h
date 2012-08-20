@@ -15,10 +15,7 @@ typedef enum
     ANPostModeRepost
 } ANPostMode;
 
-@interface ANPostStatusViewController : UIViewController
-{
-    int postMode;
-}
+@interface ANPostStatusViewController : UIViewController<UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic, retain) IBOutlet UILabel *characterCountLabel;
