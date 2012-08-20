@@ -177,23 +177,6 @@
     return height;
 }
 
-/*#pragma mark - TTTAttributedLabel delgate
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if([[url scheme]isEqualToString:@"username"]) {
-        NSString *userID = [url host];
-        [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-            NSDictionary *userData = dataObject;
-            ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-            [self.navigationController pushViewController:userViewController animated:YES];
-        }];
-        
-    } else if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
-    }
-}*/
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ANStatusViewCell";
@@ -285,11 +268,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (toolbarIsVisible) {
+    if (toolbarIsVisible)
+    {
         [self hideToolbar];
         currentSelection = nil;
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
+        // get out, we don't want to jump to the next post, just hide the toolbar.
+        return;
     }
     
     // Navigation logic may go here. Create and push another view controller.
