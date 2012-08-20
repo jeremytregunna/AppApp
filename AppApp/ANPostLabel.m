@@ -11,6 +11,7 @@
 #import "NSAttributedString+HTML.h"
 #import "NSDictionary+SDExtensions.h"
 #import "DTCoreTextConstants.h"
+#import "NSString+HTML.h"
 
 @implementation ANPostLabel
 
@@ -71,8 +72,6 @@
     {
         NSUInteger pos = [item unsignedIntegerForKey:@"pos"];
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
-        if (pos + len >= attrString.length - 1)
-            len = (attrString.length - 1) - pos;
         NSString *keyValue = [item stringForKey:key];
         NSRange range = { .location = pos, .length = len };
         
@@ -94,21 +93,21 @@
     
     _postData = postData;
     
-    NSString *text = [_postData stringForKey:@"text"];
+    NSMutableString *text = [[[_postData stringForKey:@"text"] stringByAddingHTMLEntities] mutableCopy];
     if (!text || [text length] == 0)
-        text = @"[deleted post]";
+        text = [@"[deleted post]" mutableCopy];
+    
+    [text replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, text.length)];
     
     NSData *htmlData = [text dataUsingEncoding:NSUTF8StringEncoding];
 	NSMutableAttributedString *postString = [[[NSAttributedString alloc] initWithHTMLData:htmlData documentAttributes:NULL] mutableCopy];
 
+    NSMutableAttributedString *originalStr = [postString copy];
+    
     NSArray *hashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
     NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
     NSArray *mentions = [_postData arrayForKeyPath:@"entities.mentions"];
     
-    /*[postString addAttribute:(NSString *)kCTFontAttributeName
-                        value:[UIFont fontWithName:@"Helvetica" size:12.0f]
-                        range:NSMakeRange(0, postString.length-1)];*/
-
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     [postString addAttribute:(NSString*)kCTFontAttributeName
