@@ -68,30 +68,35 @@
         
     if (!currentToolbarView) {
         self.currentToolbarView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.currentToolbarView.backgroundColor = [UIColor darkGrayColor];
+        self.currentToolbarView.backgroundColor = [UIColor colorWithHue:0.574 saturation:0.036 brightness:0.984 alpha:1];
         
-        UIImageView *background = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"toolbarbg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0]];
+        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"actionbar_separator.png"]];
         background.frame = CGRectMake(0,0,260,40);
         
-        UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnReply setTitle:@"Reply" forState:UIControlStateNormal];
-        [btnReply setFrame:CGRectMake(10,5,50,30)];
-        [btnReply.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
+        UIImage *btnReplyImg = [UIImage imageNamed:@"actionbar_reply.png"];
+        UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
+        [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
+        [btnReply setFrame:CGRectMake(45,12,18,21)];
      
-        UIButton *btnReplyAll = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnReplyAll setTitle:@"Reply All" forState:UIControlStateNormal];
-        [btnReplyAll setFrame:CGRectMake(65,5,60,30)];
-        [btnReplyAll.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        UIImage *btnRepostImg = [UIImage imageNamed:@"actionbar_repost.png"];
+        UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        
+        [btnRepost setFrame:CGRectMake(105,12,18,21)];
 
-        UIButton *btnProfile = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnProfile setTitle:@"Profile" forState:UIControlStateNormal];
-        [btnProfile setFrame:CGRectMake(130,5,60,30)];
-        [btnProfile.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        UIImage *btnConversationImg = [UIImage imageNamed:@"actionbar_conversation.png"];
+        UIButton *btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+        [btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
+
+        [btnConversation setFrame:CGRectMake(175,12,22,21)];
         
         [self.currentToolbarView addSubview:background];
         [self.currentToolbarView addSubview:btnReply];
-        [self.currentToolbarView addSubview:btnReplyAll];
-        [self.currentToolbarView addSubview:btnProfile];
+        [self.currentToolbarView addSubview:btnRepost];
+        [self.currentToolbarView addSubview:btnConversation];
     }
     
     toolbarIsVisible = false;
