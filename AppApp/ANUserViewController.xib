@@ -44,7 +44,7 @@
 							<object class="IBUIImageView" id="892157344">
 								<reference key="NSNextResponder" ref="26849038"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{0, -40}, {320, 160}}</string>
+								<string key="NSFrame">{{0, -40}, {320, 200}}</string>
 								<reference key="NSSuperview" ref="26849038"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="338651105"/>
@@ -134,7 +134,7 @@
 									<bytes key="NSWhite">MQA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
-								<object class="NSColor" key="IBUIShadowColor" id="141528802">
+								<object class="NSColor" key="IBUIShadowColor" id="698412127">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
 								</object>
@@ -170,7 +170,7 @@
 								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="676039101"/>
 								<nil key="IBUIHighlightedColor"/>
-								<reference key="IBUIShadowColor" ref="141528802"/>
+								<reference key="IBUIShadowColor" ref="698412127"/>
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<float key="IBUIMinimumFontSize">10</float>
