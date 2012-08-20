@@ -47,6 +47,9 @@ static NSDictionary *entityReverseLookup = nil;
 
 - (NSString *)stringByNormalizingWhitespace
 {
+	// we don't want this!! -- BKS
+	return self;
+	/*
 	NSInteger stringLength = [self length];
 	
 	// reserve buffer, same size as input
@@ -90,7 +93,7 @@ static NSDictionary *entityReverseLookup = nil;
 	// free buffers
 	free(_characters);
 	
-	return retString;
+	return retString;*/
 }
 
 - (BOOL)hasPrefixCharacterFromSet:(NSCharacterSet *)characterSet

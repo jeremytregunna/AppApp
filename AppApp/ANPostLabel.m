@@ -74,7 +74,8 @@
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
         NSString *keyValue = [item stringForKey:key];
         NSRange range = { .location = pos, .length = len };
-        
+        if (len > [attrString length]-1)
+            len = [attrString length]-1;
         NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                        (__bridge id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
                                        type, @"ANPostLabelAttributeType",
@@ -102,8 +103,6 @@
     NSData *htmlData = [text dataUsingEncoding:NSUTF8StringEncoding];
 	NSMutableAttributedString *postString = [[[NSAttributedString alloc] initWithHTMLData:htmlData documentAttributes:NULL] mutableCopy];
 
-    NSMutableAttributedString *originalStr = [postString copy];
-    
     NSArray *hashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
     NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
     NSArray *mentions = [_postData arrayForKeyPath:@"entities.mentions"];
