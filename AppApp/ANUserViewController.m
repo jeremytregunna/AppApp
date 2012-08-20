@@ -450,7 +450,7 @@
             postLabel.center = center;
             
             frame = postLabel.frame;
-            frame.origin.y = postCount.frame.origin.y + postCount.frame.size.height-3.0;
+            frame.origin.y = postCount.frame.origin.y + postCount.frame.size.height-5.0;
             postLabel.frame = frame;
             
             UILabel* followersCount = (UILabel*)[cell.contentView viewWithTag:3];
@@ -471,7 +471,7 @@
             followersLabel.center = center;
             
             frame = followersLabel.frame;
-            frame.origin.y = followersCount.frame.origin.y + followersCount.frame.size.height-3.0;
+            frame.origin.y = followersCount.frame.origin.y + followersCount.frame.size.height-5.0;
             followersLabel.frame = frame;
             
             UILabel* followingCount = (UILabel*)[cell.contentView viewWithTag:5];
@@ -492,7 +492,7 @@
             followingLabel.center = center;
             
             frame = followingLabel.frame;
-            frame.origin.y = followingCount.frame.origin.y + followingCount.frame.size.height-3.0;
+            frame.origin.y = followingCount.frame.origin.y + followingCount.frame.size.height-5.0;
             followingLabel.frame = frame;
             
             
