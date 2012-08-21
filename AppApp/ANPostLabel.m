@@ -11,6 +11,7 @@
 #import "NSAttributedString+HTML.h"
 #import "NSDictionary+SDExtensions.h"
 #import "DTCoreTextConstants.h"
+#import "NSString+HTML.h"
 
 @implementation ANPostLabel
 
@@ -71,11 +72,10 @@
     {
         NSUInteger pos = [item unsignedIntegerForKey:@"pos"];
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
-        if (pos + len >= attrString.length - 1)
-            len = (attrString.length - 1) - pos;
         NSString *keyValue = [item stringForKey:key];
         NSRange range = { .location = pos, .length = len };
-        
+        if (len > [attrString length]-1)
+            len = [attrString length]-1;
         NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                        (__bridge id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
                                        type, @"ANPostLabelAttributeType",
@@ -94,9 +94,11 @@
     
     _postData = postData;
     
-    NSString *text = [_postData stringForKey:@"text"];
+    NSMutableString *text = [[[_postData stringForKey:@"text"] stringByAddingHTMLEntities] mutableCopy];
     if (!text || [text length] == 0)
-        text = @"[deleted post]";
+        text = [@"[deleted post]" mutableCopy];
+    
+    [text replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, text.length)];
     
     NSData *htmlData = [text dataUsingEncoding:NSUTF8StringEncoding];
 	NSMutableAttributedString *postString = [[[NSAttributedString alloc] initWithHTMLData:htmlData documentAttributes:NULL] mutableCopy];
@@ -105,10 +107,6 @@
     NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
     NSArray *mentions = [_postData arrayForKeyPath:@"entities.mentions"];
     
-    /*[postString addAttribute:(NSString *)kCTFontAttributeName
-                        value:[UIFont fontWithName:@"Helvetica" size:12.0f]
-                        range:NSMakeRange(0, postString.length-1)];*/
-
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     [postString addAttribute:(NSString*)kCTFontAttributeName

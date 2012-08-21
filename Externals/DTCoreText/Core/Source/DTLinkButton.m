@@ -53,7 +53,7 @@ NSString *DTLinkButtonDidHighlightNotification = @"DTLinkButtonDidHighlightNotif
 }
 
 
-- (void)drawRect:(CGRect)rect
+/*- (void)drawRect:(CGRect)rect
 {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
@@ -65,7 +65,7 @@ NSString *DTLinkButtonDidHighlightNotification = @"DTLinkButtonDidHighlightNotif
 		CGContextSetGrayFillColor(ctx, 0.73f, 0.4f);
 		[roundedPath fill];							 
 	}
-}
+}*/
 
 - (void)adjustBoundsIfNecessary
 {

@@ -47,8 +47,7 @@ static NSDictionary *entityReverseLookup = nil;
 
 - (NSString *)stringByNormalizingWhitespace
 {
-	// -- WE DON'T WANT THIS!!! --BKS
-	
+	// we don't want this!! -- BKS
 	return self;
 	/*
 	NSInteger stringLength = [self length];

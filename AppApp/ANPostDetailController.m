@@ -77,46 +77,18 @@
     detailCell = nil;
 }
 
-- (NSString *)usersMentioned
-{
-    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
-
-    NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];
-    NSMutableString *result = [NSMutableString stringWithFormat:@"@%@ ", posterUsername];
-    
-    for (NSDictionary *mention in mentions)
-    {
-        // skip ourselves if its a reply to us.
-        NSString *userID = [mention stringForKey:@"id"];
-        if (![userID isEqualToString:[ANAPICall sharedAppAPI].userID])
-        {
-            NSString *name = [mention stringForKey:@"name"];
-            [result appendFormat:@"@%@ ", name];
-        }
-    }
-    
-    return result;
-}
-
 #pragma mark - Button Actions
 
 - (IBAction)newPostAction:(id)sender
 {
-    NSString *replyToID = [postData stringForKey:@"id"];
-    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeReply];
     [self presentModalViewController:postView animated:YES];
-    postView.postTextView.text = [self usersMentioned];
 }
 
 - (IBAction)repostAction:(id)sender
 {
-    NSString *replyToID = [postData stringForKey:@"id"];
-    NSString *originalText = [postData stringForKey:@"text"];
-    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
-
-    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithReplyToID:replyToID];
+    ANPostStatusViewController *postView = [[ANPostStatusViewController alloc] initWithPostData:postData postMode:ANPostModeRepost];
     [self presentModalViewController:postView animated:YES];
-    postView.postText = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
 }
 
 - (IBAction)userAction:(id)sender

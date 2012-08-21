@@ -8,6 +8,9 @@
 
 #import "ANPostStatusViewController.h"
 #import "ANAPICall.h"
+#import "NSDictionary+SDExtensions.h"
+#import "SVProgressHUD.h"
+#import "UIAlertView+SDExtensions.h"
 
 @interface ANPostStatusViewController ()
 
@@ -19,15 +22,19 @@
 @implementation ANPostStatusViewController
 {
     NSString *replyToID;
+    UIImage *postImage;
+    NSDictionary *postData;
+    ANPostMode postMode;
+    __weak IBOutlet UIButton *postImageButton;
 }
 
-@synthesize postText, postTextView, characterCountLabel, postButton, groupView;
+@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData;
 
 - (id)init
 {
     self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
     if (self) {
-        
+        postMode = ANPostModeNew;
     }
     return self;
 }
@@ -37,6 +44,17 @@
     self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
     if (self) {
         replyToID = aReplyToID;
+        postMode = ANPostModeNew; // This is semantically wrong, but we need to prevent that anything is added to the text field until we refactored the calling classes (@ralf)
+    }
+    return self;
+}
+
+- (id)initWithPostData:(NSDictionary *)aPostData postMode:(ANPostMode)aPostMode {
+    self = [super initWithNibName:@"ANPostStatusViewController" bundle:nil];
+    if (self) {
+        postData = aPostData;
+        postMode = aPostMode;
+        replyToID = [postData stringForKeyPath:@"id"];
     }
     return self;
 }
@@ -45,6 +63,7 @@
 {
     [super viewDidLoad];
     [self registerForNotifications];
+    postImageButton.hidden = YES;
 }
 
 
@@ -85,7 +104,23 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [postTextView becomeFirstResponder];
+    switch (postMode) {
+        case ANPostModeNew:
+            break;
+        case ANPostModeReply:
+            self.postTextView.text = [self usersMentionedInPostData];
+            break;
+        case ANPostModeRepost:
+        {
+            NSString *originalText = [postData stringForKey:@"text"];
+            NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
+            self.postTextView.text = [NSString stringWithFormat:@"RP @%@: %@", posterUsername, originalText];
+            self.postTextView.selectedRange = NSMakeRange(0,0);
+            break;
+        }
+    }
 }
+
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -108,6 +143,10 @@
 {
     NSInteger textLength = 256 - [postTextView.text length];
     
+    // account for the imgur url.
+    if (postImage)
+        textLength -= 29;
+    
     // unblock / block post button
     if(textLength > 0 && textLength < 256) {
         postButton.enabled = YES;
@@ -123,6 +162,26 @@
     postTextView.text = textView.text;
 }
 
+- (void)internalPerformADNPost
+{
+    if([postTextView.text length] < 256)
+    {
+        if (replyToID)
+        {
+            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text replyToPostID:replyToID uiCompletionBlock:^(id dataObject, NSError *error) {
+                SDLog(@"post response = %@", dataObject);
+                [SVProgressHUD dismiss];
+            }];
+        }
+        else
+        {
+            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text uiCompletionBlock:^(id dataObject, NSError *error) {
+                SDLog(@"post response = %@", dataObject);
+                [SVProgressHUD dismiss];
+            }];
+        }
+    }
+}
 
 -(IBAction)dismissPostStatusViewController:(id)sender
 {
@@ -133,35 +192,134 @@
 {
     if([postTextView.text length] < 256)
     {
-        
-        // TODO: Disable Text View.
-        // TODO: Activity Indicator.
-        
-        // TODO: Add delegate to API, make sure to dismiss *only* when post goes through.
-        //       ... and add the post to the status listing -- BKS.
-        
-        if (replyToID)
+        [self.postTextView resignFirstResponder];
+        if (postImage)
         {
-            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text replyToPostID:replyToID uiCompletionBlock:^(id dataObject, NSError *error) {
-                SDLog(@"post response = %@", dataObject);
-            }];        
+            [SVProgressHUD showWithStatus:@"Uploading image..." maskType:SVProgressHUDMaskTypeBlack];
+            [[ANAPICall sharedAppAPI] uploadImage:postImage caption:@"" uiCompletionBlock:^(id dataObject, NSError *error) {
+                NSString *urlForImage = [dataObject stringForKeyPath:@"upload.links.original"];
+                if (urlForImage)
+                {
+                    NSString *newPostText = [NSString stringWithFormat:@"%@ %@", postTextView.text, urlForImage];
+                    postTextView.text = newPostText;
+
+                    [self internalPerformADNPost];
+                    [self dismissPostStatusViewController:nil];
+                }
+                else
+                {
+                    [UIAlertView alertViewWithTitle:@"Image upload failed" message:@"Sorry, it appears Imgur is down for maintenance or overloaded."];
+                }
+                [SVProgressHUD dismiss];
+            }];
         }
         else
         {
-            [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text uiCompletionBlock:^(id dataObject, NSError *error) {
-                SDLog(@"post response = %@", dataObject);
-            }];
+            [SVProgressHUD showWithStatus:@"Posting..." maskType:SVProgressHUDMaskTypeBlack];
+            [self internalPerformADNPost];
+            [self dismissPostStatusViewController:nil];
         }
-        [self dismissPostStatusViewController:nil];
     }
 }
 
+- (IBAction)photoAction:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take photo", @"Choose from library", nil];
+    [actionSheet showInView:self.view];
+}
+
+#pragma mark - Helpers
+
+- (NSString *)usersMentionedInPostData
+{
+    if (!postData)
+        return @"";
+    
+    NSString *posterUsername = [postData stringForKeyPath:@"user.username"];
+    
+    NSArray *mentions = [postData arrayForKeyPath:@"entities.mentions"];
+    NSMutableString *result = [NSMutableString stringWithFormat:@"@%@ ", posterUsername];
+    
+    for (NSDictionary *mention in mentions)
+    {
+        // skip ourselves if its a reply to us.
+        NSString *userID = [mention stringForKey:@"id"];
+        if (![userID isEqualToString:[ANAPICall sharedAppAPI].userID])
+        {
+            NSString *name = [mention stringForKey:@"name"];
+            [result appendFormat:@"@%@ ", name];
+        }
+    }
+    
+    return result;
+}
+
+- (IBAction)hashAction:(id)sender
+{
+    postTextView.text = [NSString stringWithFormat:@"%@#", postTextView.text];
+}
+
+- (IBAction)clearPhotoAction:(id)sender
+{
+}
+
+#pragma mark - Action sheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = NO;
+    
+    switch (buttonIndex)
+    {
+            // take photo
+        case 0:
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            break;
+            
+            // choose photo
+        case 1:
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            break;
+            
+            // cancel = index 2.
+        default:
+            break;
+    }
+    
+    if (buttonIndex < 2)
+    {
+        [self presentModalViewController:picker animated:YES];
+    }
+}
+
+#pragma mark - UIImagePickerController delegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    postImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    if (!postImage)
+        postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    if (postImage)
+    {
+        postImageButton.hidden = NO;
+        [postImageButton setImage:postImage forState:UIControlStateNormal];
+        [self updateCharCountLabel:nil];
+    }
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark - UIKeyboard handling
 
-
 - (void) applyKeyboardSizeChange:(NSNotification *)notification{
-    NSDictionary *dict = [notification userInfo];
+    /*NSDictionary *dict = [notification userInfo];
     NSNumber *animationDuration = [dict valueForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [dict valueForKey:UIKeyboardAnimationCurveUserInfoKey];
     
@@ -181,8 +339,14 @@
                      animations:^{
                          aViewToResize.frame = newFrame;
                      }
-                     completion:NULL];
+                     completion:NULL];*/
 }
 
+
+- (void)viewDidUnload
+{
+    postImageButton = nil;
+    [super viewDidUnload];
+}
 
 @end

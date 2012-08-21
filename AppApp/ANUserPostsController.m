@@ -34,7 +34,7 @@
 
 - (NSString *)sideMenuTitle
 {
-    return @"User Posts";
+    return @"Posts";
 }
 
 

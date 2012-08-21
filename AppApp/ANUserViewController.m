@@ -92,17 +92,19 @@
         bioLabel.text = bioText;
     }
     // compute height of bio line.
-    [bioLabel adjustHeightToFit:120];
-    
-    // now get that and set the header height..
-    CGFloat defaultViewHeight = 154; // seen in the nib.
-    CGFloat defaultLabelHeight = 21; // ... i'm putting these here in case we need to change it later.
-    CGFloat newLabelHeight = bioLabel.frame.size.height;
-    
-    UIView *headerView = self.tableView.tableHeaderView;
-    CGRect newHeaderFrame = headerView.frame;
-    newHeaderFrame.size.height = defaultViewHeight + (newLabelHeight - defaultLabelHeight);
-    headerView.frame = newHeaderFrame;
+    CGSize bioSize = [bioLabel.text sizeWithFont:bioLabel.font constrainedToSize:CGSizeMake(197,HUGE_VALF)];
+    CGRect frame = bioLabel.frame;
+    frame.size.height = MAX(bioSize.height,25.0);
+    bioLabel.frame = frame;
+    frame = topCoverView.frame;
+    frame.size.height = MAX(bioSize.height,30.0) + 10.0;
+    topCoverView.frame = frame;
+    UIView* tableHeader = self.tableView.tableHeaderView;
+    frame = self.tableView.tableHeaderView.frame;
+    frame.size.height = topCoverView.frame.origin.y + topCoverView.frame.size.height;
+    self.tableView.tableHeaderView.frame = frame;
+    self.tableView.tableHeaderView =  tableHeader;
+   
     
     if (![self isThisUserMe:userID])
     {
@@ -111,7 +113,7 @@
         else
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Follow" style:UIBarButtonItemStyleBordered target:self action:@selector(followAction:)];
     }
-    self.tableView.tableHeaderView = headerView;
+   
     [self.tableView reloadData];
 }
 
@@ -128,9 +130,9 @@
         userData = (NSDictionary *)dataObject;
         [self configureFromUserData];
         [self fetchFollowData];
-        
         [SVProgressHUD dismiss];
     }];
+    
 }
 
 - (BOOL)isThisUserMe:(NSString *)thisUsersID
@@ -142,7 +144,7 @@
 
 - (BOOL)doIFollowThisUser
 {
-    BOOL result = [userData boolForKey:@"is_follower"];
+    BOOL result = [userData boolForKey:@"you_follow"];
     return result;
 }
 
@@ -228,13 +230,20 @@
         [self configureFromUserData];
         [self fetchFollowData];
     }
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    userImageView.layer.cornerRadius = 6.0;
+    //userImageView.layer.cornerRadius = 6.0;
 
     // Setup shadow for cover image view
     topCoverView.layer.shadowRadius = 10.0f;
     topCoverView.layer.shadowOpacity = 0.4f;
     topCoverView.layer.shadowOffset = CGSizeMake(0.0f, -5.0f);
+    
+    // Setup shadow for avatar image view
+    userImageView.layer.shadowRadius = 2.0f;
+    userImageView.layer.shadowOpacity = 0.4f;
+    userImageView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    userImageView.layer.masksToBounds = NO;
     
     CGRect shadowRect = topCoverView.bounds;
     shadowRect.size.height /= 4;
@@ -264,6 +273,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // only do this if its the only vc on the stack.  workaround for the side menu keeping it around.
+    if ([self.navigationController.viewControllers count] == 1)
+        [self fetchDataFromUserID];
     [super viewWillAppear:animated];
 }
 
@@ -283,73 +295,236 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 4;
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.row == 0 ? 90.0 : 44.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    // Configure the cell...
+        // Configure the cell...
     
     switch (indexPath.row) {
         case 0:
         {
-            NSUInteger postCount = [userData unsignedIntegerForKeyPath:@"counts.posts"];
-            cell.textLabel.text = @"Posts";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", postCount];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            if (postCount > 0)
-            {
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            static NSString *CountCellIdentifier = @"CountCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CountCellIdentifier];
+            
+
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CountCellIdentifier];
+                cell.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,90)];   
+                cell.backgroundView.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+                
+                // posts counter
+                UILabel *postCount = [[UILabel alloc] initWithFrame:CGRectMake(0,15,0,40)];
+        
+                postCount.textAlignment = UITextAlignmentCenter;
+                postCount.font = [UIFont fontWithName:@"Ubuntu-Bold" size:38.0];
+                postCount.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                postCount.backgroundColor = cell.backgroundView.backgroundColor;
+                postCount.shadowColor = [UIColor whiteColor];
+                postCount.tag = 1;
+                postCount.shadowOffset = CGSizeMake(0,1);
+                [cell.contentView addSubview:postCount];
+               
+               
+                UILabel *postLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,postCount.frame.size.height+10.0,50,16)];
+                postLabel.text = @"posts";
+                postLabel.tag = 2;
+                postLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+                CGSize size = [postLabel.text sizeWithFont:postLabel.font];
+                CGRect frame = postLabel.frame;
+                frame.size = size;
+                postLabel.frame = frame;
+              
+                postLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                postLabel.backgroundColor = cell.backgroundView.backgroundColor;
+                postLabel.shadowColor = [UIColor whiteColor];
+                postLabel.shadowOffset = CGSizeMake(0,1);
+                [cell.contentView addSubview:postLabel];
+                
+                //followers counter
+                UILabel *followersCount = [[UILabel alloc] initWithFrame:CGRectMake(0,15,0,40)];
+                followersCount.text = [userData stringForKeyPath:@"counts.followers"];
+                followersCount.textAlignment = UITextAlignmentCenter;
+                followersCount.font = [UIFont fontWithName:@"Ubuntu-Bold" size:38.0];
+                followersCount.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                followersCount.backgroundColor = cell.backgroundView.backgroundColor;
+                followersCount.shadowColor = [UIColor whiteColor];
+                followersCount.shadowOffset = CGSizeMake(0,1);
+                followersCount.tag = 3;
+                [cell.contentView addSubview:followersCount];
+                
+                
+                UILabel *followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,followersCount.frame.size.height+10.0,50,16)];
+                followersLabel.text = @"followers";
+                followersLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+                size = [followersLabel.text sizeWithFont:followersLabel.font];
+                frame = followersLabel.frame;
+                frame.size = size;
+                followersLabel.frame = frame;
+                followersLabel.tag = 4;
+                
+                followersLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                followersLabel.backgroundColor = cell.backgroundView.backgroundColor;
+                followersLabel.shadowColor = [UIColor whiteColor];
+                followersLabel.shadowOffset = CGSizeMake(0,1);
+                [cell.contentView addSubview:followersLabel];
+                
+                //following counter
+                UILabel *followingCount = [[UILabel alloc] initWithFrame:CGRectMake(0,15,0,40)];
+               
+                followingCount.textAlignment = UITextAlignmentCenter;
+                followingCount.font = [UIFont fontWithName:@"Ubuntu-Bold" size:38.0];
+                followingCount.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                followingCount.backgroundColor = cell.backgroundView.backgroundColor;
+                followingCount.shadowColor = [UIColor whiteColor];
+                followingCount.shadowOffset = CGSizeMake(0,1);
+                followingCount.tag = 5;
+                [cell.contentView addSubview:followingCount];
+                
+              
+       
+                
+                UILabel *followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,postCount.frame.size.height+10.0,50,16)];
+                followingLabel.text = @"following";
+                followingLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+                followingLabel.tag = 6;
+                size = [followingLabel.text sizeWithFont:followingLabel.font];
+                frame = followingLabel.frame;
+                frame.size = size;
+                followingLabel.frame = frame;
+                
+               
+                followingLabel.textColor = [UIColor colorWithRed:42.0/255.0 green:66.0/255.0 blue:88.0/255.0 alpha:1.0];
+                followingLabel.backgroundColor = cell.backgroundView.backgroundColor;
+                followingLabel.shadowColor = [UIColor whiteColor];
+                followingLabel.shadowOffset = CGSizeMake(0,1);
+                [cell.contentView addSubview:followingLabel];
+                
+                //seperators
+                UIImage* sepImage = [UIImage imageNamed:@"vertical_seperator"];
+                UIImageView* sep = [[UIImageView alloc]
+                                    initWithFrame:CGRectMake(110,28,sepImage.size.width,sepImage.size.height)];
+                sep.image = sepImage;
+                [cell.contentView addSubview:sep];
+                sep = [[UIImageView alloc]
+                                    initWithFrame:CGRectMake(216,28,sepImage.size.width,sepImage.size.height)];
+                sep.image = sepImage;
+                [cell.contentView addSubview:sep];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                //buttons for the counters
+                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                button.frame = CGRectMake(0,0,110,90);
+                [button addTarget:self action:@selector(viewPosts:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:button];
+                
+                button = [UIButton buttonWithType:UIButtonTypeCustom];
+                button.frame = CGRectMake(110,0,106,90);
+                [button addTarget:self action:@selector(viewFollowers:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:button];
+                
+                button = [UIButton buttonWithType:UIButtonTypeCustom];
+                button.frame = CGRectMake(216,0,104,90);
+                [button addTarget:self action:@selector(viewFollowing:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:button];
             }
+            
+            UILabel* postCount = (UILabel*)[cell.contentView viewWithTag:1];
+            UILabel* postLabel = (UILabel*)[cell.contentView viewWithTag:2];
+            
+            postCount.text = [userData stringForKeyPath:@"counts.posts"];
+            
+            CGSize size = [postCount.text sizeWithFont:postCount.font];
+            CGRect frame = postCount.frame;
+            frame.size = size;
+            postCount.frame = frame;
+            
+            CGPoint center = postCount.center;
+            center.x = 52.0;
+            postCount.center = center;
+            
+            center = postLabel.center;
+            center.x = postCount.center.x;
+            postLabel.center = center;
+            
+            frame = postLabel.frame;
+            frame.origin.y = postCount.frame.origin.y + postCount.frame.size.height-5.0;
+            postLabel.frame = frame;
+            
+            UILabel* followersCount = (UILabel*)[cell.contentView viewWithTag:3];
+            UILabel* followersLabel = (UILabel*)[cell.contentView viewWithTag:4];
+            followersCount.text = [userData stringForKeyPath:@"counts.followers"];
+            
+            size = [followersCount.text sizeWithFont:followersCount.font];
+            frame = followersCount.frame;
+            frame.size = size;
+            followersCount.frame = frame;
+            
+            center = followersCount.center;
+            center.x = 160.0;
+            followersCount.center = center;
+            
+            center = followersLabel.center;
+            center.x = followersCount.center.x;
+            followersLabel.center = center;
+            
+            frame = followersLabel.frame;
+            frame.origin.y = followersCount.frame.origin.y + followersCount.frame.size.height-5.0;
+            followersLabel.frame = frame;
+            
+            UILabel* followingCount = (UILabel*)[cell.contentView viewWithTag:5];
+            UILabel* followingLabel = (UILabel*)[cell.contentView viewWithTag:6];
+            followingCount.text = [userData stringForKeyPath:@"counts.following"];
+            
+            size = [followingCount.text sizeWithFont:followingCount.font];
+            frame = followingCount.frame;
+            frame.size = size;
+            followingCount.frame = frame;
+            
+            center = followingCount.center;
+            center.x = 268.0;
+            followingCount.center = center;
+            
+            center = followingLabel.center;
+            center.x = followingCount.center.x;
+            followingLabel.center = center;
+            
+            frame = followingLabel.frame;
+            frame.origin.y = followingCount.frame.origin.y + followingCount.frame.size.height-5.0;
+            followingLabel.frame = frame;
+            
+            
+            return cell;
         }
             break;
-            
         case 1:
         {
-            cell.textLabel.text = @"Followers";
-            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.followers"];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            if (followersList && followersList.count > 0)
-            {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", followersList.count];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            static NSString *CellIdentifier = @"Cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            ;
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             }
-        }
-            break;
-
-        case 2:
-        {
-            cell.textLabel.text = @"Following";
-            cell.detailTextLabel.text = [userData stringForKeyPath:@"counts.following"];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            if (followingList && followingList.count > 0)
-            {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", followingList.count];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-        }
-            break;
-            
-        case 3:
-        {
-            cell.textLabel.text = @"Muted";
-            cell.detailTextLabel.text = @"?";
+            cell.detailTextLabel.text = @"";
             cell.accessoryType = UITableViewCellAccessoryNone;
             if ([self isThisUserMe:userID])
             {
+                cell.textLabel.text = @"Muted Users";
                 if (mutedList)
                 {
                     cell.detailTextLabel.text = [NSString stringWithFormat:@"%u", mutedList.count];
                     if (mutedList.count > 0)
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
             }
             else
             {
+                cell.textLabel.text = @"Muted User";
                 BOOL youMuted = [userData boolForKey:@"you_muted"];
                 if (youMuted)
                 {
@@ -362,21 +537,36 @@
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
             }
+            return cell;
         }
             break;
-        /*case 3:
-        {
-            // TODO: check back when this isn't broken.
-            cell.textLabel.text = @"Follows You";
-            cell.detailTextLabel.text = [userData valueForKeyPath:@"is_following"] ? @"NO" : @"YES";
-        }*/
-            break;
-        
         default:
             break;
     }
     
-    return cell;
+    return nil;
+}
+
+
+-(void)viewPosts:(id)sender {
+     UIViewController* controller = [[ANUserPostsController alloc] initWithUserID:userID];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)viewFollowers:(id)sender {
+    if (!followersList)
+        return;
+    UIViewController* controller = [[ANUserListController alloc] initWithUserArray:followersList];
+    controller.title = @"Followers";
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)viewFollowing:(id)sender {
+    if (!followingList)
+        return;
+    UIViewController* controller = [[ANUserListController alloc] initWithUserArray:followingList];
+    controller.title = @"Following";
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Table view delegate
@@ -388,7 +578,7 @@
     UIViewController *controller = nil;
     
     switch (indexPath.row) {
-        case 0:
+       /* case 0:
             controller = [[ANUserPostsController alloc] initWithUserID:userID];
             [self.navigationController pushViewController:controller animated:YES];
             break;
@@ -408,8 +598,8 @@
             controller.title = @"Following";
             [self.navigationController pushViewController:controller animated:YES];
             break;
-            
-        case 3:
+            */
+        case 1:
         {
             if ([self isThisUserMe:userID])
             {
@@ -448,7 +638,7 @@
         default:
             break;
     }
-
+    
     /*if (controller)
         [self.navigationController pushViewController:controller animated:YES];
     else

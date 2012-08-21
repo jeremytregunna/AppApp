@@ -37,8 +37,8 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
     mentionsStream = [[ANUserMentionsController alloc] init];
     globalStream = [[ANGlobalStreamController alloc] init];
     userInfo = [[ANUserViewController alloc] init];
-    
-    _navigationArray = @[userStream, mentionsStream, globalStream, userInfo];
+
+    _navigationArray = @[userStream, mentionsStream, globalStream, userInfo];   
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 

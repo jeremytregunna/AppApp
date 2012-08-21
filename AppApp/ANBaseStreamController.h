@@ -16,10 +16,17 @@
 {
 @protected
     NSMutableArray *streamData;
+    NSIndexPath *newSelection;
+    NSIndexPath *currentSelection;
+    bool toolbarIsVisible;
+    UIView *currentToolbarView;
+    UIButton *btnConversation;
 }
 
 @property (nonatomic, readonly) NSString *sideMenuTitle;
 @property (nonatomic, readonly) NSString *sideMenuImageName;
+@property (nonatomic, retain) UIView *currentToolbarView;
+@property (nonatomic, retain) UIButton *btnConversation;
 
 - (BOOL)refresh;
 - (void)updateTopWithData:(id)dataObject;
