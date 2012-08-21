@@ -144,7 +144,7 @@
 
 - (BOOL)doIFollowThisUser
 {
-    BOOL result = [userData boolForKey:@"is_follower"];
+    BOOL result = [userData boolForKey:@"you_follow"];
     return result;
 }
 
