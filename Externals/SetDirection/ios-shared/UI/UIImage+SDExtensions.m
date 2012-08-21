@@ -53,7 +53,7 @@
     
     CGImageRef imageRef = [sourceImage CGImage];
     CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-    CGColorSpaceRef colorSpaceInfo = CGImageGetColorSpace(imageRef);
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
     
     if (bitmapInfo == kCGImageAlphaNone)
         bitmapInfo = kCGImageAlphaNoneSkipLast;
@@ -61,9 +61,11 @@
     CGContextRef bitmap;
     
     if (sourceImage.imageOrientation == UIImageOrientationUp || sourceImage.imageOrientation == UIImageOrientationDown)
-        bitmap = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+        bitmap = CGBitmapContextCreate(NULL, targetWidth, targetHeight, 8, 4 * targetWidth, colorSpaceRef, kCGImageAlphaPremultipliedFirst);
     else
-        bitmap = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+        bitmap = CGBitmapContextCreate(NULL, targetHeight, targetWidth, 8, 4 * targetHeight, colorSpaceRef, kCGImageAlphaPremultipliedFirst);
+    
+    CGColorSpaceRelease(colorSpaceRef);
     
     if (sourceImage.imageOrientation == UIImageOrientationLeft)
     {
@@ -91,7 +93,7 @@
     
     CGContextDrawImage(bitmap, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
     CGImageRef ref = CGBitmapContextCreateImage(bitmap);
-    UIImage* newImage = [UIImage imageWithCGImage:ref];
+    UIImage* newImage = [UIImage imageWithCGImage:ref scale:1.0 orientation:self.imageOrientation];
     
     CGContextRelease(bitmap);
     CGImageRelease(ref);
