@@ -499,7 +499,8 @@
     // this one is speshul.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // should do a image resize here too.
-        NSString *imageData = [image base64forImage];
+        UIImage *resizedImage = [image resizedImageToFitInSize:CGSizeMake(320, 480) scaleIfSmaller:YES];
+        NSString *imageData = [resizedImage base64forImage];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *replacements = @{ @"apiKey" : kImgurAPIKey, @"caption" : caption, @"base64image" : imageData };
             
