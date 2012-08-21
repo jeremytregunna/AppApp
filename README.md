@@ -1,5 +1,5 @@
 #AppApp
-AppApp is the first __completely native__ iOS client for ADN. We hope you love it.
+AppApp is the first __completely native__ iOS client for ADN. We hope you love it as much as we do. For announcements follow [@appapp](http://alpha.app.net/appapp) on App.net.
 
 ## License
 The AppApp source code is distributed under the __The MIT License (MIT)__ license.
