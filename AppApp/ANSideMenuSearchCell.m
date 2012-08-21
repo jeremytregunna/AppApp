@@ -12,6 +12,7 @@
 {
     CGRect initialHashTagImageViewFrame;
     CGRect initialSearchFieldFrame;
+    BOOL _hashtagVisible;
 }
 
 - (void)awakeFromNib
@@ -25,6 +26,8 @@
 
 - (void)showHashTag
 {
+    if (_hashtagVisible) return;
+    
     CGRect targHashTagRect = CGRectMake(70.0f, CGRectGetMinY(self.hashTagImageView.frame), CGRectGetWidth(self.hashTagImageView.frame), CGRectGetHeight(self.hashTagImageView.frame));
     
     CGRect targSearchFieldRect = CGRectMake(90.0f, CGRectGetMinY(self.searchTextField.frame), CGRectGetWidth(self.searchTextField.frame), CGRectGetHeight(self.searchTextField.frame));
@@ -34,11 +37,16 @@
         self.searchTextField.frame = targSearchFieldRect;
         self.hashTagImageView.frame = targHashTagRect;
     }];
+    
+    _hashtagVisible = YES;
 }
 
 - (void)hideHashTag
 {
-    self.searchTextField.text = @"";
+    if (!_hashtagVisible) return;
+    
+    _hashtagVisible = NO;
+    
     [UIView animateWithDuration:.25 animations:^{
         self.hashTagImageView.alpha = 0.0f;
         self.searchTextField.frame = initialSearchFieldFrame;

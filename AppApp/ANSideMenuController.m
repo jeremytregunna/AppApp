@@ -67,7 +67,8 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
 {
     [super viewWillDisappear:animated];
     [searchCell.searchTextField resignFirstResponder];
-    [searchCell hideHashTag];    
+    [searchCell hideHashTag];
+    searchCell.searchTextField.text = @"";
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -75,6 +76,7 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
     [super viewDidDisappear:animated];
     [searchCell.searchTextField resignFirstResponder];
     [searchCell hideHashTag];
+    searchCell.searchTextField.text = @"";    
 }
 
 #pragma mark - UITableViewDataSource
@@ -205,39 +207,14 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    // If there is text and we aren't reusing a hash tag
-    if (textField.text.length > 0 && ![searchTags containsObject:textField.text])
-    {
-        // Begin table updates
-        [self.tableView beginUpdates];
-        
-        // Add text to model
-        [searchTags insertObject:textField.text atIndex:0];
-        
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
-        
-        // Reload cells
-        [self.tableView endUpdates];
-
-        // Create hashtag controller
-        NSString *hashTag = textField.text;
-        
-        // Set up delay for animation purposes
-        NSTimeInterval delayInSeconds = .5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-
-            // Select the cell
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] animated:NO scrollPosition:UITableViewScrollPositionNone];
-
-            ANHashtagStreamController *hashTagController = [[ANHashtagStreamController alloc] initWithHashtag:hashTag];
-            NSArray *controllers = [NSArray arrayWithObject:hashTagController];
-//            [self updateOnlyCurrentTableViewToScrollToTop:hashTagController];
-            [MFSideMenuManager sharedManager].navigationController.viewControllers = controllers;
-            [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
-        });
-        
-        [self _syncHashTagsToDefaults];
+    if (textField.text.length > 0 && [[textField.text substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"@"]) {
+        [self _handleUsernameSearch:textField.text];
+    } else if (textField.text.length > 0){
+        NSString *hashtag = textField.text;
+        if ([textField.text rangeOfString:@"#"].location == 0) {
+            hashtag = [textField.text stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:@""];
+        }
+        [self _handleHashTagSearch:hashtag];
     }
     
     // Resign first responder
@@ -246,12 +223,71 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
     // Change hashtag
     [searchCell hideHashTag];
     
+    // Clear search field
+    searchCell.searchTextField.text = @"";
+    
     return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [searchCell showHashTag];
+    // Get new string
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    // Get first char
+    NSString *firstChar = newString.length == 0 ? @"" : [newString substringWithRange:NSMakeRange(0, 1)];
+    
+    // if string is empty OR the first char is @ or #
+    if (newString.length == 0 || (newString.length > 0 && ([firstChar isEqualToString:@"@"] || [firstChar isEqualToString:@"#"]))) {
+        [searchCell hideHashTag];
+    } else {
+        [searchCell showHashTag];
+    }
+    
+    return YES;
+}
+
+- (void)_handleUsernameSearch:(NSString *)username
+{
+    ANUserViewController *userViewController = [[ANUserViewController alloc] initWithUsername:username];
+    [MFSideMenuManager sharedManager].navigationController.viewControllers = @[userViewController];
+    [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
+}
+
+- (void)_handleHashTagSearch:(NSString *)hashTag
+{
+    // If there is text and we aren't reusing a hash tag
+    if (hashTag.length > 0 && ![searchTags containsObject:hashTag])
+    {
+        // Begin table updates
+        [self.tableView beginUpdates];
+        
+        // Add text to model
+        [searchTags insertObject:hashTag atIndex:0];
+        
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
+        
+        // Reload cells
+        [self.tableView endUpdates];
+        
+        // Create hashtag controller
+        // Set up delay for animation purposes
+        NSTimeInterval delayInSeconds = .5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            
+            // Select the cell
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            
+            ANHashtagStreamController *hashTagController = [[ANHashtagStreamController alloc] initWithHashtag:hashTag];
+            NSArray *controllers = [NSArray arrayWithObject:hashTagController];
+            //            [self updateOnlyCurrentTableViewToScrollToTop:hashTagController];
+            [MFSideMenuManager sharedManager].navigationController.viewControllers = controllers;
+            [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
+        });
+        
+        [self _syncHashTagsToDefaults];
+    }
 }
 
 // syncs searchTags array to NSUserDefaults

@@ -15,5 +15,6 @@
 @property (nonatomic, readonly) NSString *userID;
 
 - (id)initWithUserDictionary:(NSDictionary *)userDictionary;
+- (id)initWithUsername:(NSString *)username;
 
 @end

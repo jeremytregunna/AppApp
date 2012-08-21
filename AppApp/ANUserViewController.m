@@ -63,6 +63,16 @@
     return self;
 }
 
+- (id)initWithUsername:(NSString *)username
+{
+    self = [super initWithNibName:@"ANUserViewController" bundle:nil];
+    
+    userID = username;
+    self.title = username;
+    
+    return self;
+}
+
 - (NSString *)sideMenuTitle
 {
     return @"Me";
@@ -127,9 +137,15 @@
     [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
         SDLog(@"user data = %@", dataObject);
         
-        userData = (NSDictionary *)dataObject;
-        [self configureFromUserData];
-        [self fetchFollowData];
+        // Check if we have errors.
+        if (!error && [dataObject objectForKey:@"error"] == nil) {
+            userData = (NSDictionary *)dataObject;
+            [self configureFromUserData];
+            [self fetchFollowData];
+        } else {
+            //TODO: Show an error
+        }
+        
         [SVProgressHUD dismiss];
     }];
     
