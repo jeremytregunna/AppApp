@@ -299,7 +299,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     postImage = [info objectForKey:UIImagePickerControllerEditedImage];
-    if (postImage)
+    if (!postImage)
         postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     if (postImage)
