@@ -176,6 +176,9 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)aDeviceToken
 {
+#ifdef DEBUG
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [aDeviceToken description]);
+#endif
     NSString *hexDeviceToken = [[aDeviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
 	NSString *deviceToken = [hexDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
@@ -185,7 +188,7 @@ static ANAppDelegate *sharedInstance = nil;
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
 #ifdef DEBUG
-    // NSLog(@"didFailToRegisterForRemoteNotificationsWithError:");
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.localizedDescription);
 #endif
 }
 

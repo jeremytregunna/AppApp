@@ -10,5 +10,5 @@
 #define PMB_API_SECRET @"D0F6VWUuhB0BrwXIOJxK"
 
 // Debug config
-#define PMB_DEBUG_API_KEY @""
-#define PMB_DEBUG_API_SECRET @""
+#define PMB_DEBUG_API_KEY @"n4bfnKb6BwH57E2ewLo5"
+#define PMB_DEBUG_API_SECRET @"zQL3tzsFWKEKelfiJDKx"
