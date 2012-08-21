@@ -88,7 +88,7 @@
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setObject:userID forKey:@"userID"];
                 [defaults synchronize];
-                
+                                
                 [self dismissAuthenticationViewController:nil];
                 [SVProgressHUD dismiss];
                 NSArray *controllers = [ANAppDelegate sharedInstance].sideMenuController.navigationArray;
