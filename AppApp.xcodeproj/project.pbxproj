@@ -67,6 +67,8 @@
 		AEDA85C415E409D100CB8A45 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA85B715E409D100CB8A45 /* SBJsonUTF8Stream.m */; };
 		AEDA85C515E409D100CB8A45 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA85B915E409D100CB8A45 /* SBJsonWriter.m */; };
 		AEDA85C815E40A0900CB8A45 /* RRDefaultPlatformConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA85C715E40A0900CB8A45 /* RRDefaultPlatformConnector.m */; };
+		AEDA861415E4137100CB8A45 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA861115E4137100CB8A45 /* NSString+MD5Addition.m */; };
+		AEDA861515E4137100CB8A45 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA861315E4137100CB8A45 /* UIDevice+IdentifierAddition.m */; };
 		AEE6630615E2F5CA00AE8FAD /* actionBar-Conversation.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE6630415E2F5CA00AE8FAD /* actionBar-Conversation.png */; };
 		AEE6630715E2F5CA00AE8FAD /* actionBar-Conversation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE6630515E2F5CA00AE8FAD /* actionBar-Conversation@2x.png */; };
 		AEE6630A15E2F60300AE8FAD /* actionBar-Reply.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE6630815E2F60300AE8FAD /* actionBar-Reply.png */; };
@@ -313,6 +315,10 @@
 		AEDA85C715E40A0900CB8A45 /* RRDefaultPlatformConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRDefaultPlatformConnector.m; sourceTree = "<group>"; };
 		AEDA85C915E40A6700CB8A45 /* RRPlatformConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRPlatformConnector.h; sourceTree = "<group>"; };
 		AEDA85CC15E40A9600CB8A45 /* RRPlatformConnectorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRPlatformConnectorDelegate.h; sourceTree = "<group>"; };
+		AEDA861015E4137100CB8A45 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
+		AEDA861115E4137100CB8A45 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
+		AEDA861215E4137100CB8A45 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
+		AEDA861315E4137100CB8A45 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		AEE6630415E2F5CA00AE8FAD /* actionBar-Conversation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionBar-Conversation.png"; sourceTree = "<group>"; };
 		AEE6630515E2F5CA00AE8FAD /* actionBar-Conversation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionBar-Conversation@2x.png"; sourceTree = "<group>"; };
 		AEE6630815E2F60300AE8FAD /* actionBar-Reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionBar-Reply.png"; sourceTree = "<group>"; };
@@ -680,6 +686,7 @@
 		AEDA858615E407F300CB8A45 /* Apns */ = {
 			isa = PBXGroup;
 			children = (
+				AEDA860F15E4135B00CB8A45 /* UDID */,
 				AEDA858A15E408C800CB8A45 /* JSON */,
 				AEDA858715E4082F00CB8A45 /* RRDeviceMetadata.h */,
 				AEDA858815E4082F00CB8A45 /* RRDeviceMetadata.m */,
@@ -724,6 +731,17 @@
 				AEDA85B915E409D100CB8A45 /* SBJsonWriter.m */,
 			);
 			name = JSON;
+			sourceTree = "<group>";
+		};
+		AEDA860F15E4135B00CB8A45 /* UDID */ = {
+			isa = PBXGroup;
+			children = (
+				AEDA861015E4137100CB8A45 /* NSString+MD5Addition.h */,
+				AEDA861115E4137100CB8A45 /* NSString+MD5Addition.m */,
+				AEDA861215E4137100CB8A45 /* UIDevice+IdentifierAddition.h */,
+				AEDA861315E4137100CB8A45 /* UIDevice+IdentifierAddition.m */,
+			);
+			name = UDID;
 			sourceTree = "<group>";
 		};
 		CA13EFAA15DBCCEB005359E3 /* Controls */ = {
@@ -1263,6 +1281,8 @@
 				AEDA85C415E409D100CB8A45 /* SBJsonUTF8Stream.m in Sources */,
 				AEDA85C515E409D100CB8A45 /* SBJsonWriter.m in Sources */,
 				AEDA85C815E40A0900CB8A45 /* RRDefaultPlatformConnector.m in Sources */,
+				AEDA861415E4137100CB8A45 /* NSString+MD5Addition.m in Sources */,
+				AEDA861515E4137100CB8A45 /* UIDevice+IdentifierAddition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,7 +1316,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1313,6 +1333,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/**";
 			};
@@ -1347,8 +1368,8 @@
 		00B4742915D38E3C00F767CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppApp/AppApp-Prefix.pch";
 				INFOPLIST_FILE = "AppApp/AppApp-Info.plist";
@@ -1358,8 +1379,8 @@
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "43D87721-89B3-46D5-9948-47CCA5170CDB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

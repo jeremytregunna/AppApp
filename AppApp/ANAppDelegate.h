@@ -25,9 +25,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ANSideMenuController.h"
+#import "RRDefaultPlatformConnector.h"
 
-@interface ANAppDelegate : UIResponder <UIApplicationDelegate> {
-    
+@interface ANAppDelegate : UIResponder <UIApplicationDelegate, RRPlatformConnectorDelegate> {
+    RRDefaultPlatformConnector *pmbConnector;
 }
 
 @property (strong, nonatomic) UIWindow *window;
