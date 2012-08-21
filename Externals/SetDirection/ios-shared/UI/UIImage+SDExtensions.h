@@ -10,8 +10,8 @@
 
 @interface UIImage (SDExtensions)
 
-- (NSString*)base64forImage;
-- (UIImage*)resizedImageToSize:(CGSize)dstSize;
+- (NSString *)base64forImage;
+- (UIImage *)resizedImageToSize:(CGSize)dstSize;
 - (UIImage *)resizedImageToFitInSize:(CGSize)boundingSize scaleIfSmaller:(BOOL)scale;
 
 @end

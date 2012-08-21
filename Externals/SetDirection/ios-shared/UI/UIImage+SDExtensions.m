@@ -10,7 +10,7 @@
 
 @implementation UIImage (SDExtensions)
 
-- (NSString*)base64forImage
+- (NSString *)base64forImage
 {
     NSData *theData = UIImagePNGRepresentation(self);
     const uint8_t* input = (const uint8_t*)[theData bytes];
@@ -45,97 +45,58 @@
 
 // rework of original by Olivier Halligon
 
-- (UIImage*)resizedImageToSize:(CGSize)dstSize
+- (UIImage *)resizedImageToSize:(CGSize)targetSize
 {
-	CGImageRef imgRef = self.CGImage;
-	CGSize  srcSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef)); // not equivalent to self.size (which is dependant on the imageOrientation)!
+    UIImage* sourceImage = self;
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
     
-	CGFloat scaleRatio = dstSize.width / srcSize.width;
-	UIImageOrientation orient = self.imageOrientation;
-	CGAffineTransform transform = CGAffineTransformIdentity;
-	switch(orient) {
-            
-		case UIImageOrientationUp: //EXIF = 1
-			transform = CGAffineTransformIdentity;
-			break;
-            
-		case UIImageOrientationUpMirrored: //EXIF = 2
-			transform = CGAffineTransformMakeTranslation(srcSize.width, 0.0);
-			transform = CGAffineTransformScale(transform, -1.0, 1.0);
-			break;
-            
-		case UIImageOrientationDown: //EXIF = 3
-			transform = CGAffineTransformMakeTranslation(srcSize.width, srcSize.height);
-			transform = CGAffineTransformRotate(transform, M_PI);
-			break;
-            
-		case UIImageOrientationDownMirrored: //EXIF = 4
-			transform = CGAffineTransformMakeTranslation(0.0, srcSize.height);
-			transform = CGAffineTransformScale(transform, 1.0, -1.0);
-			break;
-            
-		case UIImageOrientationLeftMirrored: //EXIF = 5
-			dstSize = CGSizeMake(dstSize.height, dstSize.width);
-			transform = CGAffineTransformMakeTranslation(srcSize.height, srcSize.width);
-			transform = CGAffineTransformScale(transform, -1.0, 1.0);
-			transform = CGAffineTransformRotate(transform, 3.0 * M_PI_2);
-			break;
-            
-		case UIImageOrientationLeft: //EXIF = 6
-			dstSize = CGSizeMake(dstSize.height, dstSize.width);
-			transform = CGAffineTransformMakeTranslation(0.0, srcSize.width);
-			transform = CGAffineTransformRotate(transform, 3.0 * M_PI_2);
-			break;
-            
-		case UIImageOrientationRightMirrored: //EXIF = 7
-			dstSize = CGSizeMake(dstSize.height, dstSize.width);
-			transform = CGAffineTransformMakeScale(-1.0, 1.0);
-			transform = CGAffineTransformRotate(transform, M_PI_2);
-			break;
-            
-		case UIImageOrientationRight: //EXIF = 8
-			dstSize = CGSizeMake(dstSize.height, dstSize.width);
-			transform = CGAffineTransformMakeTranslation(srcSize.height, 0.0);
-			transform = CGAffineTransformRotate(transform, M_PI_2);
-			break;
-            
-		default:
-			[NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
-            
-	}
+    CGImageRef imageRef = [sourceImage CGImage];
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+    CGColorSpaceRef colorSpaceInfo = CGImageGetColorSpace(imageRef);
     
-    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(NULL, dstSize.width, dstSize.height,
-                                                 8,
-                                                 4 * dstSize.width,
-                                                 colorSpaceRef,
-                                                 kCGImageAlphaPremultipliedLast);
-    CGColorSpaceRelease(colorSpaceRef);
-    CGRect rect = CGRectMake(0.0, 0.0, dstSize.width, dstSize.height);
-    CGContextClearRect(context, rect);
+    if (bitmapInfo == kCGImageAlphaNone)
+        bitmapInfo = kCGImageAlphaNoneSkipLast;
     
-	if (orient == UIImageOrientationRight || orient == UIImageOrientationLeft) {
-		CGContextScaleCTM(context, -scaleRatio, scaleRatio);
-		CGContextTranslateCTM(context, -srcSize.height, 0);
-	} else {
-		CGContextScaleCTM(context, scaleRatio, -scaleRatio);
-		CGContextTranslateCTM(context, 0, -srcSize.height);
-	}
+    CGContextRef bitmap;
     
-	CGContextConcatCTM(context, transform);
+    if (sourceImage.imageOrientation == UIImageOrientationUp || sourceImage.imageOrientation == UIImageOrientationDown)
+        bitmap = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    else
+        bitmap = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
     
-    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, srcSize.height);
-    CGContextConcatCTM(context, flipVertical);
+    if (sourceImage.imageOrientation == UIImageOrientationLeft)
+    {
+        CGContextRotateCTM (bitmap, radians(90));
+        CGContextTranslateCTM (bitmap, 0, -targetHeight);
+    }
+    else
+    if (sourceImage.imageOrientation == UIImageOrientationRight)
+    {
+        CGContextRotateCTM (bitmap, radians(-90));
+        CGContextTranslateCTM (bitmap, -targetWidth, 0);
+        
+    }
+    else
+    if (sourceImage.imageOrientation == UIImageOrientationUp)
+    {
+        // NOTHING
+    }
+    else
+    if (sourceImage.imageOrientation == UIImageOrientationDown)
+    {
+        CGContextTranslateCTM (bitmap, targetWidth, targetHeight);
+        CGContextRotateCTM (bitmap, radians(-180.));
+    }
     
-	// we use srcSize (and not dstSize) as the size to specify is in user space (and we use the CTM to apply a scaleRatio)
-	CGContextDrawImage(context, CGRectMake(0, 0, srcSize.width, srcSize.height), imgRef);
+    CGContextDrawImage(bitmap, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
+    CGImageRef ref = CGBitmapContextCreateImage(bitmap);
+    UIImage* newImage = [UIImage imageWithCGImage:ref];
     
-    CGImageRef cgImage = CGBitmapContextCreateImage(context);
-    UIImage *resizedImage = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    CGContextRelease(context);
+    CGContextRelease(bitmap);
+    CGImageRelease(ref);
     
-	return resizedImage;
+    return newImage;
 }
 
 - (UIImage *)resizedImageToFitInSize:(CGSize)boundingSize scaleIfSmaller:(BOOL)scale
@@ -173,5 +134,7 @@
     
 	return [self resizedImageToSize:dstSize];
 }
+
+static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 @end
