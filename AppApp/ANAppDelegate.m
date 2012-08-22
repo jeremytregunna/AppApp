@@ -88,8 +88,7 @@ static ANAppDelegate *sharedInstance = nil;
         NSLog(@"bacon");
     }
     
-
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAuthenticate:) name:@"DidAuthenticate" object:nil];
     // if we don't have an access token or it's not a valid token, display auth.
     // probably should move back to calling Safari. <-- disagree, this looks fine. -- jedi
     if (![[ANAPICall sharedAppAPI] hasAccessToken] || ![[ANAPICall sharedAppAPI] isAccessTokenValid])
@@ -151,6 +150,13 @@ static ANAppDelegate *sharedInstance = nil;
     NSLog(@"access_token saved to defaults");
     */
     return YES;
+}
+
+- (void)didAuthenticate:(NSNotification *)notification
+{
+    if ([[ANAPICall sharedAppAPI] hasAccessToken] && [[ANAPICall sharedAppAPI] isAccessTokenValid]) {
+        [self registerForRemoteNotifications];
+    }
 }
 
 - (void)registerForRemoteNotifications
@@ -229,7 +235,10 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [self registerForRemoteNotifications];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    if ([[ANAPICall sharedAppAPI] hasAccessToken] && [[ANAPICall sharedAppAPI] isAccessTokenValid]) {
+        [self registerForRemoteNotifications];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

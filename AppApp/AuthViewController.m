@@ -92,6 +92,7 @@
                 [self dismissAuthenticationViewController:nil];
                 [SVProgressHUD dismiss];
                 NSArray *controllers = [ANAppDelegate sharedInstance].sideMenuController.navigationArray;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"DidAuthenticate" object:nil];
                 [controllers makeObjectsPerformSelector:@selector(refresh)];
             }];
         }
