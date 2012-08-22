@@ -36,6 +36,8 @@
 #import "NSDictionary+SDExtensions.h"
 //#import "NSDate+Helper.h"
 
+#import "ANReadLaterManager.h"
+
 
 @interface ANBaseStreamController ()
 
@@ -229,7 +231,22 @@
             }
             return result;
         };
-    }    
+        
+        __weak typeof(self) blockSelf = self;
+        cell.statusTextLabel.longPressHandler = ^BOOL (NSString *type, NSString *value) {
+            if([type isEqualToString:@"link"])
+            {
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:value delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), nil];
+                [sheet showInView:blockSelf.view];
+            }
+            else
+            {
+                // TODO: Craft a URL pointing to the post on alpha.app.net
+                //       open the action sheet above with this URL. @jtregunna
+            }
+            return YES;
+        };
+    }
 
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
     
@@ -300,6 +317,31 @@
         [self.tableView endUpdates];
     }
     [super scrollViewDidScroll:scrollView];
+}
+
+#pragma mark - Action sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    ANReadLaterManager *manager = [[ANReadLaterManager alloc] initWithDelegate:self];
+
+    switch(buttonIndex)
+    {
+        case 0: // Pocket
+            [manager saveURL:[NSURL URLWithString:actionSheet.title] serviceType:kANReadLaterTypePocket];
+    }
+}
+
+#pragma mark - Read Later delegate
+
+- (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url
+{
+    NSLog(@"Successfully saved %@", url);
+}
+
+- (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
+{
+    NSLog(@"Failed to save url: %@ because: %@ needsToRelogin: %d", url, error, needsToRelogin);
 }
 
 #pragma mark - Gesture Handling
