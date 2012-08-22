@@ -24,8 +24,8 @@ typedef enum
 @interface ANReadLaterManager : NSObject
 @property (nonatomic, weak) id<ANReadLaterDelegate> delegate;
 
++ (NSString*)serviceNameForType:(ANReadLaterType)type;
 - (id)initWithDelegate:(id<ANReadLaterDelegate>)delegate;
-
 - (void)saveURL:(NSURL *)url serviceType:(ANReadLaterType)type;
 
 @end

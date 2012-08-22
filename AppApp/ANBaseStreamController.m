@@ -37,6 +37,7 @@
 //#import "NSDate+Helper.h"
 
 #import "ANReadLaterManager.h"
+#import "ANReadLaterAuthViewController.h"
 
 
 @interface ANBaseStreamController ()
@@ -341,6 +342,11 @@
 
 - (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
 {
+    if(needsToRelogin)
+    {
+        ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:kANReadLaterTypePocket];
+        [self presentModalViewController:vc animated:YES];
+    }
     NSLog(@"Failed to save url: %@ because: %@ needsToRelogin: %d", url, error, needsToRelogin);
 }
 

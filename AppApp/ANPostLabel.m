@@ -87,7 +87,6 @@
     // This long press gesture recognizer is added so we can perform some action like
     // popping up an action sheet so a user can save a URL via Pocket. @jtregunna
     UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(executeLongPressHandler:)];
-    longPressRecognizer.minimumPressDuration = 1.0f;
     [button addGestureRecognizer:longPressRecognizer];
 
     return button;

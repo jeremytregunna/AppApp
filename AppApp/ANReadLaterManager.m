@@ -16,6 +16,15 @@
 
 @synthesize delegate = _delegate;
 
++ (NSString*)serviceNameForType:(ANReadLaterType)type
+{
+    switch(type)
+    {
+        case kANReadLaterTypePocket:
+            return @"Pocket";
+    }
+}
+
 #pragma mark - Object lifecycle
 
 - (id)initWithDelegate:(id<ANReadLaterDelegate>)delegate
