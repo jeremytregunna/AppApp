@@ -55,7 +55,7 @@
 
 - (void)asyncAssociateUser:(NSString *)_userId withDeviceId:(NSString *)_deviceId andAccessToken:(NSString *)_authToken
 {
-    NSString *_endpointUrl = [NSString stringWithFormat: @"%@/hello/%@/%@/%@.json", RR_APPAPP_CLOUD_URL, _userId, _deviceId, _authToken];
+    NSString *_endpointUrl = [NSString stringWithFormat: @"%@/hello/%@/%@/%@.json", RR_APPAPP_CLOUD_URL, _userId, _authToken, _deviceId];
     
     NSMutableURLRequest *_request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_endpointUrl]
                                                             cachePolicy:NSURLRequestReloadIgnoringCacheData
