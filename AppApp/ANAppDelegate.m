@@ -1,16 +1,36 @@
-//
-//  snkyAppDelegate.m
-//  AppApp
-//
-//  Created by Nick Pannuto on 8/8/12.
-//  Copyright (c) 2012 Sneakyness. All rights reserved.
-//
+/*
+ Copyright (c) 2012 T. Chroma, M. Herzog, N. Pannuto, J.Pittman, R. Rottmann, B. Sneed, V. Speelman
+ The AppApp source code is distributed under the The MIT License (MIT) license.
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all copies or substantial
+ portions of the Software.
+ 
+ Any end-user product or application build based on this code, must include the following acknowledgment:
+ 
+ "This product includes software developed by the original AppApp team and its contributors", in the software
+ itself, including a link to www.app-app.net.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+ TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ DEALINGS IN THE SOFTWARE.
+*/
 
 #import "ANAppDelegate.h"
 #import "AuthViewController.h"
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
+#import "RRDeviceMetadata.h"
+#import "UIDevice+IdentifierAddition.h"
+#import "RRConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ANAppDelegate
@@ -76,6 +96,16 @@ static ANAppDelegate *sharedInstance = nil;
         [self.window.rootViewController presentModalViewController:authView animated:YES];
     }
     
+#ifdef DEBUG
+    NSString *key = PMB_DEBUG_API_KEY;
+    NSString *secret = PMB_DEBUG_API_SECRET;
+#else
+    NSString *key = PMB_API_KEY;
+    NSString *secret = PMB_API_SECRET;
+#endif
+    pmbConnector = [[RRDefaultPlatformConnector alloc] initWithApiKey:key withApiSecret:secret];
+    pmbConnector.delegate = self;
+    
     [self _setupGlobalStyling];
     
     return YES;
@@ -121,6 +151,61 @@ static ANAppDelegate *sharedInstance = nil;
     return YES;
 }
 
+- (void)registerForRemoteNotifications
+{
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
+                                                                           UIRemoteNotificationTypeAlert |
+                                                                           UIRemoteNotificationTypeBadge |
+                                                                           UIRemoteNotificationTypeBadge)];
+}
+
+- (void)registerDevice:(NSString *)deviceToken
+{
+    NSString *deviceId = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+    
+    RRDeviceMetadata *metadata = [[RRDeviceMetadata alloc] initWithDeviceToken:deviceToken withDeviceId:deviceId];
+    metadata.deviceName = [[UIDevice currentDevice] name];
+    metadata.deviceModel = [[UIDevice currentDevice] model];
+    metadata.systemName = [[UIDevice currentDevice] systemName];
+    metadata.systemVersion = [[UIDevice currentDevice] systemVersion];
+    metadata.tags = [NSDictionary dictionary];
+    
+    [pmbConnector asyncRegisterDevice:metadata];
+    
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)aDeviceToken
+{
+#ifdef DEBUG
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", [aDeviceToken description]);
+#endif
+    NSString *hexDeviceToken = [[aDeviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+	NSString *deviceToken = [hexDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    [self registerDevice:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+#ifdef DEBUG
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.localizedDescription);
+#endif
+}
+
+- (void)didRegistrationFail:(RRDeviceMetadata *)_metadata withError:(NSError *)_error
+{
+#ifdef DEBUG
+    // NSLog(@"didRegistrationFail:");
+#endif
+}
+
+- (void)didRegistrationFinish:(RRDeviceMetadata *)_metadata
+{
+#ifdef DEBUG
+    // NSLog(@"didRegistrationFinish:");
+#endif
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -142,7 +227,7 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [self registerForRemoteNotifications];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
