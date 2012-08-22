@@ -30,5 +30,6 @@
 @property (nonatomic, strong) NSDictionary *postData;
 @property (nonatomic, assign) BOOL enableLinks;
 @property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSString *type, NSString *value);
+@property (readwrite, nonatomic, copy) BOOL (^longPressHandler)(NSString *type, NSString *value);
 
 @end
