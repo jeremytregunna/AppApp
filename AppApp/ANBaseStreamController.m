@@ -86,30 +86,33 @@
         self.currentToolbarView = [[UIView alloc] initWithFrame:CGRectZero];
         self.currentToolbarView.backgroundColor = [UIColor colorWithHue:0.574 saturation:0.036 brightness:0.984 alpha:1];
         
-        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"actionbar_separator.png"]];
-        background.frame = CGRectMake(0,0,260,40);
+        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Action_Bar_Separator.png"]];
+        background.frame = CGRectMake(0,0,258,61);
         
-        UIImage *btnReplyImg = [UIImage imageNamed:@"actionBar-Reply.png"];
+        UIImage *btnReplyImg = [UIImage imageNamed:@"Action_Bar_Reply_Active.png"];
         UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
         [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
-        [btnReply setFrame:CGRectMake(45,13,24,16)];
+        [btnReply setFrame:CGRectMake(10,10,40,40)];
      
-        UIImage *btnRepostImg = [UIImage imageNamed:@"actionBar-Repost.png"];
+        UIImage *btnRepostImg = [UIImage imageNamed:@"Action_Bar_Repost_Active.png"];
         UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
         [btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
         
-        [btnRepost setFrame:CGRectMake(105,13,25,19)];
+        [btnRepost setFrame:CGRectMake(60,10,40,40)];
 
-        UIImage *btnConversationImg = [UIImage imageNamed:@"actionBar-Conversation.png"];
+        UIImage *btnConversationImg = [UIImage imageNamed:@"Action_Bar_Conversation_Active.png"];
+        UIImage *btnConversationImgDisabled = [UIImage imageNamed:@"Action_Bar_Conversation_Disabled.png"];
+
         self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.btnConversation addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
         [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
         [self.btnConversation setImage:btnConversationImg forState:UIControlStateHighlighted];
-        [self.btnConversation setFrame:CGRectMake(175,13,24,22)];
+        [self.btnConversation setImage:btnConversationImgDisabled forState:UIControlStateDisabled];
+        [self.btnConversation setFrame:CGRectMake(110,10,40,40)];
         
         [self.currentToolbarView addSubview:background];
         [self.currentToolbarView addSubview:btnReply];
@@ -187,7 +190,7 @@
     
     if ((currentSelection) && (currentSelection.row == indexPath.row))
     {
-        height += 40;
+        height += 60;
     }
 
     return height;
