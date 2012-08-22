@@ -44,6 +44,9 @@
 		2239C20A15E062E500020AF1 /* following@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20415E062E500020AF1 /* following@2x.png */; };
 		2239C20B15E062E500020AF1 /* mutualFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20515E062E500020AF1 /* mutualFollow.png */; };
 		2239C20C15E062E500020AF1 /* mutualFollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20615E062E500020AF1 /* mutualFollow@2x.png */; };
+		4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1815E50BD600042C04 /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		922F80C915D58F6C0049F194 /* ANAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80C815D58F6C0049F194 /* ANAPICall.m */; };
 		922F80CD15D590400049F194 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80CC15D590400049F194 /* AuthViewController.m */; };
 		922F80CF15D595510049F194 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 922F80CE15D595510049F194 /* AuthViewController.xib */; };
@@ -273,6 +276,13 @@
 		2239C20415E062E500020AF1 /* following@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "following@2x.png"; sourceTree = "<group>"; };
 		2239C20515E062E500020AF1 /* mutualFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mutualFollow.png; sourceTree = "<group>"; };
 		2239C20615E062E500020AF1 /* mutualFollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mutualFollow@2x.png"; sourceTree = "<group>"; };
+		4EF81E1715E50BD600042C04 /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
+		4EF81E1815E50BD600042C04 /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
+		4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
+		4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPIOperation.m; sourceTree = "<group>"; };
+		4EF81E1B15E50BD600042C04 /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
+		4EF81E1C15E50BD600042C04 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		922F80C715D58F6C0049F194 /* ANAPICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANAPICall.h; sourceTree = "<group>"; };
 		922F80C815D58F6C0049F194 /* ANAPICall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANAPICall.m; sourceTree = "<group>"; };
 		922F80CB15D590400049F194 /* AuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
@@ -627,6 +637,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4EF81E1615E50BD600042C04 /* PocketSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4EF81E1715E50BD600042C04 /* PocketAPI.h */,
+				4EF81E1815E50BD600042C04 /* PocketAPI.m */,
+				4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */,
+				4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */,
+				4EF81E1B15E50BD600042C04 /* PocketAPITypes.h */,
+				4EF81E1C15E50BD600042C04 /* SFHFKeychainUtils.h */,
+				4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */,
+			);
+			path = PocketSDK;
+			sourceTree = "<group>";
+		};
 		9229761915D5BF300096B5D8 /* Generic Stream Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,6 +842,7 @@
 		CAD8D8DF15D706E7007FC765 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				4EF81E1615E50BD600042C04 /* PocketSDK */,
 				CA96DE5F15E048F8006A8E40 /* DTCoreText */,
 				CAD8D99515D7709C007FC765 /* MFSideMenu */,
 				0053C6BC15D76A36000F36FA /* TestFlightSDK1.0 */,
@@ -1299,6 +1324,9 @@
 				AEDA85C815E40A0900CB8A45 /* RRDefaultPlatformConnector.m in Sources */,
 				AEDA861415E4137100CB8A45 /* NSString+MD5Addition.m in Sources */,
 				AEDA861515E4137100CB8A45 /* UIDevice+IdentifierAddition.m in Sources */,
+				4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */,
+				4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */,
+				4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1332,7 +1360,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1349,7 +1378,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/**";
 			};
@@ -1363,8 +1393,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: GrandCentrix GmbH";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: GrandCentrix GmbH";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1375,8 +1405,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "25B34A29-416C-4707-BB2E-125213ED07E6";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "25B34A29-416C-4707-BB2E-125213ED07E6";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/**";
 				VALIDATE_PRODUCT = YES;
@@ -1386,8 +1416,8 @@
 		00B4742915D38E3C00F767CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppApp/AppApp-Prefix.pch";
 				INFOPLIST_FILE = "AppApp/AppApp-Info.plist";
@@ -1397,8 +1427,8 @@
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1406,7 +1436,7 @@
 		00B4742A15D38E3C00F767CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: GrandCentrix GmbH";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppApp/AppApp-Prefix.pch";
 				INFOPLIST_FILE = "AppApp/AppApp-Info.plist";
@@ -1416,7 +1446,7 @@
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "25B34A29-416C-4707-BB2E-125213ED07E6";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
