@@ -27,3 +27,4 @@
 
 NSString *const kANAPIClientID = @"RG2Brqye96rLZQtjwRenVZsBrMtpYXYP";
 NSString *const kImgurAPIKey = @"a9a7a840e73a8c4e9f0314ab1608c131";
+NSString *const kPocketAPIKey = @"f7fd7r7dTX095C3bs7A247aOb2gaR373";

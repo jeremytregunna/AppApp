@@ -27,3 +27,4 @@
 
 extern NSString *const kANAPIClientID;
 extern NSString *const kImgurAPIKey;
+extern NSString *const kPocketAPIKey;
