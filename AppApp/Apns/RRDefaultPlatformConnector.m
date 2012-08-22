@@ -20,7 +20,8 @@
 @implementation RRDefaultPlatformConnector
 @synthesize delegate, deviceMetadata;
 
-- (RRDefaultPlatformConnector *) initWithApiKey:(NSString *)_apiKey withApiSecret:(NSString *)_apiSecret{
+- (RRDefaultPlatformConnector *) initWithApiKey:(NSString *)_apiKey withApiSecret:(NSString *)_apiSecret
+{
     if ((self = [super init]) != nil) {
         apiKey = _apiKey;
         apiSecret = _apiSecret;
@@ -29,7 +30,8 @@
     
 }
 
-- (void) asyncRegisterDevice:(RRDeviceMetadata *)_deviceMetadata{
+- (void)asyncRegisterDevice:(RRDeviceMetadata *)_deviceMetadata
+{
     self.deviceMetadata = _deviceMetadata;
     
     NSString *_endpointUrl = [NSString stringWithFormat: @"%@/device_tokens/%@", RR_PLATFORM_URL, _deviceMetadata.deviceToken];
@@ -51,14 +53,34 @@
     
 }
 
-- (void)connection:(NSURLConnection *)_connection didFailWithError:(NSError *)_error{
+- (void)asyncAssociateUser:(NSString *)_userId withDeviceId:(NSString *)_deviceId andAccessToken:(NSString *)_authToken
+{
+    NSString *_endpointUrl = [NSString stringWithFormat: @"%@/hello/%@/%@/%@.json", RR_APPAPP_CLOUD_URL, _userId, _deviceId, _authToken];
+    
+    NSMutableURLRequest *_request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_endpointUrl]
+                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                        timeoutInterval:60.0];
+    [_request setHTTPMethod:@"PUT"];
+    [_request addValue:@"application/json;charset=utf-8" forHTTPHeaderField: @"Content-Type"];
+    [_request addValue:RR_APPAPP_CLOUD_API_KEY forHTTPHeaderField: @"X-APPAPPCLOUD-KEY"];
+    [_request addValue:RR_APPAPP_CLOUD_API_SECRET forHTTPHeaderField: @"X-APPAPPCLOUD-SECRET"];
+
+    connection = [[NSURLConnection alloc]
+                  initWithRequest:_request
+                  delegate:self
+                  startImmediately:YES];
+}
+
+- (void)connection:(NSURLConnection *)_connection didFailWithError:(NSError *)_error
+{
 	
     [delegate didRegistrationFail:deviceMetadata withError:_error];
     [self releaseConnection];
 }
 
 
-- (void)connection:(NSURLConnection *)_connection didReceiveResponse:(NSHTTPURLResponse *)_response{
+- (void)connection:(NSURLConnection *)_connection didReceiveResponse:(NSHTTPURLResponse *)_response
+{
     
     switch ([_response statusCode]) {
         case 200:
@@ -89,7 +111,8 @@
 #pragma mark -
 #pragma mark Private Methods
 
-- (void)authenticateRequest:(NSMutableURLRequest *)_request{
+- (void)authenticateRequest:(NSMutableURLRequest *)_request
+{
     NSString *authStr = [NSString stringWithFormat:@"%@:%@", apiKey, apiSecret];
     
     // employ the Base64 encoding above to encode the authentication tokens
@@ -99,7 +122,8 @@
     [_request setValue:authValue forHTTPHeaderField:@"Authorization"];
 }
 
-- (void)releaseConnection {
+- (void)releaseConnection
+{
     if (connection) {
         [connection cancel];
         connection = nil;

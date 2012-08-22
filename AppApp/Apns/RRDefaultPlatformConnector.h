@@ -25,6 +25,7 @@
 @property(nonatomic, retain) RRDeviceMetadata* deviceMetadata;
 
 - (RRDefaultPlatformConnector *) initWithApiKey:(NSString *)_apiKey withApiSecret:(NSString *)_apiSecret;
-- (void) asyncRegisterDevice:(RRDeviceMetadata *)_deviceMetadata;
+- (void)asyncRegisterDevice:(RRDeviceMetadata *)_deviceMetadata;
+- (void)asyncAssociateUser:(NSString *)_userId withDeviceId:(NSString *)_deviceId andAccessToken:(NSString *)_authToken;
 
 @end

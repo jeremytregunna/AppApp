@@ -33,6 +33,7 @@
     NSString *accessToken;
     NSString *userID;
 }
+
 -(void)readTokenFromDefaults;
 
 @end
@@ -133,6 +134,13 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *idValue = [defaults objectForKey:@"userID"];
+    return idValue;
+}
+
+- (NSString *)accessToken
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *idValue = [defaults objectForKey:@"access_token"];
     return idValue;
 }
 
