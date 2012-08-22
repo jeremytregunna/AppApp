@@ -337,7 +337,8 @@
 
 - (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url
 {
-    NSLog(@"Successfully saved %@", url);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Saved URL", @"") message:NSLocalizedString(@"Successfully saved your URL to Pocket", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
+    [alertView show];
 }
 
 - (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
@@ -347,7 +348,11 @@
         ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:kANReadLaterTypePocket];
         [self presentModalViewController:vc animated:YES];
     }
-    NSLog(@"Failed to save url: %@ because: %@ needsToRelogin: %d", url, error, needsToRelogin);
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving URL", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 #pragma mark - Gesture Handling

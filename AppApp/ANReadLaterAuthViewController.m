@@ -27,10 +27,8 @@
 
 - (id)initWithServiceType:(ANReadLaterType)type
 {
-    if((self = [super initWithNibName:@"ANReadLaterAuthViewController" bundle:nil])) {
-        NSLog(@"[ANReadLaterManager serviceNameForType:type] = %@", [ANReadLaterManager serviceNameForType:type]);
+    if((self = [super initWithNibName:@"ANReadLaterAuthViewController" bundle:nil]))
         serviceType = type;
-    }
     return self;
 }
 
@@ -62,7 +60,6 @@
     switch(serviceType)
     {
         case kANReadLaterTypePocket:
-            NSLog(@"username = %@, password = %@", username, password);
             [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:^(PocketAPI *api, NSError *error) {
                 if(error)
                 {
