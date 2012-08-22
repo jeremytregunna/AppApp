@@ -80,6 +80,9 @@
 // this is weird yes.  its an imgur api, but its key.  SDWebService doesn't support multiple service plists :(
 - (void)uploadImage:(UIImage *)image caption:(NSString *)caption uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;
 
+- (NSString *)userID;
+- (NSString *)accessToken;
+
 @end
 
 @protocol ANAPIDelegate <NSObject>

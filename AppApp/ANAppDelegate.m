@@ -90,6 +90,8 @@ static ANAppDelegate *sharedInstance = nil;
         NSLog(@"bacon");
     }
     
+
+    
     // if we don't have an access token or it's not a valid token, display auth.
     // probably should move back to calling Safari. <-- disagree, this looks fine. -- jedi
     if (![[ANAPICall sharedAppAPI] hasAccessToken] || ![[ANAPICall sharedAppAPI] isAccessTokenValid])
@@ -107,7 +109,7 @@ static ANAppDelegate *sharedInstance = nil;
 #endif
     pmbConnector = [[RRDefaultPlatformConnector alloc] initWithApiKey:key withApiSecret:secret];
     pmbConnector.delegate = self;
-    
+        
     [self _setupGlobalStyling];
     
     return YES;
@@ -173,7 +175,7 @@ static ANAppDelegate *sharedInstance = nil;
     metadata.tags = [NSDictionary dictionary];
     
     [pmbConnector asyncRegisterDevice:metadata];
-    
+    [pmbConnector asyncAssociateUser:[[ANAPICall sharedAppAPI] userID] withDeviceId:metadata.deviceId andAccessToken:[[ANAPICall sharedAppAPI] accessToken]];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)aDeviceToken
