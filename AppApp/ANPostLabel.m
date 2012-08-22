@@ -29,6 +29,7 @@
 #import "NSDictionary+SDExtensions.h"
 #import "DTCoreTextConstants.h"
 #import "NSString+HTML.h"
+#import "PocketAPI.h"
 
 @implementation ANPostLabel
 
@@ -59,6 +60,15 @@
     _tapHandler(button.type, button.value);
 }
 
+- (void)executeLongPressHandler:(UILongPressGestureRecognizer *)longPressRecognizer
+{
+    if(longPressRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        ANPostLinkButton *button = (ANPostLinkButton *)longPressRecognizer.view;
+        _longPressHandler(button.type, button.value);
+    }
+}
+
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForLink:(NSURL *)url identifier:(NSString *)identifier frame:(CGRect)frame;
 {
     if (!_enableLinks)
@@ -74,7 +84,11 @@
     button.enabled = YES;
     button.userInteractionEnabled = YES;
     [button addTarget:self action:@selector(executeTapHandler:) forControlEvents:UIControlEventTouchUpInside];
-    
+    // This long press gesture recognizer is added so we can perform some action like
+    // popping up an action sheet so a user can save a URL via Pocket. @jtregunna
+    UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(executeLongPressHandler:)];
+    [button addGestureRecognizer:longPressRecognizer];
+
     return button;
 }
 

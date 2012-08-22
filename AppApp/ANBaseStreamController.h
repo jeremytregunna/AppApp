@@ -28,8 +28,9 @@
 #import "ANAPICall.h"
 #import "ANViewControllerProtocol.h"
 #import "ANStatusViewCell.h"
+#import "ANReadLaterManager.h"
 
-@interface ANBaseStreamController : STableViewController<ANViewControllerProtocol>
+@interface ANBaseStreamController : STableViewController<ANViewControllerProtocol, UIActionSheetDelegate, ANReadLaterDelegate>
 {
 @protected
     NSMutableArray *streamData;
