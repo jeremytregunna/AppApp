@@ -38,6 +38,8 @@
 {
     [super viewDidLoad];
 
+    UIImage *backgroundPatternImage = [UIImage imageNamed:@"statusCellBackground"];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:backgroundPatternImage];
     _serviceNameLabel.text = [ANReadLaterManager serviceNameForType:serviceType];
 }
 
