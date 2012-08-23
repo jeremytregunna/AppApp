@@ -65,7 +65,7 @@
             [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:^(PocketAPI *api, NSError *error) {
                 if(error)
                 {
-                    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving URL", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
+                    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
                     [alertView show];
                 }
                 else
