@@ -38,6 +38,7 @@
 
 #import "ANReadLaterManager.h"
 #import "ANReadLaterAuthViewController.h"
+#import "MKInfoPanel.h"
 
 
 @interface ANBaseStreamController ()
@@ -337,8 +338,7 @@
 
 - (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Saved URL", @"") message:NSLocalizedString(@"Successfully saved your URL to Pocket", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
-    [alertView show];
+    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:NSLocalizedString(@"Saved URL", @"") subtitle:NSLocalizedString(@"Successfully saved URL to Pocket", @"") hideAfter:2.5f];
 }
 
 - (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
@@ -350,8 +350,7 @@
     }
     else
     {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving URL", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
-        [alertView show];
+        [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeError title:NSLocalizedString(@"Error Saving URL", @"") subtitle:[error localizedDescription] hideAfter:2.5f];
     }
 }
 

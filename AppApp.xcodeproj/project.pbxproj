@@ -50,7 +50,7 @@
 		4EF81E2715E5216B00042C04 /* ANReadLaterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E2615E5216B00042C04 /* ANReadLaterManager.m */; };
 		4EF81E2B15E535D600042C04 /* ANReadLaterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E2915E535D600042C04 /* ANReadLaterAuthViewController.m */; };
 		4EF81E2C15E535D600042C04 /* ANReadLaterAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF81E2A15E535D600042C04 /* ANReadLaterAuthViewController.xib */; };
-		4EF81E9E15E5C03400042C04 /* MKInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E9C15E5C03400042C04 /* MKInfoPanel.m */; };
+		4EF81E9E15E5C03400042C04 /* MKInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E9C15E5C03400042C04 /* MKInfoPanel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E9F15E5C03400042C04 /* MKInfoPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF81E9D15E5C03400042C04 /* MKInfoPanel.xib */; };
 		922F80C915D58F6C0049F194 /* ANAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80C815D58F6C0049F194 /* ANAPICall.m */; };
 		922F80CD15D590400049F194 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80CC15D590400049F194 /* AuthViewController.m */; };
