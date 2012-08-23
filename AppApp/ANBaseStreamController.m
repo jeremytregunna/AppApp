@@ -340,16 +340,17 @@
 
 #pragma mark - Read Later delegate
 
-- (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType savedURL:(NSURL *)url
 {
-    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:NSLocalizedString(@"Saved URL", @"") subtitle:NSLocalizedString(@"Successfully saved URL for later reading.", @"") hideAfter:2.5f];
+    NSString* message = [NSString stringWithFormat:@"Successfully saved URL to %@", [ANReadLaterManager serviceNameForType:serviceType]];
+    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:NSLocalizedString(@"Saved URL", @"") subtitle:NSLocalizedString(message, @"") hideAfter:2.5f];
 }
 
-- (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
 {
     if(needsToRelogin)
     {
-        ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:kANReadLaterTypePocket];
+        ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:serviceType];
         [self presentModalViewController:vc animated:YES];
     }
     else

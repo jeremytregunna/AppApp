@@ -47,13 +47,13 @@
     PocketAPISaveHandler handler = ^(id api, NSURL *savedURL, NSError *error, BOOL needsToRelogin) {
         if(error)
         {
-            if([self.delegate respondsToSelector:@selector(readLater:failedToSaveURL:needsToRelogin:error:)])
-                [self.delegate readLater:self failedToSaveURL:savedURL needsToRelogin:needsToRelogin error:error];
+            if([self.delegate respondsToSelector:@selector(readLater:serviceType:failedToSaveURL:needsToRelogin:error:)])
+                [self.delegate readLater:self serviceType:type failedToSaveURL:savedURL needsToRelogin:needsToRelogin error:error];
         }
         else
         {
-            if([self.delegate respondsToSelector:@selector(readLater:savedURL:)])
-                [self.delegate readLater:self savedURL:savedURL];
+            if([self.delegate respondsToSelector:@selector(readLater:serviceType:savedURL:)])
+                [self.delegate readLater:self serviceType:type savedURL:savedURL];
         }
     };
 

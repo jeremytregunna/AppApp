@@ -32,9 +32,9 @@ static NSString* const kJSimpleInstapaperSaveURLString = @"https://www.instapape
 
 + (instancetype)sharedAPI
 {
-    __block id shared = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    static id shared = nil;
+    static dispatch_once_t instapaperToken;
+    dispatch_once(&instapaperToken, ^{
         shared = [[self alloc] init];
     });
     return shared;
@@ -79,7 +79,10 @@ static NSString* const kJSimpleInstapaperSaveURLString = @"https://www.instapape
 
         NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
         if(statusCode == 403)
+        {
+            error = [NSError errorWithDomain:@"JSimpleInstapaperDomain" code:400 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Invalid credentials. Try logging in again.", @"")}];
             needsToRelogin = YES;
+        }
         else if(statusCode == 400)
         {
             error = [NSError errorWithDomain:@"JSimpleInstapaperDomain" code:400 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Malformed request. Please try again.", @"")}];
