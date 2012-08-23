@@ -1,6 +1,30 @@
 #AppApp
 AppApp is the first __completely native__ iOS client for ADN. We hope you love it as much as we do. For announcements follow [@appapp](http://alpha.app.net/appapp) on App.net.
 
+## Important
+The AppApp team decided to keep the code base open for the public. However, due to the nation of the stuff we are doing, we had to make a decision to start keeping some parts private / available only for the core team. 
+
+The primary reason for this: Advanced services like integrating __Apple Push Notifications__ require credentials, certificates and other things, that must not be made available publicly.
+
+We have started to move those parts of our code base to a __Git submodule__ which will only be available for the core team.
+
+We will add __conditional compiler flags__ so that deverlopers building on top of our code can successfully compile even without the submodule. 
+
+__Note:__ We have not yet done so! This means, you will likely not be able to compile with the current status unless you manually comment out references to the parts of the code, that are not available publicly. As stated above, we will make this entire process a lot easier in the very near future.
+
+### Core Contributors
+In order to check out the complete AppApp code base including the __Confidentials__:
+
+1. Clone the publicly available code: `git clone git@github.com:24z/AppAppP.git`
+2. CD into the project root: `cd AppAppP`
+3. Get the _Confidentials_ folder: `git submodule update -i --recursive`
+
+Notes:
+* In step 1 you should also be able to use the public AppApp repo address.
+* For step 3 you need to be a member of the core team. Ping [@ralf](http://alpha.app.net/ralf) if you need assistance.
+
+We are confident, that this procedure will balance both our requirements and supporting the public with a jump start into App.net development. 
+
 ## License
 The AppApp source code is distributed under the __The MIT License (MIT)__ license.
 
