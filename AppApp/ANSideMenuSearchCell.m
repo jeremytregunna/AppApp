@@ -38,6 +38,7 @@
     initialSearchFieldFrame = self.searchTextField.frame;
     
     self.searchTextField.font = [UIFont fontWithName:@"Ubuntu-Bold" size:16.0f];
+    self.searchTextField.keyboardType = UIKeyboardTypeTwitter;
     self.hashTagImageView.alpha = 0.0f;
 }
 
