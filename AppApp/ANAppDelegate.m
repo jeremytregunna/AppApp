@@ -33,6 +33,8 @@
 #import "RRConstants.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PocketAPI.h"
+#import "MKInfoPanel.h"
+#import "TestFlight.h"
 
 @implementation ANAppDelegate
 
@@ -200,6 +202,28 @@ static ANAppDelegate *sharedInstance = nil;
 #ifdef DEBUG
     NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.localizedDescription);
 #endif
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"didReceiveRemoteNotification");
+    NSString *message = nil;
+    
+    id aps = [userInfo objectForKey:@"aps"];
+    if ([aps isKindOfClass:[NSDictionary class]]) {
+        message = (NSString *)[(NSDictionary *)aps objectForKey:@"alert"];
+    }
+    
+    NSString *adnUsername = (NSString *)[userInfo objectForKey:@"adnUsername"];
+    NSString *rawText = (NSString *)[userInfo objectForKey:@"rawText"];
+    NSString *adnPostId = (NSString *)[userInfo objectForKey:@"adnPostId"]; // Can use this later for deep linking
+    
+    if (message) {
+        [MKInfoPanel showPanelInView:self.window.rootViewController.view
+                                type:MKInfoPanelTypeInfo
+                               title:[NSString stringWithFormat:@"%@%@", @"@", adnUsername]
+                            subtitle:rawText hideAfter:6.0f];
+    }
 }
 
 - (void)didRegistrationFail:(RRDeviceMetadata *)_metadata withError:(NSError *)_error
