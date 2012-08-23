@@ -50,6 +50,8 @@
 		4EF81E2715E5216B00042C04 /* ANReadLaterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E2615E5216B00042C04 /* ANReadLaterManager.m */; };
 		4EF81E2B15E535D600042C04 /* ANReadLaterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E2915E535D600042C04 /* ANReadLaterAuthViewController.m */; };
 		4EF81E2C15E535D600042C04 /* ANReadLaterAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF81E2A15E535D600042C04 /* ANReadLaterAuthViewController.xib */; };
+		4EF81E9E15E5C03400042C04 /* MKInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E9C15E5C03400042C04 /* MKInfoPanel.m */; };
+		4EF81E9F15E5C03400042C04 /* MKInfoPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF81E9D15E5C03400042C04 /* MKInfoPanel.xib */; };
 		922F80C915D58F6C0049F194 /* ANAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80C815D58F6C0049F194 /* ANAPICall.m */; };
 		922F80CD15D590400049F194 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F80CC15D590400049F194 /* AuthViewController.m */; };
 		922F80CF15D595510049F194 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 922F80CE15D595510049F194 /* AuthViewController.xib */; };
@@ -291,6 +293,9 @@
 		4EF81E2815E535D600042C04 /* ANReadLaterAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANReadLaterAuthViewController.h; sourceTree = "<group>"; };
 		4EF81E2915E535D600042C04 /* ANReadLaterAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANReadLaterAuthViewController.m; sourceTree = "<group>"; };
 		4EF81E2A15E535D600042C04 /* ANReadLaterAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ANReadLaterAuthViewController.xib; sourceTree = "<group>"; };
+		4EF81E9B15E5C03400042C04 /* MKInfoPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKInfoPanel.h; sourceTree = "<group>"; };
+		4EF81E9C15E5C03400042C04 /* MKInfoPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKInfoPanel.m; sourceTree = "<group>"; };
+		4EF81E9D15E5C03400042C04 /* MKInfoPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MKInfoPanel.xib; sourceTree = "<group>"; };
 		922F80C715D58F6C0049F194 /* ANAPICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANAPICall.h; sourceTree = "<group>"; };
 		922F80C815D58F6C0049F194 /* ANAPICall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANAPICall.m; sourceTree = "<group>"; };
 		922F80CB15D590400049F194 /* AuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
@@ -672,6 +677,16 @@
 			name = "Read Later Integration";
 			sourceTree = "<group>";
 		};
+		4EF81E9A15E5C03400042C04 /* MKInfoPanel */ = {
+			isa = PBXGroup;
+			children = (
+				4EF81E9B15E5C03400042C04 /* MKInfoPanel.h */,
+				4EF81E9C15E5C03400042C04 /* MKInfoPanel.m */,
+				4EF81E9D15E5C03400042C04 /* MKInfoPanel.xib */,
+			);
+			path = MKInfoPanel;
+			sourceTree = "<group>";
+		};
 		9229761915D5BF300096B5D8 /* Generic Stream Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -863,6 +878,7 @@
 		CAD8D8DF15D706E7007FC765 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				4EF81E9A15E5C03400042C04 /* MKInfoPanel */,
 				4EF81E1615E50BD600042C04 /* PocketSDK */,
 				CA96DE5F15E048F8006A8E40 /* DTCoreText */,
 				CAD8D99515D7709C007FC765 /* MFSideMenu */,
@@ -1269,6 +1285,7 @@
 				AE1F24CF15E4CBFE0002FE03 /* Action_Bar_Separator.png in Resources */,
 				AE1F24D015E4CBFE0002FE03 /* Action_Bar_Separator@2x.png in Resources */,
 				4EF81E2C15E535D600042C04 /* ANReadLaterAuthViewController.xib in Resources */,
+				4EF81E9F15E5C03400042C04 /* MKInfoPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1351,6 +1368,7 @@
 				4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */,
 				4EF81E2715E5216B00042C04 /* ANReadLaterManager.m in Sources */,
 				4EF81E2B15E535D600042C04 /* ANReadLaterAuthViewController.m in Sources */,
+				4EF81E9E15E5C03400042C04 /* MKInfoPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
