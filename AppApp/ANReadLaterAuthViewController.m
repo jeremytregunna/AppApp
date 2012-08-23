@@ -20,16 +20,22 @@
 @implementation ANReadLaterAuthViewController
 {
     ANReadLaterType serviceType;
+    NSURL *_failedURL;
+    ANReadLaterManager *_manager;
 }
 
 @synthesize serviceNameLabel = _serviceNameLabel;
 @synthesize usernameField = _usernameField;
 @synthesize passwordField = _passwordField;
 
-- (id)initWithServiceType:(ANReadLaterType)type
+- (id)initWithServiceType:(ANReadLaterType)type failedURL:(NSURL *)url manager:(ANReadLaterManager *)manager
 {
     if((self = [super initWithNibName:@"ANReadLaterAuthViewController" bundle:nil]))
+    {
         serviceType = type;
+        _failedURL = url;
+        _manager = manager;
+    }
     return self;
 }
 
@@ -69,7 +75,8 @@
         else
         {
             [self dismissViewControllerAnimated:YES completion:^{
-                // Do something cool here, like show a success message
+                if([_manager.delegate respondsToSelector:@selector(readLater:serviceType:didLoginSuccessfullyWithURL:)])
+                    [_manager.delegate readLater:_manager serviceType:serviceType didLoginSuccessfullyWithURL:_failedURL];
             }];
         }
     };

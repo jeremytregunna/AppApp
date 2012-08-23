@@ -340,6 +340,11 @@
 
 #pragma mark - Read Later delegate
 
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType didLoginSuccessfullyWithURL:(NSURL *)url
+{
+    [manager saveURL:url serviceType:serviceType];
+}
+
 - (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType savedURL:(NSURL *)url
 {
     NSString* message = [NSString stringWithFormat:@"Successfully saved URL to %@", [ANReadLaterManager serviceNameForType:serviceType]];
@@ -350,7 +355,7 @@
 {
     if(needsToRelogin)
     {
-        ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:serviceType];
+        ANReadLaterAuthViewController* vc = [[ANReadLaterAuthViewController alloc] initWithServiceType:serviceType failedURL:url manager:manager];
         [self presentModalViewController:vc animated:YES];
     }
     else
