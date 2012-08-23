@@ -12,7 +12,8 @@
 
 typedef enum
 {
-    kANReadLaterTypePocket
+    kANReadLaterTypePocket,
+    kANReadLaterTypeInstapaper
 } ANReadLaterType;
 
 @protocol ANReadLaterDelegate <NSObject>

@@ -8,6 +8,7 @@
 
 #import "ANReadLaterAuthViewController.h"
 #import "PocketAPI.h"
+#import "JSimpleInstapaper.h"
 
 @interface ANReadLaterAuthViewController ()
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
@@ -59,20 +60,28 @@
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
+    PocketAPILoginHandler handler = ^(id api, NSError *error) {
+        if(error)
+        {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
+            [alertView show];
+        }
+        else
+        {
+            [self dismissViewControllerAnimated:YES completion:^{
+                // Do something cool here, like show a success message
+            }];
+        }
+    };
+
     switch(serviceType)
     {
         case kANReadLaterTypePocket:
-            [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:^(PocketAPI *api, NSError *error) {
-                if(error)
-                {
-                    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else
-                    [self dismissViewControllerAnimated:YES completion:^{
-                        // Do something cool here, like show a success message
-                    }];
-            }];
+            [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:handler];
+            break;
+        case kANReadLaterTypeInstapaper:
+            [[JSimpleInstapaper sharedAPI] loginWithUsername:username password:password handler:(JSimpleInstapaperLoginHandler)handler];
+            break;
     }
 }
 

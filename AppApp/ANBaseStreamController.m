@@ -238,7 +238,7 @@
         cell.statusTextLabel.longPressHandler = ^BOOL (NSString *type, NSString *value) {
             if([type isEqualToString:@"link"])
             {
-                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:value delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), nil];
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:value delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
                 [sheet showInView:blockSelf.view];
             }
             else
@@ -331,6 +331,10 @@
     {
         case 0: // Pocket
             [manager saveURL:[NSURL URLWithString:actionSheet.title] serviceType:kANReadLaterTypePocket];
+            break;
+        case 1:
+            [manager saveURL:[NSURL URLWithString:actionSheet.title] serviceType:kANReadLaterTypeInstapaper];
+            break;
     }
 }
 
@@ -338,7 +342,7 @@
 
 - (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url
 {
-    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:NSLocalizedString(@"Saved URL", @"") subtitle:NSLocalizedString(@"Successfully saved URL to Pocket", @"") hideAfter:2.5f];
+    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:NSLocalizedString(@"Saved URL", @"") subtitle:NSLocalizedString(@"Successfully saved URL for later reading.", @"") hideAfter:2.5f];
 }
 
 - (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error
