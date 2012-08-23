@@ -44,6 +44,7 @@
 		2239C20A15E062E500020AF1 /* following@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20415E062E500020AF1 /* following@2x.png */; };
 		2239C20B15E062E500020AF1 /* mutualFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20515E062E500020AF1 /* mutualFollow.png */; };
 		2239C20C15E062E500020AF1 /* mutualFollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20615E062E500020AF1 /* mutualFollow@2x.png */; };
+		4E343D2A15E6C8830091355D /* JSimpleInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343D2915E6C8830091355D /* JSimpleInstapaper.m */; };
 		4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1815E50BD600042C04 /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -281,6 +282,8 @@
 		2239C20415E062E500020AF1 /* following@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "following@2x.png"; sourceTree = "<group>"; };
 		2239C20515E062E500020AF1 /* mutualFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mutualFollow.png; sourceTree = "<group>"; };
 		2239C20615E062E500020AF1 /* mutualFollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mutualFollow@2x.png"; sourceTree = "<group>"; };
+		4E343D2815E6C8830091355D /* JSimpleInstapaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSimpleInstapaper.h; sourceTree = "<group>"; };
+		4E343D2915E6C8830091355D /* JSimpleInstapaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSimpleInstapaper.m; sourceTree = "<group>"; };
 		4EF81E1715E50BD600042C04 /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
 		4EF81E1815E50BD600042C04 /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
 		4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
@@ -651,6 +654,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4E343D2715E6C8830091355D /* JSimpleInstapaper */ = {
+			isa = PBXGroup;
+			children = (
+				4E343D2815E6C8830091355D /* JSimpleInstapaper.h */,
+				4E343D2915E6C8830091355D /* JSimpleInstapaper.m */,
+			);
+			path = JSimpleInstapaper;
+			sourceTree = "<group>";
+		};
 		4EF81E1615E50BD600042C04 /* PocketSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -888,6 +900,7 @@
 		CAD8D8DF15D706E7007FC765 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				4E343D2715E6C8830091355D /* JSimpleInstapaper */,
 				4EF81E9A15E5C03400042C04 /* MKInfoPanel */,
 				4EF81E1615E50BD600042C04 /* PocketSDK */,
 				CA96DE5F15E048F8006A8E40 /* DTCoreText */,
@@ -1379,6 +1392,7 @@
 				AEA6B53E15E6BAF300731B46 /* SBJsonTokeniser.m in Sources */,
 				AEA6B53F15E6BAF300731B46 /* SBJsonUTF8Stream.m in Sources */,
 				AEA6B54015E6BAF300731B46 /* SBJsonWriter.m in Sources */,
+				4E343D2A15E6C8830091355D /* JSimpleInstapaper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
