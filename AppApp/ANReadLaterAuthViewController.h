@@ -10,5 +10,5 @@
 #import "ANReadLaterManager.h"
 
 @interface ANReadLaterAuthViewController : UIViewController <UITextFieldDelegate>
-- (id)initWithServiceType:(ANReadLaterType)type;
+- (id)initWithServiceType:(ANReadLaterType)type failedURL:(NSURL*)url manager:(ANReadLaterManager*)manager;
 @end

@@ -8,6 +8,7 @@
 
 #import "ANReadLaterAuthViewController.h"
 #import "PocketAPI.h"
+#import "JSimpleInstapaper.h"
 
 @interface ANReadLaterAuthViewController ()
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
@@ -19,16 +20,22 @@
 @implementation ANReadLaterAuthViewController
 {
     ANReadLaterType serviceType;
+    NSURL *_failedURL;
+    ANReadLaterManager *_manager;
 }
 
 @synthesize serviceNameLabel = _serviceNameLabel;
 @synthesize usernameField = _usernameField;
 @synthesize passwordField = _passwordField;
 
-- (id)initWithServiceType:(ANReadLaterType)type
+- (id)initWithServiceType:(ANReadLaterType)type failedURL:(NSURL *)url manager:(ANReadLaterManager *)manager
 {
     if((self = [super initWithNibName:@"ANReadLaterAuthViewController" bundle:nil]))
+    {
         serviceType = type;
+        _failedURL = url;
+        _manager = manager;
+    }
     return self;
 }
 
@@ -59,20 +66,29 @@
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
+    PocketAPILoginHandler handler = ^(id api, NSError *error) {
+        if(error)
+        {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
+            [alertView show];
+        }
+        else
+        {
+            [self dismissViewControllerAnimated:YES completion:^{
+                if([_manager.delegate respondsToSelector:@selector(readLater:serviceType:didLoginSuccessfullyWithURL:)])
+                    [_manager.delegate readLater:_manager serviceType:serviceType didLoginSuccessfullyWithURL:_failedURL];
+            }];
+        }
+    };
+
     switch(serviceType)
     {
         case kANReadLaterTypePocket:
-            [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:^(PocketAPI *api, NSError *error) {
-                if(error)
-                {
-                    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", @"") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else
-                    [self dismissViewControllerAnimated:YES completion:^{
-                        // Do something cool here, like show a success message
-                    }];
-            }];
+            [[PocketAPI sharedAPI] loginWithUsername:username password:password handler:handler];
+            break;
+        case kANReadLaterTypeInstapaper:
+            [[JSimpleInstapaper sharedAPI] loginWithUsername:username password:password handler:(JSimpleInstapaperLoginHandler)handler];
+            break;
     }
 }
 

@@ -8,6 +8,7 @@
 
 #import "ANReadLaterManager.h"
 #import "PocketAPI.h"
+#import "JSimpleInstapaper.h"
 
 @implementation ANReadLaterManager
 {
@@ -22,6 +23,8 @@
     {
         case kANReadLaterTypePocket:
             return @"Pocket";
+        case kANReadLaterTypeInstapaper:
+            return @"Instapaper";
     }
 }
 
@@ -41,22 +44,30 @@
 
 - (void)saveURL:(NSURL *)url serviceType:(ANReadLaterType)type
 {
+    PocketAPISaveHandler handler = ^(id api, NSURL *savedURL, NSError *error, BOOL needsToRelogin) {
+        if(error)
+        {
+            if([self.delegate respondsToSelector:@selector(readLater:serviceType:failedToSaveURL:needsToRelogin:error:)])
+                [self.delegate readLater:self serviceType:type failedToSaveURL:savedURL needsToRelogin:needsToRelogin error:error];
+        }
+        else
+        {
+            if([self.delegate respondsToSelector:@selector(readLater:serviceType:savedURL:)])
+                [self.delegate readLater:self serviceType:type savedURL:savedURL];
+        }
+    };
+
     switch(type)
     {
         case kANReadLaterTypePocket:
         {
-            [[PocketAPI sharedAPI] saveURL:url handler:^(PocketAPI *api, NSURL *savedURL, NSError *error, BOOL needsToRelogin) {
-                if(error)
-                {
-                    if([self.delegate respondsToSelector:@selector(readLater:failedToSaveURL:needsToRelogin:error:)])
-                        [self.delegate readLater:self failedToSaveURL:savedURL needsToRelogin:needsToRelogin error:error];
-                }
-                else
-                {
-                    if([self.delegate respondsToSelector:@selector(readLater:savedURL:)])
-                        [self.delegate readLater:self savedURL:savedURL];
-                }
-            }];
+            [[PocketAPI sharedAPI] saveURL:url handler:handler];
+            break;
+        }
+        case kANReadLaterTypeInstapaper:
+        {
+            [[JSimpleInstapaper sharedAPI] saveURL:url handler:(JSimpleInstapaperSaveHandler)handler];
+            break;
         }
     }
 }

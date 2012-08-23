@@ -12,13 +12,15 @@
 
 typedef enum
 {
-    kANReadLaterTypePocket
+    kANReadLaterTypePocket,
+    kANReadLaterTypeInstapaper
 } ANReadLaterType;
 
 @protocol ANReadLaterDelegate <NSObject>
 @optional
-- (void)readLater:(ANReadLaterManager *)manager savedURL:(NSURL *)url;
-- (void)readLater:(ANReadLaterManager *)manager failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error;
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType didLoginSuccessfullyWithURL:(NSURL *)url;
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType savedURL:(NSURL *)url;
+- (void)readLater:(ANReadLaterManager *)manager serviceType:(ANReadLaterType)serviceType failedToSaveURL:(NSURL *)url needsToRelogin:(BOOL)needsToRelogin error:(NSError *)error;
 @end
 
 @interface ANReadLaterManager : NSObject
