@@ -80,6 +80,9 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithRed:7/255.0f green:92/255.0f blue:127/255.0f alpha:1.0f];
+
+    [self.tableView setNeedsLayout];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustsFrameWhenStatusBarChanges:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -336,6 +339,22 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
         [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         [self.tableView endUpdates];
     }
+}
+
+#pragma mark -
+#pragma mark Notification callbacks
+
+- (void)adjustsFrameWhenStatusBarChanges:(NSNotification*)notif
+{
+    NSValue* valueRect = [[notif userInfo] objectForKey:UIApplicationStatusBarFrameUserInfoKey];
+    CGRect statusBarFrame = [valueRect CGRectValue];
+    CGRect frame = self.tableView.frame;
+    frame.origin.y = statusBarFrame.size.height;
+    frame.size.height = [UIScreen mainScreen].bounds.size.height - statusBarFrame.size.height;
+    __weak ANSideMenuController* weakSelf = self;
+    [UIView animateWithDuration:0.35 animations:^{
+        weakSelf.tableView.frame = frame;
+    }];
 }
 
 @end

@@ -47,6 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 * Johnnie Pittman ([@jedi](http://alpha.app.net/jedi) on app.net, @dtjedi on twitter, [email](mailto:jpittman@group6.net))
 * Travis Choma ([@tc](http://alpha.app.net/@tc) on app.net, @travischoma, [email](mailto:travischoma@gmail.com))
 * Ralf Rottmann ([@ralf](http://alpha.app.net/ralf) on app.net, [@ralf](http://twitter.com/ralf) on Twitter)
+* Jeremy Tregunna ([@jtregunna](http://alpha.app.net/jtregunna) on app.net, [@jtregunna](http://twitter.com/jtregunna) on Twitter)
 
 You can find us in the [App.net hipchat](https://www.hipchat.com/garqCaGOZ), on irc.freenode.net in #appnet. You can also buy us beer in person, if you come to Seattle, Portland, Detroit, or San Francisco.
 
