@@ -23,6 +23,7 @@
  DEALINGS IN THE SOFTWARE.
 */
 
+#import <QuartzCore/QuartzCore.h>
 #import "ANBaseStreamController.h"
 #import "ANPostStatusViewController.h"
 #import "ANStreamFooterView.h"
@@ -160,9 +161,27 @@
     [self presentModalViewController:postView animated:YES];
 }
 
+- (void)addOverlayToUserButton:(UIButton*)button
+{
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = button.layer.bounds;
+    gradientLayer.colors = @[ (id)[UIColor colorWithWhite:0.3f alpha:0.4f].CGColor, (id)[UIColor colorWithWhite:0.0f alpha:0.4f].CGColor ];
+    gradientLayer.locations = @[ @0, @0.5 ];
+    gradientLayer.name = @"overlayGradient";
+    [button.layer addSublayer:gradientLayer];
+}
+
+- (void)removeLayerFromView:(UIView*)view
+{
+    CAGradientLayer *gradientLayer = [[view.layer.sublayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"overlayGradient"]] objectAtIndex:0];
+    [gradientLayer removeFromSuperlayer];
+}
+
 - (void)showUserAction:(id)sender
 {
-    NSUInteger index = [(UIControl *)sender tag];
+    UIControl *control = (UIControl *)sender;
+    [self removeLayerFromView:control];
+    NSUInteger index = [control tag];
     NSDictionary *postDict = [streamData objectAtIndex:index];
     NSDictionary *userDict = [postDict objectForKey:@"user"];
     ANUserViewController *userController = [[ANUserViewController alloc] initWithUserDictionary:userDict];
@@ -258,6 +277,8 @@
     cell.showUserButton.tag = indexPath.row;
     // END JANKY.
 
+    [cell.showUserButton addTarget:self action:@selector(addOverlayToUserButton:) forControlEvents:UIControlEventTouchDown];
+    [cell.showUserButton addTarget:self action:@selector(removeLayerFromView:) forControlEvents:UIControlEventTouchDragOutside];
     [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
