@@ -194,7 +194,7 @@
     
     if ((currentSelection) && (currentSelection.row == indexPath.row))
     {
-        height += 60;
+        height += 61;
     }
 
     return height;
