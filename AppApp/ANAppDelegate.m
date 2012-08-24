@@ -221,16 +221,14 @@ static ANAppDelegate *sharedInstance = nil;
         message = (NSString *)[(NSDictionary *)aps objectForKey:@"alert"];
     }
     
-    NSString *adnUsername = (NSString *)[userInfo objectForKey:@"adnUsername"];
-    NSString *rawText = (NSString *)[userInfo objectForKey:@"rawText"];
     NSString *adnPostId = (NSString *)[userInfo objectForKey:@"adnPostId"]; // Can use this later for deep linking
 #pragma unused(adnPostId)
     
     if (message) {
         [MKInfoPanel showPanelInView:self.window.rootViewController.view
                                 type:MKInfoPanelTypeInfo
-                               title:[NSString stringWithFormat:@"%@%@", @"@", adnUsername]
-                            subtitle:rawText hideAfter:6.0f];
+                               title:[NSString stringWithFormat:NSLocalizedString(@"New Mention", @"")]
+                            subtitle:message hideAfter:6.0f];
     }
 }
 
