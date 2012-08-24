@@ -1357,9 +1357,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1378,9 +1383,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1436,9 +1446,16 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+					"-L$(SRCROOT)/Externals/AppAppC/libAppAppPNS",
+					"-lAppAppPNS",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Debug PNS";
@@ -1484,8 +1501,15 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+					"-L$(SRCROOT)/Externals/AppAppC/libAppAppPNS",
+					"-lAppAppPNS",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25B34A29-416C-4707-BB2E-125213ED07E6";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Release PNS";
