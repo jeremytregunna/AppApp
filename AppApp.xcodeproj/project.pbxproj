@@ -88,6 +88,7 @@
 		AEA6B53E15E6BAF300731B46 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA6B53015E6BAF300731B46 /* SBJsonTokeniser.m */; };
 		AEA6B53F15E6BAF300731B46 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA6B53215E6BAF300731B46 /* SBJsonUTF8Stream.m */; };
 		AEA6B54015E6BAF300731B46 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA6B53415E6BAF300731B46 /* SBJsonWriter.m */; };
+		AEFE22DC15E786CC0022CCA6 /* appapp.caf in Resources */ = {isa = PBXBuildFile; fileRef = AEFE22DB15E786CC0022CCA6 /* appapp.caf */; };
 		CA13EFAD15DBCD02005359E3 /* ANPostLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */; };
 		CA2BEE0C15DCE91E00DD2D3A /* NSDate+ANExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA2BEE0B15DCE91E00DD2D3A /* NSDate+ANExtensions.m */; };
 		CA2BEE1315DCF1FA00DD2D3A /* ANHashtagStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA2BEE1215DCF1FA00DD2D3A /* ANHashtagStreamController.m */; };
@@ -359,6 +360,7 @@
 		AEA6B53215E6BAF300731B46 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		AEA6B53315E6BAF300731B46 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		AEA6B53415E6BAF300731B46 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		AEFE22DB15E786CC0022CCA6 /* appapp.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appapp.caf; sourceTree = "<group>"; };
 		CA13EFAB15DBCD02005359E3 /* ANPostLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANPostLabel.h; sourceTree = "<group>"; };
 		CA13EFAC15DBCD02005359E3 /* ANPostLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPostLabel.m; sourceTree = "<group>"; };
 		CA2BEE0A15DCE91E00DD2D3A /* NSDate+ANExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ANExtensions.h"; sourceTree = "<group>"; };
@@ -1101,6 +1103,7 @@
 		FD3EB17015DB5670005BF189 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				AEFE22DB15E786CC0022CCA6 /* appapp.caf */,
 				FD3EB17115DB5671005BF189 /* Ubuntu-M.ttf */,
 				FD3EB17515DB57F9005BF189 /* Ubuntu-B.ttf */,
 			);
@@ -1309,6 +1312,7 @@
 				AE1F24D015E4CBFE0002FE03 /* Action_Bar_Separator@2x.png in Resources */,
 				4EF81E2C15E535D600042C04 /* ANReadLaterAuthViewController.xib in Resources */,
 				4EF81E9F15E5C03400042C04 /* MKInfoPanel.xib in Resources */,
+				AEFE22DC15E786CC0022CCA6 /* appapp.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
