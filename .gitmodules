@@ -1,0 +1,3 @@
+[submodule "Externals/AppAppC"]
+	path = Externals/AppAppC
+	url = git@github.com:24z/AppAppC.git
