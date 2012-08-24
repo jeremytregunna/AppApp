@@ -28,13 +28,16 @@
 #import "MFSideMenuManager.h"
 #import "ANSideMenuController.h"
 #import "ANAPICall.h"
-#import "RRDeviceMetadata.h"
-#import "UIDevice+IdentifierAddition.h"
-#import "RRConstants.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PocketAPI.h"
 #import "MKInfoPanel.h"
 #import "TestFlight.h"
+
+#if ENABLEPNS
+#import "RRDeviceMetadata.h"
+#import "UIDevice+IdentifierAddition.h"
+#import "RRConstants.h"
+#endif
 
 @implementation ANAppDelegate
 
@@ -100,7 +103,8 @@ static ANAppDelegate *sharedInstance = nil;
         AuthViewController *authView = [[AuthViewController alloc] init];
         [self.window.rootViewController presentModalViewController:authView animated:YES];
     }
-    
+ 
+#if ENABLEPNS
 #ifdef DEBUG
     NSString *key = PMB_DEBUG_API_KEY;
     NSString *secret = PMB_DEBUG_API_SECRET;
@@ -110,6 +114,7 @@ static ANAppDelegate *sharedInstance = nil;
 #endif
     pmbConnector = [[RRDefaultPlatformConnector alloc] initWithApiKey:key withApiSecret:secret];
     pmbConnector.delegate = self;
+#endif
         
     [self _setupGlobalStyling];
     
@@ -173,6 +178,7 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (void)registerDevice:(NSString *)deviceToken
 {
+#if ENABLEPNS
     NSString *deviceId = [[UIDevice currentDevice] uniqueDeviceIdentifier];
     
     RRDeviceMetadata *metadata = [[RRDeviceMetadata alloc] initWithDeviceToken:deviceToken withDeviceId:deviceId];
@@ -184,6 +190,7 @@ static ANAppDelegate *sharedInstance = nil;
     
     [pmbConnector asyncRegisterDevice:metadata];
     [pmbConnector asyncAssociateUser:[[ANAPICall sharedAppAPI] userID] withDeviceId:metadata.deviceId andAccessToken:[[ANAPICall sharedAppAPI] accessToken]];
+#endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)aDeviceToken
@@ -217,6 +224,7 @@ static ANAppDelegate *sharedInstance = nil;
     NSString *adnUsername = (NSString *)[userInfo objectForKey:@"adnUsername"];
     NSString *rawText = (NSString *)[userInfo objectForKey:@"rawText"];
     NSString *adnPostId = (NSString *)[userInfo objectForKey:@"adnPostId"]; // Can use this later for deep linking
+#pragma unused(adnPostId)
     
     if (message) {
         [MKInfoPanel showPanelInView:self.window.rootViewController.view
@@ -226,6 +234,7 @@ static ANAppDelegate *sharedInstance = nil;
     }
 }
 
+#if ENABLEPNS
 - (void)didRegistrationFail:(RRDeviceMetadata *)_metadata withError:(NSError *)_error
 {
 #ifdef DEBUG
@@ -239,6 +248,7 @@ static ANAppDelegate *sharedInstance = nil;
     // NSLog(@"didRegistrationFinish:");
 #endif
 }
+#endif
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

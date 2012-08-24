@@ -25,11 +25,16 @@
 
 #import <UIKit/UIKit.h>
 #import "ANSideMenuController.h"
-#import "RRDefaultPlatformConnector.h"
 
+#if ENABLEPNS
+#import "RRDefaultPlatformConnector.h"
 @interface ANAppDelegate : UIResponder <UIApplicationDelegate, RRPlatformConnectorDelegate> {
     RRDefaultPlatformConnector *pmbConnector;
 }
+#else
+@interface ANAppDelegate : UIResponder <UIApplicationDelegate> {
+}
+#endif
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) ANSideMenuController *sideMenuController;
