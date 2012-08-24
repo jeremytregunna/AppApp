@@ -101,6 +101,7 @@
 {
     for (NSDictionary *item in items)
     {
+
         NSUInteger pos = [item unsignedIntegerForKey:@"pos"];
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
         NSString *keyValue = [item stringForKey:key];
@@ -114,7 +115,7 @@
                                        type, DTGUIDAttribute,
                                        keyValue, DTLinkAttribute,
                                        NULL];
-
+        
         [attrString setAttributes:theAttributes range:range];
     }
 }
@@ -134,9 +135,9 @@
     NSData *htmlData = [text dataUsingEncoding:NSUTF8StringEncoding];
 	NSMutableAttributedString *postString = [[[NSAttributedString alloc] initWithHTMLData:htmlData documentAttributes:NULL] mutableCopy];
 
-    NSArray *hashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
+    NSArray *rawHashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
     NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
-    NSArray *mentions = [_postData arrayForKeyPath:@"entities.mentions"];
+    NSArray *rawMentions = [_postData arrayForKeyPath:@"entities.mentions"];
     
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0f];
     CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
@@ -149,9 +150,42 @@
                        value:(id)[UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0].CGColor
                        range:NSMakeRange(0, postString.length-1)];
     
-    [self addAttributes:hashtags key:@"name" type:@"hashtag" attributedString:postString];
+    /* 
+     @ralf: 
+     I had to add this because occasionally ADN does return the wrong start position (pos) for hashtags and mentions.
+     This seems to happen when there are additional unicode characters in a post which will not be displayed.
+     AppApp crashed if that lead to an edge condition, where position + length is out of the boundaries of the text,
+     e.g. when a hashtag is at the end of a post. 
+     
+     We very likely have to check on those for links, too, but they are not as easy to be identified as a # or @.
+     
+     Example Post ID that caused a crash:
+     170655
+     
+     Text:
+     &#55357;&#56891; RP @eay: Think about this: Twitter wasn&apos;t able to create something like Smart Push Notification in three years (since Apple introduced the Push Notification Service), while @ralf, @sneakyness &amp; Co. did it in 10 days! #AppApp
+     
+     Seems as if the unicode entities do not get parsed correctly by ADN API. Opened an issue with App.net https://github.com/appdotnet/api-spec/issues/131.
+    */
+    NSMutableArray *cleanedHashtags = [[NSMutableArray alloc] initWithCapacity:0];
+    [rawHashtags enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        int pos = (int)[(NSDictionary *)obj integerForKey:@"pos"];
+        if ([text characterAtIndex:pos] == '#') {
+            [cleanedHashtags addObject:obj];
+        }
+    }];
+    
+    NSMutableArray *cleanedMentions = [[NSMutableArray alloc] initWithCapacity:0];
+    [rawMentions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        int pos = (int)[(NSDictionary *)obj integerForKey:@"pos"];
+        if ([text characterAtIndex:pos] == '@') {
+            [cleanedMentions addObject:obj];
+        }
+    }];
+    
+    [self addAttributes:cleanedHashtags key:@"name" type:@"hashtag" attributedString:postString];
     [self addAttributes:links key:@"url" type:@"link" attributedString:postString];
-    [self addAttributes:mentions key:@"id" type:@"name" attributedString:postString];
+    [self addAttributes:cleanedMentions key:@"id" type:@"name" attributedString:postString];
     
     self.attributedString = postString;
     [self relayoutText];
