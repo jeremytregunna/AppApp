@@ -63,12 +63,13 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    if (!authErrorShown)
+    // this is coming up when it shouldn't.  fix it later.
+    /*if (!authErrorShown)
     {
         authErrorShown = TRUE;
         [[UIAlertView alertViewWithTitle:@"Authentication failed" message:@"We were unable to load the authentication page.  Please check your network settings."] show];
         [self dismissAuthenticationViewController:nil];
-    }
+    }*/
 }
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
