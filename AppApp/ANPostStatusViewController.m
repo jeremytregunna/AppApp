@@ -361,13 +361,14 @@
 - (void)suggestionAction:(UIButton *)button
 {
     NSLog(@"Tapped on button at index %d", button.tag);
-    /*
     NSRange inputRange = [postTextView selectedRange];
     NSMutableString *text = [postTextView.text mutableCopy];
-    [text insertString:@"@" atIndex:inputRange.location];
+    ReferencedEntity *suggestion = currentSuggestions[button.tag];
+    NSString *title = [NSString stringWithFormat:@"%@%@", [suggestion.type intValue] == ANReferencedEntityTypeUsername ? @"@" : @"#", suggestion.name];
+    NSString *stringToInsert = [title stringByReplacingOccurrencesOfString:currentCapture withString:@""];
+    [text insertString:stringToInsert atIndex:inputRange.location];
     postTextView.text = text;
-    currentCapture = nil
-     */
+    currentCapture = nil;
 }
 
 #pragma mark - Action sheet delegate methods
