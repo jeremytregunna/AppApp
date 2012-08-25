@@ -1338,7 +1338,6 @@
 				4E343DAC15E861410091355D /* ANDataStoreController.m in Sources */,
 				4E343DAF15E870450091355D /* AppAppModel.xcdatamodeld in Sources */,
 				4E343DB215E870E30091355D /* ReferencedEntity.m in Sources */,
-				CACE0BB015E93C3A00E1A319 /* TSMiniWebBrowser.m in Sources */,
 				CACE0BC715E94BAC00E1A319 /* TSMiniWebBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

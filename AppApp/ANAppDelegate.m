@@ -222,10 +222,12 @@ static ANAppDelegate *sharedInstance = nil;
 {
     NSLog(@"didReceiveRemoteNotification");
     NSString *message = nil;
+    NSString *sender = nil;
     
     id aps = [userInfo objectForKey:@"aps"];
     if ([aps isKindOfClass:[NSDictionary class]]) {
         message = (NSString *)[(NSDictionary *)aps objectForKey:@"alert"];
+        sender = ((NSDictionary *)aps)[@"from_adn_user_name"];
     }
     
     NSString *adnPostId = (NSString *)[userInfo objectForKey:@"adnPostId"]; // Can use this later for deep linking
@@ -237,13 +239,7 @@ static ANAppDelegate *sharedInstance = nil;
                                title:[NSString stringWithFormat:NSLocalizedString(@"New Mention", @"")]
                             subtitle:message hideAfter:6.0f];
 
-        // Extract the sender out of the message. It is assumed that the sender will be the first @foo word
-        // in the message. If that assumption is broken, this code needs to change. @jtregunna
-        NSScanner *scanner = [[NSScanner alloc] initWithString:message];
-        NSString* sender;
-        [scanner scanUpToString:@"@" intoString:&sender];
-        [scanner setScanLocation:scanner.scanLocation + 1];
-        [scanner scanUpToCharactersFromSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet] intoString:&sender];
+        // If we have a sender, index it in for auto complete.
         if(sender)
         {
             ReferencedEntity *re = [ReferencedEntity referencedEntityWithType:ANReferencedEntityTypeUsername name:sender];
