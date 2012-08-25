@@ -53,6 +53,7 @@ static ANAppDelegate *sharedInstance = nil;
 {
     self = [super init];
     sharedInstance = self;
+    [ANAPICall sharedAppAPI].timeout = 10;
     [NSURLCache setSharedURLCache:[self cacheInstance]];
     return self;
 }
@@ -98,7 +99,7 @@ static ANAppDelegate *sharedInstance = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAuthenticate:) name:@"DidAuthenticate" object:nil];
     // if we don't have an access token or it's not a valid token, display auth.
     // probably should move back to calling Safari. <-- disagree, this looks fine. -- jedi
-    if (![[ANAPICall sharedAppAPI] hasAccessToken] || ![[ANAPICall sharedAppAPI] isAccessTokenValid])
+    if (![[ANAPICall sharedAppAPI] hasAccessToken])
     {
         AuthViewController *authView = [[AuthViewController alloc] init];
         [self.window.rootViewController presentModalViewController:authView animated:YES];
@@ -163,7 +164,7 @@ static ANAppDelegate *sharedInstance = nil;
 
 - (void)didAuthenticate:(NSNotification *)notification
 {
-    if ([[ANAPICall sharedAppAPI] hasAccessToken] && [[ANAPICall sharedAppAPI] isAccessTokenValid]) {
+    if ([[ANAPICall sharedAppAPI] hasAccessToken]) {
         [self registerForRemoteNotifications];
     }
 }
@@ -272,7 +273,7 @@ static ANAppDelegate *sharedInstance = nil;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    if ([[ANAPICall sharedAppAPI] hasAccessToken] && [[ANAPICall sharedAppAPI] isAccessTokenValid]) {
+    if ([[ANAPICall sharedAppAPI] hasAccessToken]) {
         [self registerForRemoteNotifications];
     }
 }

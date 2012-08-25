@@ -177,30 +177,32 @@
     
     NSString *postID = [postData stringForKey:@"id"];
     [[ANAPICall sharedAppAPI] getPostReplies:postID uiCompletionBlock:^(id dataObject, NSError *error) {
-        
-        // sort the array by postID, so everything is in order of occurrence.
-        // surely all this could be done faster/better.  i challenge you to do it and it still work right.
-        
-        NSArray *sortedArray = [(NSArray *)dataObject sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            NSString *id1 = [obj1 stringForKey:@"id"];
-            NSString *id2 = [obj2 stringForKey:@"id"];
-            if ([id1 integerValue] > [id2 integerValue]) {
-                return (NSComparisonResult)NSOrderedDescending;
-            }
+        if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+        {
+            // sort the array by postID, so everything is in order of occurrence.
+            // surely all this could be done faster/better.  i challenge you to do it and it still work right.
             
-            if ([id1 integerValue] < [id2 integerValue]) {
-                return (NSComparisonResult)NSOrderedAscending;
-            }
+            NSArray *sortedArray = [(NSArray *)dataObject sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                NSString *id1 = [obj1 stringForKey:@"id"];
+                NSString *id2 = [obj2 stringForKey:@"id"];
+                if ([id1 integerValue] > [id2 integerValue]) {
+                    return (NSComparisonResult)NSOrderedDescending;
+                }
+                
+                if ([id1 integerValue] < [id2 integerValue]) {
+                    return (NSComparisonResult)NSOrderedAscending;
+                }
+                
+                return (NSComparisonResult)NSOrderedSame;
+            }];
             
-            return (NSComparisonResult)NSOrderedSame;
-        }];
-        
-        streamData = [NSMutableArray arrayWithArray:sortedArray];
-        
-        postIndex = [self indexOfTargetPost];
-        
-        [self.tableView reloadData];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:postIndex inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            streamData = [NSMutableArray arrayWithArray:sortedArray];
+            
+            postIndex = [self indexOfTargetPost];
+            
+            [self.tableView reloadData];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:postIndex inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
         [self refreshCompleted];
     }];
 }

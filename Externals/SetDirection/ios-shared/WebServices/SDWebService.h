@@ -13,6 +13,8 @@ typedef void (^SDWebServiceCompletionBlock)(int responseCode, NSString *response
 typedef id (^SDWebServiceDataCompletionBlock)(int responseCode, NSString *response, NSError *error);
 typedef void (^SDWebServiceUICompletionBlock)(id dataObject, NSError *error);
 
+extern NSString *const SDWebServiceError;
+
 enum
 {
     SDWebServiceErrorNoConnection = 0xBEEF,
@@ -48,6 +50,8 @@ enum
     NSOperationQueue *dataProcessingQueue;
 }
 
+@property (nonatomic, assign) NSUInteger timeout;
+
 - (id)initWithSpecification:(NSString *)specificationName;
 - (id)initWithSpecification:(NSString *)specificationName host:(NSString *)defaultHost;
 - (SDWebServiceResult)performRequestWithMethod:(NSString *)requestName routeReplacements:(NSDictionary *)replacements completion:(SDWebServiceCompletionBlock)completionBlock;
@@ -55,6 +59,7 @@ enum
 - (SDRequestResult *)performRequestWithMethod:(NSString *)requestName routeReplacements:(NSDictionary *)replacements dataProcessingBlock:(SDWebServiceDataCompletionBlock)dataProcessingBlock uiUpdateBlock:(SDWebServiceUICompletionBlock)uiUpdateBlock shouldRetry:(BOOL)shouldRetry;
 - (void)cancelRequestForIdentifier:(NSString *)identifier;
 - (BOOL)responseIsValid:(NSString *)response forRequest:(NSString *)requestName;
+- (void)handleError:(NSError *)error forResult:(id)result;
 - (NSString *)baseURLInServiceSpecification;
 - (BOOL)isReachable:(BOOL)showError;
 - (BOOL)isReachableToHost:(NSString *)hostName showError:(BOOL)showError;

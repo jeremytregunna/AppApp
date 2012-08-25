@@ -50,12 +50,14 @@
         
         // get newest posts
         [[ANAPICall sharedAppAPI] getGlobalStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-            [self updateTopWithData:dataObject];
+            if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateTopWithData:dataObject];
             [self refreshCompleted];
         }];
     } else {
         [[ANAPICall sharedAppAPI] getGlobalStream:^(id dataObject, NSError *error) {
-            [self updateTopWithData:dataObject];
+            if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateTopWithData:dataObject];
             [self refreshCompleted];            
         }];
     }
@@ -71,7 +73,8 @@
         
         // fetch old data
         [[ANAPICall sharedAppAPI] getGlobalStreamBeforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-            [self updateBottomWithData:dataObject];
+            if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateBottomWithData:dataObject];
             [self loadMoreCompleted];
         }];        
     } else {

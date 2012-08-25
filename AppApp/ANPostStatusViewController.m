@@ -28,6 +28,7 @@
 #import "NSDictionary+SDExtensions.h"
 #import "SVProgressHUD.h"
 #import "UIAlertView+SDExtensions.h"
+#import "MKInfoPanel.h"
 
 @interface ANPostStatusViewController ()
 
@@ -187,6 +188,8 @@
         {
             [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text replyToPostID:replyToID uiCompletionBlock:^(id dataObject, NSError *error) {
                 SDLog(@"post response = %@", dataObject);
+                if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                    [self dismissPostStatusViewController:nil];
                 [SVProgressHUD dismiss];
             }];
         }
@@ -194,6 +197,8 @@
         {
             [[ANAPICall sharedAppAPI] makePostWithText:postTextView.text uiCompletionBlock:^(id dataObject, NSError *error) {
                 SDLog(@"post response = %@", dataObject);
+                if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                    [self dismissPostStatusViewController:nil];
                 [SVProgressHUD dismiss];
             }];
         }
@@ -221,11 +226,14 @@
                     postTextView.text = newPostText;
 
                     [self internalPerformADNPost];
-                    [self dismissPostStatusViewController:nil];
                 }
                 else
                 {
-                    [UIAlertView alertViewWithTitle:@"Image upload failed" message:@"Sorry, it appears Imgur is down for maintenance or overloaded."];
+                    [MKInfoPanel showPanelInView:self.view
+                                            type:MKInfoPanelTypeError
+                                           title:@"Image upload failed"
+                                        subtitle:@"Imgur may be down for maintenance or overloaded."
+                                       hideAfter:4];
                 }
                 [SVProgressHUD dismiss];
             }];
@@ -234,7 +242,6 @@
         {
             [SVProgressHUD showWithStatus:@"Posting..." maskType:SVProgressHUDMaskTypeBlack];
             [self internalPerformADNPost];
-            [self dismissPostStatusViewController:nil];
         }
     }
 }

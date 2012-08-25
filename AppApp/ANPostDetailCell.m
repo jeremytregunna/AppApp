@@ -53,6 +53,12 @@
     [self addObserver:self forKeyPath:@"bottomView.frame" options:NSKeyValueObservingOptionOld context:NULL];
 }
 
+- (void)dealloc
+{
+    [self removeObserver:self forKeyPath:@"topView.frame"];
+    [self removeObserver:self forKeyPath:@"bottomView.frame"];
+}
+
 - (void)drawTopShadow
 {
     CGFloat baseHeight = CGRectGetHeight(self.topView.frame);

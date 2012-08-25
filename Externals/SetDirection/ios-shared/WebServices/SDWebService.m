@@ -10,6 +10,8 @@
 #import "NSURLCache+SDExtensions.h"
 #import "NSCachedURLResponse+LeakFix.h"
 
+NSString *const SDWebServiceError = @"SDWebServiceError";
+
 #ifdef DEBUG
 @interface NSURLRequest(SDExtensionsDebug)
 + (BOOL)allowsAnyHTTPSCertificateForHost:(NSString*)host;
@@ -22,14 +24,6 @@
 }
 @end
 #endif
-
-@interface SDMutableURLRequest : NSMutableURLRequest
-@property (nonatomic, assign) int retryCount;
-@end
-
-@implementation SDMutableURLRequest
-@synthesize retryCount;
-@end
 
 @implementation SDRequestResult
 + (SDRequestResult *)objectForResult:(SDWebServiceResult)result identifier:(NSString *)identifier
@@ -84,6 +78,11 @@
 - (BOOL)responseIsValid:(NSString *)response forRequest:(NSString *)requestName
 {
     return YES;
+}
+
+- (void)handleError:(NSError *)error forResult:(id)result
+{
+    // do nothing.  override in subclass.
 }
 
 - (NSString *)baseURLInServiceSpecification
@@ -269,8 +268,8 @@
         //  ^^^^^^^^^^^^^^^^^^^^^^^^^^ don't ever do that on the main thread.
     {
         // we ain't got no connection Lt. Dan
-        NSError *error = [NSError errorWithDomain:@"SDWebServiceError" code:SDWebServiceErrorNoConnection userInfo:nil];
-        dataProcessingBlock(0, nil, error);
+        NSError *error = [NSError errorWithDomain:SDWebServiceError code:SDWebServiceErrorNoConnection userInfo:nil];
+        uiUpdateBlock(nil, error);
         return [SDRequestResult objectForResult:SDWebServiceResultFailed identifier:nil];
     }
     
@@ -322,7 +321,7 @@
 	NSURL *url = [NSURL URLWithString:escapedUrlString];
 	SDLog(@"outgoing request = %@", url);
 	
-	SDMutableURLRequest *request = [SDMutableURLRequest requestWithURL:url];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 	[request setHTTPMethod:method];
 	[request setHTTPShouldHandleCookies:YES];
 	[request setHTTPShouldUsePipelining:NO];	// THIS WILL FUCK YOUR SHIT UP BRAH! 7 WAYS FROM SUNDAY!  In other words, this cannot be YES or our servers will return incorrect data
@@ -330,14 +329,9 @@
 #ifdef HUGE_SERVICES_TIMEOUT
 	[request setTimeoutInterval:120];
 #else
-	[request setTimeoutInterval:60];
+	[request setTimeoutInterval:_timeout];
 #endif
 
-	if (shouldRetry)
-		[request setRetryCount:3];
-	else
-		[request setRetryCount:0];
-	
     if (postMethod)
     {
 		NSString *post = nil;

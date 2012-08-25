@@ -26,19 +26,18 @@
 #import "ANAPICall.h"
 #import "ANConstants.h"
 #import "UIImage+SDExtensions.h"
+#import "UIAlertView+SDExtensions.h"
+#import "MKInfoPanel.h"
+#import "NSDictionary+SDExtensions.h"
+#import "AuthViewController.h"
 
-@interface ANAPICall()
+@implementation ANAPICall
 {
     id delegate;
-    NSString *accessToken;
     NSString *userID;
 }
 
--(void)readTokenFromDefaults;
-
-@end
-
-@implementation ANAPICall
+@synthesize accessToken;
 
 + (ANAPICall *)sharedAppAPI
 {
@@ -61,73 +60,9 @@
 
 - (BOOL)hasAccessToken
 {
-    [self readTokenFromDefaults];
-    if (accessToken && self.userID)
+    if (self.accessToken && self.userID)
         return YES;
     return NO;
-}
-
-
-// validates whether the token is valid by requesting info about our user.
-- (BOOL)isAccessTokenValid
-{
-    // our variable for an answer:
-    BOOL answer;
-
-    
-    // Building a url request to handle "get user" query.  The method apart is
-    // async and we need to get this info before we take any other action.
-    NSString *urlString = [NSString stringWithFormat:@"http://alpha-api.app.net/stream/0/users/%@?access_token=%@", self.userID, accessToken];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-    // filling in the blanks for the things we need to make this request
-    // synchronous.
-    NSError *error;
-    NSURLResponse *response;
-    
-    // request the data and check to see if we have an error.
-    NSData *json = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    // TODO: Implement better error handling here.
-    if (error) {
-        NSLog(@"error: %@", error);
-    }
-    
-    // Process the data into a dictionary of json data and grab the error code
-    // component if it exists.
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:json
-                                                         options:NSJSONReadingAllowFragments
-                                                           error:&error];
-    NSNumber *code = [[data objectForKey:@"error"] objectForKey:@"code"];
-    
-    // validate the code if it exists
-    if ([code isEqualToNumber:[NSNumber numberWithInt:401]]) {
-        
-        // got the unauthorized client code.  kill the access token and return
-        // NO as the answer.
-        accessToken = nil;
-        answer = NO;
-        
-    } else {
-        
-        // we're cool.  return YES
-        answer = YES;
-        
-    }
-    
-    return answer;
-}
-
-
-// TODO: redo these later..
-- (void)readTokenFromDefaults
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults objectForKey:@"access_token"];
-    accessToken = token;
 }
 
 - (NSString *)userID
@@ -141,6 +76,8 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *idValue = [defaults objectForKey:@"access_token"];
+    if (!idValue)
+        return @"";
     return idValue;
 }
 
@@ -151,182 +88,141 @@
     SDWebServiceDataCompletionBlock result = ^(int responseCode, NSString *response, NSError *error) {
         NSData *data = [response dataUsingEncoding:NSUTF8StringEncoding];
         NSError *jsonError = nil;
-        id dataObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        id dataObject = nil;
+        if (data)
+            dataObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         return dataObject;
     };
     return result;
 }
 
+- (BOOL)handledError:(NSError *)error dataObject:(id)dataObject view:(UIView *)view
+{
+    BOOL result = FALSE;
+    
+    // error handling.  shmowzow!
+    if (error)
+        SDLog(@"error = %@", error);
+    
+    if (error.domain == SDWebServiceError || error.domain == NSURLErrorDomain)
+    {
+        [MKInfoPanel showPanelInView:view
+                                type:MKInfoPanelTypeError
+                               title:@"Network Error"
+                            subtitle:@"Check your network connection.  App.net could also be down."
+                           hideAfter:4];
+        result = YES;
+    }
+    else
+    if (dataObject)
+    {
+        NSDictionary *responseData = (NSDictionary *)responseData;
+        NSUInteger code = [responseData unsignedIntegerForKeyPath:@"error.code"];
+        if (code)
+        {
+            if (code == 401) // invalid access token
+            {
+                // got the unauthorized client code.  kill the access token and show the auth screen.
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:@"" forKey:@"access_token"];
+
+                AuthViewController *authView = [[AuthViewController alloc] init];
+                [view.window.rootViewController presentModalViewController:authView animated:YES];
+            }
+        }
+    }
+    
+    return result;
+}
+
 - (void)makePostWithText:(NSString*)text uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
     // App.net guys (? Alex K. and Mathew Phillips) say we should put accessToken in the headers, like so:
     // "Authorization: Bearer " + access_token
     
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"text" : text };
-    
-    [self performRequestWithMethod:@"postToStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"text" : text };
+    [self performRequestWithMethod:@"postToStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)makePostWithText:(NSString*)text replyToPostID:(NSString *)postID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
     // App.net guys (? Alex K. and Mathew Phillips) say we should put accessToken in the headers, like so:
     // "Authorization: Bearer " + access_token
     
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"text" : text, @"post_id" : postID };
-    
-    [self performRequestWithMethod:@"postToStreamAsReply" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];    
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"text" : text, @"post_id" : postID };
+    [self performRequestWithMethod:@"postToStreamAsReply" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];    
 }
 
 - (void)getGlobalStream:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken };
-    
-    [self performRequestWithMethod:@"getGlobalStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken };
+    [self performRequestWithMethod:@"getGlobalStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getGlobalStreamSincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id };
-    
-    [self performRequestWithMethod:@"getGlobalStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"since_id" : since_id };
+    [self performRequestWithMethod:@"getGlobalStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getGlobalStreamBeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id };
-    
-    [self performRequestWithMethod:@"getGlobalStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"before_id" : before_id };
+    [self performRequestWithMethod:@"getGlobalStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getTaggedPosts:(NSString*)hashtag withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"hashtag" : hashtag};
-    
-    [self performRequestWithMethod:@"getTaggedPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"hashtag" : hashtag};
+    [self performRequestWithMethod:@"getTaggedPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getTaggedPosts:(NSString*)hashtag sincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id, @"hashtag" : hashtag };
-    
-    [self performRequestWithMethod:@"getTaggedPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"since_id" : since_id, @"hashtag" : hashtag };
+    [self performRequestWithMethod:@"getTaggedPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getTaggedPosts:(NSString*)hashtag beforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id, @"hashtag" : hashtag };
-    
-    [self performRequestWithMethod:@"getTaggedPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"before_id" : before_id, @"hashtag" : hashtag };
+    [self performRequestWithMethod:@"getTaggedPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserStream:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken };
-    
-    [self performRequestWithMethod:@"getUserStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken };
+    [self performRequestWithMethod:@"getUserStream" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserStreamSincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"since_id" : since_id };
-    
-    [self performRequestWithMethod:@"getUserStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"since_id" : since_id };
+    [self performRequestWithMethod:@"getUserStreamSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserStreamBeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"before_id" : before_id };
-    
-    [self performRequestWithMethod:@"getUserStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"before_id" : before_id };
+    [self performRequestWithMethod:@"getUserStreamBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserPosts:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"getUserPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"getUserPosts" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserPosts:(NSString *)ID SincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"since_id" : since_id };
-    
-    [self performRequestWithMethod:@"getUserPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID, @"since_id" : since_id };
+    [self performRequestWithMethod:@"getUserPostsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserPosts:(NSString *)ID BeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"before_id" : before_id };
-    
-    [self performRequestWithMethod:@"getUserPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID, @"before_id" : before_id };
+    [self performRequestWithMethod:@"getUserPostsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserPosts:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -346,38 +242,20 @@
 
 - (void)getUserMentions:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"getUserMentions" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"getUserMentions" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserMentions:(NSString *)ID SincePost:(NSString*)since_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"since_id" : since_id };
-    
-    [self performRequestWithMethod:@"getUserMentionsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID, @"since_id" : since_id };
+    [self performRequestWithMethod:@"getUserMentionsSince" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserMentions:(NSString *)ID BeforePost:(NSString*)before_id withCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID, @"before_id" : before_id };
-    
-    [self performRequestWithMethod:@"getUserMentionsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID, @"before_id" : before_id };
+    [self performRequestWithMethod:@"getUserMentionsBefore" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserMentions:(SDWebServiceUICompletionBlock)uiCompletionBlock
@@ -397,124 +275,62 @@
 
 - (void)getCurrentUser:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken };
-    
-    [self performRequestWithMethod:@"getCurrentUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken };
+    [self performRequestWithMethod:@"getCurrentUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"getUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];    
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"getUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserFollowers:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"getUserFollowers" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];    
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"getUserFollowers" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getUserFollowing:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"getUserFollowing" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"getUserFollowing" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getPostReplies:(NSString *)postID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"post_id" : postID };
-    
-    [self performRequestWithMethod:@"getPostReplies" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"post_id" : postID };
+    [self performRequestWithMethod:@"getPostReplies" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)followUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
-    // App.net guys (? Alex K. and Mathew Phillips) say we should put accessToken in the headers, like so:
-    // "Authorization: Bearer " + access_token
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"followUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"followUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)unfollowUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"unfollowUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"unfollowUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)muteUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
-    // App.net guys (? Alex K. and Mathew Phillips) say we should put accessToken in the headers, like so:
-    // "Authorization: Bearer " + access_token
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"muteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"muteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)unmuteUser:(NSString *)ID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken, @"user_id" : ID };
-    
-    [self performRequestWithMethod:@"unmuteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken, @"user_id" : ID };
+    [self performRequestWithMethod:@"unmuteUser" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 - (void)getMutedUsers:(SDWebServiceUICompletionBlock)uiCompletionBlock
 {
-    [self readTokenFromDefaults];
-    
-    if (!accessToken)
-        return;
-    
-    NSDictionary *replacements = @{ @"accessToken" : accessToken};
-    
-    [self performRequestWithMethod:@"getMutedUsers" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+    NSDictionary *replacements = @{ @"accessToken" : self.accessToken};
+    [self performRequestWithMethod:@"getMutedUsers" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
 }
 
 #pragma mark - Imgur upload
@@ -529,7 +345,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *replacements = @{ @"apiKey" : kImgurAPIKey, @"caption" : caption, @"base64image" : imageData };
             
-            [self performRequestWithMethod:@"imgurPhotoUpload" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:YES];
+            [self performRequestWithMethod:@"imgurPhotoUpload" routeReplacements:replacements dataProcessingBlock:[self defaultJSONProcessingBlock] uiUpdateBlock:uiCompletionBlock shouldRetry:NO];
         });
     });
 }

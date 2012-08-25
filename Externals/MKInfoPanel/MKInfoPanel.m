@@ -174,7 +174,7 @@
     }
 
     // update frame of panel
-    panel.frame = CGRectMake(0, view.bounds.size.height - panelHeight, view.bounds.size.width, panelHeight);
+    panel.frame = CGRectMake(0, 0, view.bounds.size.width, panelHeight);
     [view addSubview:panel];
     
     if (interval > 0) {
@@ -207,7 +207,7 @@
 	transition.duration = 0.25;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type = kCATransitionPush;	
-	transition.subtype = kCATransitionFromBottom; // Changed transition direction due to position change @jtregunna
+	transition.subtype = kCATransitionFromTop; // Changed transition direction due to position change @jtregunna
 	[self.layer addAnimation:transition forKey:nil];
     self.frame = CGRectMake(0, -self.frame.size.height, self.frame.size.width, self.frame.size.height);
     
@@ -236,7 +236,7 @@
 	transition.duration = 0.25;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type = kCATransitionPush;	
-	transition.subtype = kCATransitionFromTop; // Changed transition direction due to position change @jtregunna
+	transition.subtype = kCATransitionFromBottom; // Changed transition direction due to position change @jtregunna
 	[panel.layer addAnimation:transition forKey:nil];
     
     return panel;

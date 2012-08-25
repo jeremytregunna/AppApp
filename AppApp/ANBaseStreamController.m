@@ -219,9 +219,12 @@
             {
                 NSString *userID = value;
                 [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-                    NSDictionary *userData = dataObject;
-                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-                    [self.navigationController pushViewController:userViewController animated:YES];
+                    if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                    {
+                        NSDictionary *userData = dataObject;
+                        ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                        [self.navigationController pushViewController:userViewController animated:YES];
+                    }
                 }];
             }
             else

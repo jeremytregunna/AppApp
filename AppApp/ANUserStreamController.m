@@ -49,12 +49,14 @@
     if ([streamData count] > 0) {
         id firstPost = [streamData objectAtIndex:0];
         [[ANAPICall sharedAppAPI] getUserStreamSincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-            [self updateTopWithData:dataObject];
+            if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateTopWithData:dataObject];
             [self refreshCompleted];
         }];
     } else {
         [[ANAPICall sharedAppAPI] getUserStream:^(id dataObject, NSError *error) {
-            [self updateTopWithData:dataObject];
+            if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateTopWithData:dataObject];
             [self refreshCompleted];
         }];
     }
@@ -70,7 +72,8 @@
         
         // fetch old data
         [[ANAPICall sharedAppAPI] getUserStreamBeforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
-            [self updateBottomWithData:dataObject];
+            //if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                [self updateBottomWithData:dataObject];
             [self loadMoreCompleted];
         }];
     } else {
