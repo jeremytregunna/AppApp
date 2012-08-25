@@ -18,4 +18,8 @@ typedef enum
 @interface ReferencedEntity : NSManagedObject
 @property (nonatomic, retain) NSNumber* type;
 @property (nonatomic, retain) NSString* name;
+
++ (ReferencedEntity*)referencedEntityWithType:(ANReferencedEntityType)type name:(NSString*)name;
+- (void)save:(NSError**)error successCallback:(void (^)())success;
+
 @end
