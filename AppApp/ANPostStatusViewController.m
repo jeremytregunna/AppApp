@@ -343,35 +343,54 @@
 
 - (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
 {
-    NSString* firstCharacter = [text substringWithRange:(NSRange){.location = 0, .length = 1}];
+    NSLog(@"range = %@", NSStringFromRange(range));
+    NSString* firstCharacter = nil;
+    if(range.length == 0)
+        firstCharacter = text;
+
+    if([currentCapture length] == 0)
+        currentCapture = nil;
+
     if(currentCapture == nil && [firstCharacter isEqualToString:@"@"])
     {
         // Started typing a username
-        currentCapture = [NSMutableString stringWithCapacity:range.length];
+        currentCapture = [NSMutableString string];
         currentCaptureType = ANReferencedEntityTypeUsername;
-        [currentCapture appendString:[text substringFromIndex:1]];
+        if(range.length > 0)
+            currentCapture = nil;
+        else
+            [currentCapture appendString:text];
     }
     else if(currentCapture == nil && [firstCharacter isEqualToString:@"#"])
     {
         // Started typing a hashtag
-        currentCapture = [NSMutableString stringWithCapacity:range.length];
+        currentCapture = [NSMutableString string];
         currentCaptureType = ANReferencedEntityTypeHashtag;
-        [currentCapture appendString:[text substringFromIndex:1]];
+        if(range.length > 0)
+            currentCapture = nil;
+        else
+            [currentCapture appendString:text];
     }
     else if(currentCapture && [firstCharacter isEqualToString:@" "])
     {
         // Finished typing
         NSLog(@"captured string = %@", currentCapture);
-        ReferencedEntity* re = (ReferencedEntity*)[NSEntityDescription insertNewObjectForEntityForName:@"ReferencedEntity" inManagedObjectContext:[[ANDataStoreController sharedController] managedObjectContext]];
-        re.type = @(currentCaptureType);
-        re.name = currentCapture;
+        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:currentCapture];
         NSError* error = nil;
-        if([[[ANDataStoreController sharedController] managedObjectContext] save:&error] == NO)
-            NSLog(@"error = %@", error);
-        currentCapture = nil;
+        [re save:&error successCallback:^{
+            currentCapture = nil;
+        }];
     }
     else if(currentCapture)
     {
+        if(range.length > 0)
+        {
+            NSRange deletionRange = (NSRange){.location = [currentCapture length] - range.length, .length = range.length };
+            [currentCapture deleteCharactersInRange:deletionRange];
+        }
+        else
+            [currentCapture appendString:text];
+
         switch(currentCaptureType)
         {
             case ANReferencedEntityTypeUsername:
@@ -381,7 +400,6 @@
                 NSLog(@"hashtags like %@ = %@", currentCapture, [[ANDataStoreController sharedController] hashtagsForString:currentCapture]);
                 break;
         }
-        [currentCapture appendString:text];
     }
 
     return YES;
