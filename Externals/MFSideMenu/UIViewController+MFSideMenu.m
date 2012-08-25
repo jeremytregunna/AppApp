@@ -42,10 +42,10 @@ static char menuStateKey;
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
                                                  initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered 
                                                  target:self action:@selector(toggleSideMenuPressed:)];
-    } else {
+    }/* else {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"] 
                                          style:UIBarButtonItemStyleBordered target:self action:@selector(backButtonPressed:)];
-    }
+    }*/
 }
 
 - (void)setMenuState:(MFSideMenuState)menuState {
