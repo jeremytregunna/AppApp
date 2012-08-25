@@ -32,6 +32,7 @@
 #import "PocketAPI.h"
 #import "MKInfoPanel.h"
 #import "TestFlight.h"
+#import "ANDataStoreController.h"
 
 #if ENABLEPNS
 #import "RRDeviceMetadata.h"
@@ -77,7 +78,10 @@ static ANAppDelegate *sharedInstance = nil;
 {
     [TestFlight takeOff:@"c2a440bf3e4d6e2cb3a8267e89c71dc0_MTIwMjEwMjAxMi0wOC0xMCAyMTo0NjoyMC41MTQwODc"];
     [[PocketAPI sharedAPI] setAPIKey:kPocketAPIKey];
-    
+
+    // Just make sure we set up Core Data when we startup.
+    [ANDataStoreController sharedController];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     _sideMenuController = [[ANSideMenuController alloc] init];
