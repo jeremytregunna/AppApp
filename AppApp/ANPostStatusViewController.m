@@ -280,7 +280,21 @@
 
 - (IBAction)hashAction:(id)sender
 {
-    postTextView.text = [NSString stringWithFormat:@"%@#", postTextView.text];
+    NSRange inputRange = [postTextView selectedRange];
+    NSMutableString *text = [postTextView.text mutableCopy];
+    [text insertString:@"#" atIndex:inputRange.location];
+    postTextView.text = text;
+    inputRange.location += 1;
+    inputRange.length = 0;
+    [postTextView setSelectedRange:inputRange];
+}
+
+- (IBAction)mentionAction:(id)sender
+{
+    NSRange inputRange = [postTextView selectedRange];
+    NSMutableString *text = [postTextView.text mutableCopy];
+    [text insertString:@"@" atIndex:inputRange.location];
+    postTextView.text = text;
 }
 
 - (IBAction)clearPhotoAction:(id)sender
@@ -343,7 +357,7 @@
 #pragma mark - UIKeyboard handling
 
 - (void) applyKeyboardSizeChange:(NSNotification *)notification{
-    /*NSDictionary *dict = [notification userInfo];
+    NSDictionary *dict = [notification userInfo];
     NSNumber *animationDuration = [dict valueForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [dict valueForKey:UIKeyboardAnimationCurveUserInfoKey];
     
@@ -363,7 +377,7 @@
                      animations:^{
                          aViewToResize.frame = newFrame;
                      }
-                     completion:NULL];*/
+                     completion:NULL];
 }
 
 
