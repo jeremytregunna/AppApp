@@ -45,6 +45,10 @@
 		2239C20B15E062E500020AF1 /* mutualFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20515E062E500020AF1 /* mutualFollow.png */; };
 		2239C20C15E062E500020AF1 /* mutualFollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2239C20615E062E500020AF1 /* mutualFollow@2x.png */; };
 		4E343D2A15E6C8830091355D /* JSimpleInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343D2915E6C8830091355D /* JSimpleInstapaper.m */; };
+		4E343DA915E860FA0091355D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E343DA815E860FA0091355D /* CoreData.framework */; };
+		4E343DAC15E861410091355D /* ANDataStoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAB15E861410091355D /* ANDataStoreController.m */; };
+		4E343DAF15E870450091355D /* AppAppModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */; };
+		4E343DB215E870E30091355D /* ReferencedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DB115E870E30091355D /* ReferencedEntity.m */; };
 		4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1815E50BD600042C04 /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -268,6 +272,12 @@
 		2239C20615E062E500020AF1 /* mutualFollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mutualFollow@2x.png"; sourceTree = "<group>"; };
 		4E343D2815E6C8830091355D /* JSimpleInstapaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSimpleInstapaper.h; sourceTree = "<group>"; };
 		4E343D2915E6C8830091355D /* JSimpleInstapaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSimpleInstapaper.m; sourceTree = "<group>"; };
+		4E343DA815E860FA0091355D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		4E343DAA15E861410091355D /* ANDataStoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANDataStoreController.h; sourceTree = "<group>"; };
+		4E343DAB15E861410091355D /* ANDataStoreController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANDataStoreController.m; sourceTree = "<group>"; };
+		4E343DAE15E870450091355D /* AppAppModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppAppModel.xcdatamodel; sourceTree = "<group>"; };
+		4E343DB015E870E30091355D /* ReferencedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReferencedEntity.h; sourceTree = "<group>"; };
+		4E343DB115E870E30091355D /* ReferencedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReferencedEntity.m; sourceTree = "<group>"; };
 		4EF81E1715E50BD600042C04 /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
 		4EF81E1815E50BD600042C04 /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
 		4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
@@ -447,6 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E343DA915E860FA0091355D /* CoreData.framework in Frameworks */,
 				CAFC0A7815E04CC400B5E55E /* libDTCoreText.a in Frameworks */,
 				CA96DE8415E04953006A8E40 /* libxml2.dylib in Frameworks */,
 				CA96DE8215E04945006A8E40 /* ImageIO.framework in Frameworks */,
@@ -550,6 +561,7 @@
 		00B4740D15D38E3C00F767CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E343DA815E860FA0091355D /* CoreData.framework */,
 				0053C6BD15D76A36000F36FA /* libTestFlight.a */,
 				0053C6C515D76A56000F36FA /* libz.dylib */,
 				CA96DE8315E04953006A8E40 /* libxml2.dylib */,
@@ -569,6 +581,7 @@
 		00B4741415D38E3C00F767CE /* AppApp */ = {
 			isa = PBXGroup;
 			children = (
+				4E343DA715E860DA0091355D /* Data Store */,
 				4EF81E2115E51CC400042C04 /* Read Later Integration */,
 				CA2BEE0815DCE90700DD2D3A /* Extensions */,
 				CA13EFAA15DBCCEB005359E3 /* Controls */,
@@ -607,6 +620,18 @@
 				4E343D2915E6C8830091355D /* JSimpleInstapaper.m */,
 			);
 			path = JSimpleInstapaper;
+			sourceTree = "<group>";
+		};
+		4E343DA715E860DA0091355D /* Data Store */ = {
+			isa = PBXGroup;
+			children = (
+				4E343DB015E870E30091355D /* ReferencedEntity.h */,
+				4E343DB115E870E30091355D /* ReferencedEntity.m */,
+				4E343DAA15E861410091355D /* ANDataStoreController.h */,
+				4E343DAB15E861410091355D /* ANDataStoreController.m */,
+				4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */,
+			);
+			name = "Data Store";
 			sourceTree = "<group>";
 		};
 		4EF81E1615E50BD600042C04 /* PocketSDK */ = {
@@ -1253,6 +1278,9 @@
 				4EF81E2B15E535D600042C04 /* ANReadLaterAuthViewController.m in Sources */,
 				4EF81E9E15E5C03400042C04 /* MKInfoPanel.m in Sources */,
 				4E343D2A15E6C8830091355D /* JSimpleInstapaper.m in Sources */,
+				4E343DAC15E861410091355D /* ANDataStoreController.m in Sources */,
+				4E343DAF15E870450091355D /* AppAppModel.xcdatamodeld in Sources */,
+				4E343DB215E870E30091355D /* ReferencedEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1540,6 +1568,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4E343DAE15E870450091355D /* AppAppModel.xcdatamodel */,
+			);
+			currentVersion = 4E343DAE15E870450091355D /* AppAppModel.xcdatamodel */;
+			path = AppAppModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 00B4740115D38E3C00F767CE /* Project object */;
 }

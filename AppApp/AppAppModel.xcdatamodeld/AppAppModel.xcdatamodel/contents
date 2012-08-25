@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1807" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="ReferencedEntity" representedClassName="ReferencedEntity" syncable="YES">
+        <attribute name="name" attributeType="String" minValueString="1" indexed="YES" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="1" indexed="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ReferencedEntity" positionX="0" positionY="0" width="128" height="75"/>
+    </elements>
+</model>
