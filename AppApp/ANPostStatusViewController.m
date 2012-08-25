@@ -52,7 +52,7 @@
     ANReferencedEntityType currentCaptureType;
 }
 
-@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData;
+@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData, suggestionView;
 
 - (id)init
 {
@@ -293,6 +293,13 @@
     inputRange.location += 1;
     inputRange.length = 0;
     [postTextView setSelectedRange:inputRange];
+    currentCapture = [@"#" mutableCopy];
+
+    [UIView animateWithDuration:0.35f animations:^{
+        CGRect frame = self.suggestionView.frame;
+        frame.origin.y = 0;
+        self.suggestionView.frame = frame;
+    }];
 }
 
 - (IBAction)mentionAction:(id)sender
@@ -301,6 +308,13 @@
     NSMutableString *text = [postTextView.text mutableCopy];
     [text insertString:@"@" atIndex:inputRange.location];
     postTextView.text = text;
+    currentCapture = [@"@" mutableCopy];
+
+    [UIView animateWithDuration:0.35f animations:^{
+        CGRect frame = self.suggestionView.frame;
+        frame.origin.y = 0;
+        self.suggestionView.frame = frame;
+    }];
 }
 
 - (IBAction)clearPhotoAction:(id)sender
@@ -380,6 +394,12 @@
             currentCapture = nil;
         else
             [currentCapture appendString:text];
+
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = 0;
+            self.suggestionView.frame = frame;
+        }];
     }
     else if(currentCapture && [firstCharacter isEqualToString:@" "])
     {
@@ -389,6 +409,12 @@
         [re save:&error successCallback:^{
             currentCapture = nil;
         }];
+
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = -frame.size.height;
+            self.suggestionView.frame = frame;
+        }];
     }
     else if(currentCapture)
     {
@@ -397,6 +423,15 @@
         {
             NSRange deletionRange = (NSRange){.location = [currentCapture length] - range.length, .length = range.length };
             [currentCapture deleteCharactersInRange:deletionRange];
+
+            if([currentCapture isEqualToString:@""])
+            {
+                [UIView animateWithDuration:0.35f animations:^{
+                    CGRect frame = self.suggestionView.frame;
+                    frame.origin.y = -frame.size.height;
+                    self.suggestionView.frame = frame;
+                }];
+            }
         }
         else
             [currentCapture appendString:text];
@@ -449,6 +484,7 @@
 - (void)viewDidUnload
 {
     postImageButton = nil;
+    self.suggestionView = nil;
     [super viewDidUnload];
 }
 

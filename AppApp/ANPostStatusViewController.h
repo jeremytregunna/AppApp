@@ -38,6 +38,7 @@ typedef enum
 @property (nonatomic, retain) IBOutlet UILabel *characterCountLabel;
 @property (nonatomic, retain) IBOutlet UITextView *postTextView;
 @property (nonatomic, retain) IBOutlet UIView *groupView;
+@property (nonatomic, strong) IBOutlet UIScrollView *suggestionView;
 @property (nonatomic, retain) NSString *postText;
 @property (nonatomic, retain) NSDictionary *postData;
 
