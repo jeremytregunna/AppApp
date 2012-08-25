@@ -343,7 +343,6 @@
 
 - (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
 {
-    NSLog(@"range = %@", NSStringFromRange(range));
     NSString* firstCharacter = nil;
     if(range.length == 0)
         firstCharacter = text;
@@ -351,21 +350,11 @@
     if([currentCapture length] == 0)
         currentCapture = nil;
 
-    if(currentCapture == nil && [firstCharacter isEqualToString:@"@"])
+    if(currentCapture == nil && ([firstCharacter isEqualToString:@"@"] || [firstCharacter isEqualToString:@"#"]))
     {
         // Started typing a username
         currentCapture = [NSMutableString string];
-        currentCaptureType = ANReferencedEntityTypeUsername;
-        if(range.length > 0)
-            currentCapture = nil;
-        else
-            [currentCapture appendString:text];
-    }
-    else if(currentCapture == nil && [firstCharacter isEqualToString:@"#"])
-    {
-        // Started typing a hashtag
-        currentCapture = [NSMutableString string];
-        currentCaptureType = ANReferencedEntityTypeHashtag;
+        currentCaptureType = [firstCharacter isEqualToString:@"@"] ? ANReferencedEntityTypeUsername : ANReferencedEntityTypeHashtag;
         if(range.length > 0)
             currentCapture = nil;
         else
@@ -374,8 +363,7 @@
     else if(currentCapture && [firstCharacter isEqualToString:@" "])
     {
         // Finished typing
-        NSLog(@"captured string = %@", currentCapture);
-        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:currentCapture];
+        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:[currentCapture substringFromIndex:1]];
         NSError* error = nil;
         [re save:&error successCallback:^{
             currentCapture = nil;
@@ -383,6 +371,7 @@
     }
     else if(currentCapture)
     {
+        // Normal typing when a capture has started, but before it has finished.
         if(range.length > 0)
         {
             NSRange deletionRange = (NSRange){.location = [currentCapture length] - range.length, .length = range.length };
@@ -391,14 +380,18 @@
         else
             [currentCapture appendString:text];
 
-        switch(currentCaptureType)
+        if([currentCapture length] > 0)
         {
-            case ANReferencedEntityTypeUsername:
-                NSLog(@"usernames like %@ = %@", currentCapture, [[ANDataStoreController sharedController] usernamesForString:currentCapture]);
-                break;
-            case ANReferencedEntityTypeHashtag:
-                NSLog(@"hashtags like %@ = %@", currentCapture, [[ANDataStoreController sharedController] hashtagsForString:currentCapture]);
-                break;
+            NSString* sanitizedString = [currentCapture substringFromIndex:1];
+            switch(currentCaptureType)
+            {
+                case ANReferencedEntityTypeUsername:
+                    NSLog(@"usernames like %@ = %@", currentCapture, [[ANDataStoreController sharedController] usernamesForString:sanitizedString]);
+                    break;
+                case ANReferencedEntityTypeHashtag:
+                    NSLog(@"hashtags like %@ = %@", currentCapture, [[ANDataStoreController sharedController] hashtagsForString:sanitizedString]);
+                    break;
+            }
         }
     }
 
