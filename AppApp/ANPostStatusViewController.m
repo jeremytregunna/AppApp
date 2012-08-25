@@ -331,6 +331,7 @@
     inputRange.length = 0;
     [postTextView setSelectedRange:inputRange];
     currentCapture = [@"#" mutableCopy];
+    currentCaptureType = ANReferencedEntityTypeHashtag;
 
     [UIView animateWithDuration:0.35f animations:^{
         CGRect frame = self.suggestionView.frame;
@@ -346,6 +347,7 @@
     [text insertString:@"@" atIndex:inputRange.location];
     postTextView.text = text;
     currentCapture = [@"@" mutableCopy];
+    currentCaptureType = ANReferencedEntityTypeUsername;
 
     [UIView animateWithDuration:0.35f animations:^{
         CGRect frame = self.suggestionView.frame;
