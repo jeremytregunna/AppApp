@@ -28,6 +28,8 @@
 #import "ANUserListCell.h"
 #import "NSDictionary+SDExtensions.h"
 #import "NSObject+SDExtensions.h"
+#import "ANDataStoreController.h"
+#import "ReferencedEntity.h"
 
 @interface ANUserListController ()
 
@@ -120,7 +122,12 @@
     } else {
         userObject = [userArray objectAtIndex:[indexPath row]];
     }
-    
+
+    // Cache the current username in core data
+    ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:ANReferencedEntityTypeUsername name:[userObject stringForKeyPath:@"username"]];
+    // Don't care if the save didn't work
+    [re save:nil successCallback:nil];
+
     cell.nameLabel.text = [userObject stringForKey:@"name"];
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [userObject stringForKeyPath:@"username"]];
     cell.userImageView.imageURL = [userObject stringForKeyPath:@"avatar_image.url"];
