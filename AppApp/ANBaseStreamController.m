@@ -40,6 +40,7 @@
 #import "ANReadLaterManager.h"
 #import "ANReadLaterAuthViewController.h"
 #import "MKInfoPanel.h"
+#import "TSMiniWebBrowser.h"
 
 
 @interface ANBaseStreamController ()
@@ -238,17 +239,42 @@
             {
                 NSString *userID = value;
                 [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-                    NSDictionary *userData = dataObject;
-                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-                    [self.navigationController pushViewController:userViewController animated:YES];
+                    if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                    {
+                        NSDictionary *userData = dataObject;
+                        ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                        [self.navigationController pushViewController:userViewController animated:YES];
+                    }
                 }];
             }
             else
             if ([type isEqualToString:@"link"])
             {
-                NSURL *url = [NSURL URLWithString:value];
+                /*NSURL *url = [NSURL URLWithString:value];
                 if ([[UIApplication sharedApplication] canOpenURL:url])
-                    [[UIApplication sharedApplication] openURL:url];
+                    [[UIApplication sharedApplication] openURL:url];*/
+                TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:@"http://indiedevstories.com"]];
+                //    webBrowser.delegate = self;
+                //    webBrowser.showURLStringOnActionSheetTitle = YES;
+                //    webBrowser.showPageTitleOnTitleBar = YES;
+                    webBrowser.showActionButton = YES;
+                    webBrowser.showReloadButton = YES;
+                //    [webBrowser setFixedTitleBarText:@"Test Title Text"]; // This has priority over "showPageTitleOnTitleBar".
+                webBrowser.mode = TSMiniWebBrowserModeNavigation;
+                
+                //webBrowser.barStyle = UIBarStyleBlack;
+                
+                if (webBrowser.mode == TSMiniWebBrowserModeModal)
+                {
+                    webBrowser.modalDismissButtonTitle = @"Home";
+                    [self presentModalViewController:webBrowser animated:YES];
+                }
+                else
+                if(webBrowser.mode == TSMiniWebBrowserModeNavigation)
+                {
+                    [self.navigationController pushViewController:webBrowser animated:YES];
+                }
+
             }
             return result;
         };

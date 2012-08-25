@@ -152,17 +152,19 @@
         userID = [ANAPICall sharedAppAPI].userID;
     
     [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-        SDLog(@"user data = %@", dataObject);
-        
-        // Check if we have errors.
-        if (!error && [dataObject objectForKey:@"error"] == nil) {
-            userData = (NSDictionary *)dataObject;
-            [self configureFromUserData];
-            [self fetchFollowData];
-        } else {
-            //TODO: Show an error
+        if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+        {
+            SDLog(@"user data = %@", dataObject);
+            
+            // Check if we have errors.
+            if (!error && [dataObject objectForKey:@"error"] == nil) {
+                userData = (NSDictionary *)dataObject;
+                [self configureFromUserData];
+                [self fetchFollowData];
+            } else {
+                //TODO: Show an error
+            }
         }
-        
         [SVProgressHUD dismiss];
     }];
     

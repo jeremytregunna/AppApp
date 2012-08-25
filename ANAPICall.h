@@ -29,6 +29,7 @@
 @interface ANAPICall : SDWebService
 
 @property (nonatomic, readonly) NSString *userID;
+@property (nonatomic, readonly) NSString *accessToken;
 
 + (ANAPICall *)sharedAppAPI;
 
@@ -37,9 +38,8 @@
 // check to answer whether we have a valid token for a session.
 - (BOOL)hasAccessToken;
 
-// validates whether the token is valid by requesting info about our user.
-- (BOOL)isAccessTokenValid;
-
+// ui completion blocks call this, handle more global errors.
+- (BOOL)handledError:(NSError *)error dataObject:(id)dataObject view:(UIView *)view;
 
 - (void)makePostWithText:(NSString*)text uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;
 - (void)makePostWithText:(NSString*)text replyToPostID:(NSString *)postID uiCompletionBlock:(SDWebServiceUICompletionBlock)uiCompletionBlock;

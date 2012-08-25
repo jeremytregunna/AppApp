@@ -27,8 +27,13 @@
 #import "ANAPICall.h"
 #import "SVProgressHUD.h"
 #import "ANAppDelegate.h"
+#import "UIAlertView+SDExtensions.h"
 
 @implementation AuthViewController
+{
+    BOOL authErrorShown;
+}
+
 @synthesize authWebView;
 
 - (id)init
@@ -54,6 +59,17 @@
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:authURL];
     
     [authWebView loadRequest:requestObj];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // this is coming up when it shouldn't.  fix it later.
+    /*if (!authErrorShown)
+    {
+        authErrorShown = TRUE;
+        [[UIAlertView alertViewWithTitle:@"Authentication failed" message:@"We were unable to load the authentication page.  Please check your network settings."] show];
+        [self dismissAuthenticationViewController:nil];
+    }*/
 }
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
