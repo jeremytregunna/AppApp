@@ -33,6 +33,7 @@
 #import "MKInfoPanel.h"
 #import "TestFlight.h"
 #import "ANDataStoreController.h"
+#import "ReferencedEntity.h"
 
 #if ENABLEPNS
 #import "RRDeviceMetadata.h"
@@ -233,6 +234,20 @@ static ANAppDelegate *sharedInstance = nil;
                                 type:MKInfoPanelTypeInfo
                                title:[NSString stringWithFormat:NSLocalizedString(@"New Mention", @"")]
                             subtitle:message hideAfter:6.0f];
+
+        // Extract the sender out of the message. It is assumed that the sender will be the first @foo word
+        // in the message. If that assumption is broken, this code needs to change. @jtregunna
+        NSScanner *scanner = [[NSScanner alloc] initWithString:message];
+        NSString* sender;
+        [scanner scanUpToString:@"@" intoString:&sender];
+        [scanner setScanLocation:scanner.scanLocation + 1];
+        [scanner scanUpToCharactersFromSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet] intoString:&sender];
+        if(sender)
+        {
+            ReferencedEntity *re = [ReferencedEntity referencedEntityWithType:ANReferencedEntityTypeUsername name:sender];
+            // If it fails, it fails, no worries.
+            [re save:nil successCallback:nil];
+        }
     }
 }
 
