@@ -32,6 +32,8 @@
 #import "PocketAPI.h"
 #import "MKInfoPanel.h"
 #import "TestFlight.h"
+#import "ANDataStoreController.h"
+#import "ReferencedEntity.h"
 
 #if ENABLEPNS
 #import "RRDeviceMetadata.h"
@@ -78,7 +80,10 @@ static ANAppDelegate *sharedInstance = nil;
 {
     [TestFlight takeOff:@"c2a440bf3e4d6e2cb3a8267e89c71dc0_MTIwMjEwMjAxMi0wOC0xMCAyMTo0NjoyMC41MTQwODc"];
     [[PocketAPI sharedAPI] setAPIKey:kPocketAPIKey];
-    
+
+    // Just make sure we set up Core Data when we startup.
+    [ANDataStoreController sharedController];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     _sideMenuController = [[ANSideMenuController alloc] init];
@@ -218,10 +223,12 @@ static ANAppDelegate *sharedInstance = nil;
 {
     NSLog(@"didReceiveRemoteNotification");
     NSString *message = nil;
+    NSString *sender = nil;
     
     id aps = [userInfo objectForKey:@"aps"];
     if ([aps isKindOfClass:[NSDictionary class]]) {
         message = (NSString *)[(NSDictionary *)aps objectForKey:@"alert"];
+        sender = ((NSDictionary *)aps)[@"from_adn_user_name"];
     }
     
     NSString *adnPostId = (NSString *)[userInfo objectForKey:@"adnPostId"]; // Can use this later for deep linking
@@ -232,6 +239,14 @@ static ANAppDelegate *sharedInstance = nil;
                                 type:MKInfoPanelTypeInfo
                                title:[NSString stringWithFormat:NSLocalizedString(@"New Mention", @"")]
                             subtitle:message hideAfter:6.0f];
+
+        // If we have a sender, index it in for auto complete.
+        if(sender)
+        {
+            ReferencedEntity *re = [ReferencedEntity referencedEntityWithType:ANReferencedEntityTypeUsername name:sender];
+            // If it fails, it fails, no worries.
+            [re save:nil successCallback:nil];
+        }
     }
 }
 

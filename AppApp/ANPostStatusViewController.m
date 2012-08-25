@@ -23,11 +23,14 @@
  DEALINGS IN THE SOFTWARE.
 */
 
+#import <QuartzCore/QuartzCore.h>
 #import "ANPostStatusViewController.h"
 #import "ANAPICall.h"
 #import "NSDictionary+SDExtensions.h"
 #import "SVProgressHUD.h"
 #import "UIAlertView+SDExtensions.h"
+#import "ANDataStoreController.h"
+#import "ReferencedEntity.h"
 #import "MKInfoPanel.h"
 
 @interface ANPostStatusViewController ()
@@ -44,9 +47,14 @@
     NSDictionary *postData;
     ANPostMode postMode;
     __weak IBOutlet UIButton *postImageButton;
+
+    // Autocomplete
+    NSMutableString *currentCapture;
+    ANReferencedEntityType currentCaptureType;
+    NSArray* currentSuggestions;
 }
 
-@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData;
+@synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData, suggestionView;
 
 - (id)init
 {
@@ -82,6 +90,11 @@
     [super viewDidLoad];
     [self registerForNotifications];
     postImageButton.hidden = YES;
+
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = self.suggestionView.bounds;
+    gradientLayer.colors = @[ (id)[[UIColor colorWithRed:94.0f/255.0f green:135.0f/255.0f blue:1.0f alpha:1.0f] CGColor], (id)[[UIColor colorWithRed:54.0f/255.0f green:84.0f/255.0f blue:1.0f alpha:1.0f] CGColor] ];
+    [self.suggestionView.layer insertSublayer:gradientLayer atIndex:0];
 }
 
 
@@ -254,6 +267,36 @@
 
 #pragma mark - Helpers
 
+- (CGRect)frameForSuggestionButtonAtIndex:(NSUInteger)index
+{
+    static CGFloat margin = 5.0f;
+    ReferencedEntity *suggestion = currentSuggestions[index];
+    NSString *title = [NSString stringWithFormat:@"%@%@", [suggestion.type intValue] == ANReferencedEntityTypeUsername ? @"@" : @"#", suggestion.name];
+    CGSize stringSize = [title sizeWithFont:[UIFont systemFontOfSize:14]];
+    CGRect lastButtonFrame = CGRectZero;
+    if(index > 0)
+        lastButtonFrame = [self frameForSuggestionButtonAtIndex:index - 1];
+    CGRect frame = CGRectMake(lastButtonFrame.origin.x + lastButtonFrame.size.width + margin, margin, stringSize.width + margin, stringSize.height + margin);
+    NSLog(@"lastButtonFrame = %@, frame = %@", NSStringFromCGRect(lastButtonFrame), NSStringFromCGRect(frame));
+    return frame;
+}
+
+- (UIButton *)buttonForSuggestionAtIndex:(NSUInteger)index
+{
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = [self frameForSuggestionButtonAtIndex:index];
+    button.tag = index;
+    button.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    button.titleLabel.shadowColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
+    button.titleLabel.shadowOffset = CGSizeMake(0, 1);
+
+    ReferencedEntity *suggestion = currentSuggestions[index];
+    NSString *title = [NSString stringWithFormat:@"%@%@", [suggestion.type intValue] == ANReferencedEntityTypeUsername ? @"@" : @"#", suggestion.name];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(suggestionAction:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
 - (NSString *)usersMentionedInPostData
 {
     if (!postData)
@@ -287,6 +330,13 @@
     inputRange.location += 1;
     inputRange.length = 0;
     [postTextView setSelectedRange:inputRange];
+    currentCapture = [@"#" mutableCopy];
+
+    [UIView animateWithDuration:0.35f animations:^{
+        CGRect frame = self.suggestionView.frame;
+        frame.origin.y = 0;
+        self.suggestionView.frame = frame;
+    }];
 }
 
 - (IBAction)mentionAction:(id)sender
@@ -295,10 +345,30 @@
     NSMutableString *text = [postTextView.text mutableCopy];
     [text insertString:@"@" atIndex:inputRange.location];
     postTextView.text = text;
+    currentCapture = [@"@" mutableCopy];
+
+    [UIView animateWithDuration:0.35f animations:^{
+        CGRect frame = self.suggestionView.frame;
+        frame.origin.y = 0;
+        self.suggestionView.frame = frame;
+    }];
 }
 
 - (IBAction)clearPhotoAction:(id)sender
 {
+}
+
+- (void)suggestionAction:(UIButton *)button
+{
+    NSLog(@"Tapped on button at index %d", button.tag);
+    NSRange inputRange = [postTextView selectedRange];
+    NSMutableString *text = [postTextView.text mutableCopy];
+    ReferencedEntity *suggestion = currentSuggestions[button.tag];
+    NSString *title = [NSString stringWithFormat:@"%@%@", [suggestion.type intValue] == ANReferencedEntityTypeUsername ? @"@" : @"#", suggestion.name];
+    NSString *stringToInsert = [title stringByReplacingOccurrencesOfString:currentCapture withString:@""];
+    [text insertString:stringToInsert atIndex:inputRange.location];
+    postTextView.text = text;
+    currentCapture = nil;
 }
 
 #pragma mark - Action sheet delegate methods
@@ -354,6 +424,100 @@
     [picker dismissModalViewControllerAnimated:YES];
 }
 
+#pragma mark - Textview delegate
+
+- (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
+{
+    NSString* firstCharacter = nil;
+    if(range.length == 0)
+        firstCharacter = text;
+
+    if([currentCapture length] == 0)
+        currentCapture = nil;
+
+    if(currentCapture == nil && ([firstCharacter isEqualToString:@"@"] || [firstCharacter isEqualToString:@"#"]))
+    {
+        // Started typing a username
+        currentCapture = [NSMutableString string];
+        currentCaptureType = [firstCharacter isEqualToString:@"@"] ? ANReferencedEntityTypeUsername : ANReferencedEntityTypeHashtag;
+        if(range.length > 0)
+            currentCapture = nil;
+        else
+            [currentCapture appendString:text];
+
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = 0;
+            self.suggestionView.frame = frame;
+        }];
+    }
+    else if(currentCapture && [firstCharacter isEqualToString:@" "])
+    {
+        // Finished typing
+        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:[currentCapture substringFromIndex:1]];
+        NSError* error = nil;
+        [re save:&error successCallback:^{
+            currentCapture = nil;
+        }];
+
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = -frame.size.height;
+            self.suggestionView.frame = frame;
+        }];
+    }
+    else if(currentCapture)
+    {
+        // Normal typing when a capture has started, but before it has finished.
+        if(range.length > 0)
+        {
+            NSRange deletionRange = (NSRange){.location = [currentCapture length] - range.length, .length = range.length };
+            [currentCapture deleteCharactersInRange:deletionRange];
+
+            if([currentCapture isEqualToString:@""])
+            {
+                [UIView animateWithDuration:0.35f animations:^{
+                    CGRect frame = self.suggestionView.frame;
+                    frame.origin.y = -frame.size.height;
+                    self.suggestionView.frame = frame;
+                }];
+            }
+        }
+        else
+            [currentCapture appendString:text];
+
+        if([currentCapture length] > 0)
+        {
+            NSString* sanitizedString = [currentCapture substringFromIndex:1];
+
+            [[self.suggestionView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+            switch(currentCaptureType)
+            {
+                case ANReferencedEntityTypeUsername:
+                    currentSuggestions = [[ANDataStoreController sharedController] usernamesForString:sanitizedString];
+                    NSLog(@"usernames like %@ = %@", currentCapture, [currentSuggestions valueForKey:@"name"]);
+                    break;
+                case ANReferencedEntityTypeHashtag:
+                    currentSuggestions = [[ANDataStoreController sharedController] hashtagsForString:sanitizedString];
+                    NSLog(@"hashtags like %@ = %@", currentCapture, [currentSuggestions valueForKey:@"name"]);
+                    break;
+            }
+            CGRect lastFrame = CGRectZero;
+            if([currentSuggestions count] > 0)
+                lastFrame = [self frameForSuggestionButtonAtIndex:[currentSuggestions count] - 1];
+            CGFloat width = CGRectGetMaxX(lastFrame);
+            self.suggestionView.contentSize = CGSizeMake(width, CGRectGetHeight(self.suggestionView.bounds));
+            for(NSInteger i = 0; i < [currentSuggestions count]; i++)
+            {
+                UIButton *button = [self buttonForSuggestionAtIndex:i];
+                [self.suggestionView addSubview:button];
+            }
+        }
+    }
+
+    return YES;
+}
+
 #pragma mark - UIKeyboard handling
 
 - (void) applyKeyboardSizeChange:(NSNotification *)notification{
@@ -384,6 +548,7 @@
 - (void)viewDidUnload
 {
     postImageButton = nil;
+    self.suggestionView = nil;
     [super viewDidUnload];
 }
 
