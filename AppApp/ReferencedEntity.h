@@ -16,8 +16,6 @@ typedef enum
 } ANReferencedEntityType;
 
 @interface ReferencedEntity : NSManagedObject
-
 @property (nonatomic, retain) NSNumber* type;
 @property (nonatomic, retain) NSString* name;
-
 @end

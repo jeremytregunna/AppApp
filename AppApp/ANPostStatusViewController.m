@@ -28,6 +28,8 @@
 #import "NSDictionary+SDExtensions.h"
 #import "SVProgressHUD.h"
 #import "UIAlertView+SDExtensions.h"
+#import "ANDataStoreController.h"
+#import "ReferencedEntity.h"
 
 @interface ANPostStatusViewController ()
 
@@ -43,6 +45,10 @@
     NSDictionary *postData;
     ANPostMode postMode;
     __weak IBOutlet UIButton *postImageButton;
+
+    // Autocomplete
+    NSMutableString *currentCapture;
+    ANReferencedEntityType currentCaptureType;
 }
 
 @synthesize postText, postTextView, characterCountLabel, postButton, groupView, postData;
@@ -331,6 +337,54 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - Textview delegate
+
+- (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
+{
+    NSString* firstCharacter = [text substringWithRange:(NSRange){.location = 0, .length = 1}];
+    if(currentCapture == nil && [firstCharacter isEqualToString:@"@"])
+    {
+        // Started typing a username
+        currentCapture = [NSMutableString stringWithCapacity:range.length];
+        currentCaptureType = ANReferencedEntityTypeUsername;
+        [currentCapture appendString:[text substringFromIndex:1]];
+    }
+    else if(currentCapture == nil && [firstCharacter isEqualToString:@"#"])
+    {
+        // Started typing a hashtag
+        currentCapture = [NSMutableString stringWithCapacity:range.length];
+        currentCaptureType = ANReferencedEntityTypeHashtag;
+        [currentCapture appendString:[text substringFromIndex:1]];
+    }
+    else if(currentCapture && [firstCharacter isEqualToString:@" "])
+    {
+        // Finished typing
+        NSLog(@"captured string = %@", currentCapture);
+        ReferencedEntity* re = (ReferencedEntity*)[NSEntityDescription insertNewObjectForEntityForName:@"ReferencedEntity" inManagedObjectContext:[[ANDataStoreController sharedController] managedObjectContext]];
+        re.type = @(currentCaptureType);
+        re.name = currentCapture;
+        NSError* error = nil;
+        if([[[ANDataStoreController sharedController] managedObjectContext] save:&error] == NO)
+            NSLog(@"error = %@", error);
+        currentCapture = nil;
+    }
+    else if(currentCapture)
+    {
+        switch(currentCaptureType)
+        {
+            case ANReferencedEntityTypeUsername:
+                NSLog(@"usernames like %@ = %@", currentCapture, [[ANDataStoreController sharedController] usernamesForString:currentCapture]);
+                break;
+            case ANReferencedEntityTypeHashtag:
+                NSLog(@"hashtags like %@ = %@", currentCapture, [[ANDataStoreController sharedController] hashtagsForString:currentCapture]);
+                break;
+        }
+        [currentCapture appendString:text];
+    }
+
+    return YES;
 }
 
 #pragma mark - UIKeyboard handling

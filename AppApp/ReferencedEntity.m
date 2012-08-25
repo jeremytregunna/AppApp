@@ -7,11 +7,9 @@
 //
 
 #import "ReferencedEntity.h"
-
+#import "ANDataStoreController.h"
 
 @implementation ReferencedEntity
-
 @dynamic type;
 @dynamic name;
-
 @end

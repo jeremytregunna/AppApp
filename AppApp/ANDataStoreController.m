@@ -65,7 +65,7 @@
 {
     NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReferencedEntity" inManagedObjectContext:self.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"type == %d AND name like[cd] %@", type, string]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(type == %d) AND (name contains[cd] %@)", type, string]];
 
     NSError* error = nil;
     NSArray* temporaryResults = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
