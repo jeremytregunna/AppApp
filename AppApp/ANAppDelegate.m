@@ -53,7 +53,7 @@ static ANAppDelegate *sharedInstance = nil;
 {
     self = [super init];
     sharedInstance = self;
-    [ANAPICall sharedAppAPI].timeout = 10;
+    [ANAPICall sharedAppAPI].timeout = 60;
     [NSURLCache setSharedURLCache:[self cacheInstance]];
     return self;
 }
