@@ -104,6 +104,8 @@
 		CACE0BC615E94BAC00E1A319 /* reload_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CACE0BBD15E94BAC00E1A319 /* reload_icon@2x.png */; };
 		CACE0BC715E94BAC00E1A319 /* TSMiniWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = CACE0BBF15E94BAC00E1A319 /* TSMiniWebBrowser.m */; };
 		CACE0BC815E94BAC00E1A319 /* TSMiniWebBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = CACE0BC015E94BAC00E1A319 /* TSMiniWebBrowser.xib */; };
+		CACE0BCF15E9626F00E1A319 /* backButtonBG.png in Resources */ = {isa = PBXBuildFile; fileRef = CACE0BCD15E9626F00E1A319 /* backButtonBG.png */; };
+		CACE0BD015E9626F00E1A319 /* backButtonBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CACE0BCE15E9626F00E1A319 /* backButtonBG@2x.png */; };
 		CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648BF15E0C2ED0081E981 /* photoIcon.png */; };
 		CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */; };
 		CAD648C515E0C7AE0081E981 /* ANImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD648C415E0C7AE0081E981 /* ANImageView.m */; };
@@ -359,6 +361,8 @@
 		CACE0BBE15E94BAC00E1A319 /* TSMiniWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMiniWebBrowser.h; sourceTree = "<group>"; };
 		CACE0BBF15E94BAC00E1A319 /* TSMiniWebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMiniWebBrowser.m; sourceTree = "<group>"; };
 		CACE0BC015E94BAC00E1A319 /* TSMiniWebBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TSMiniWebBrowser.xib; sourceTree = "<group>"; };
+		CACE0BCD15E9626F00E1A319 /* backButtonBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backButtonBG.png; sourceTree = "<group>"; };
+		CACE0BCE15E9626F00E1A319 /* backButtonBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backButtonBG@2x.png"; sourceTree = "<group>"; };
 		CAD648BF15E0C2ED0081E981 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoIcon.png; sourceTree = "<group>"; };
 		CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photoIcon@2x.png"; sourceTree = "<group>"; };
 		CAD648C315E0C7AE0081E981 /* ANImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageView.h; sourceTree = "<group>"; };
@@ -545,6 +549,8 @@
 				CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */,
 				CACE0BB215E93FFD00E1A319 /* toolbarBg.png */,
 				CACE0BB415E9409300E1A319 /* toolbarBg@2x.png */,
+				CACE0BCD15E9626F00E1A319 /* backButtonBG.png */,
+				CACE0BCE15E9626F00E1A319 /* backButtonBG@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -1243,6 +1249,8 @@
 				CACE0BC515E94BAC00E1A319 /* reload_icon.png in Resources */,
 				CACE0BC615E94BAC00E1A319 /* reload_icon@2x.png in Resources */,
 				CACE0BC815E94BAC00E1A319 /* TSMiniWebBrowser.xib in Resources */,
+				CACE0BCF15E9626F00E1A319 /* backButtonBG.png in Resources */,
+				CACE0BD015E9626F00E1A319 /* backButtonBG@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -127,6 +127,7 @@ static ANAppDelegate *sharedInstance = nil;
 {
     // Set up navigation bar bg
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbarBg"] forBarMetrics:UIBarMetricsDefault];
+    
     [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbarBg"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     // Set up navigation title
@@ -134,8 +135,8 @@ static ANAppDelegate *sharedInstance = nil;
     
     // Set UIBarButton item bg
     [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"barbuttonBg"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont:[UIFont fontWithName:@"Ubuntu-Medium" size:12.0f]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"backButtonBG"] stretchableImageWithLeftCapWidth:19.0f topCapHeight:0.0f] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
     // Set up navigation bar rounded corners
     ((UINavigationController *)self.window.rootViewController).navigationBar.layer.mask = [self _navigationBarShapeLayer];
