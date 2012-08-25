@@ -127,6 +127,7 @@ static ANAppDelegate *sharedInstance = nil;
 {
     // Set up navigation bar bg
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbarBg"] forBarMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbarBg"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     // Set up navigation title
     [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeFont:[UIFont fontWithName:@"Ubuntu-Medium" size:20.0f]}];
