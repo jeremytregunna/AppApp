@@ -106,10 +106,14 @@
         NSUInteger len = [item unsignedIntegerForKey:@"len"];
         NSString *keyValue = [item stringForKey:key];
         NSRange range = { .location = pos, .length = len };
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+        CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
+
         if (len > [attrString length]-1)
             len = [attrString length]-1;
         NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                        (__bridge id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
+                                       (__bridge id)ctFont, kCTFontAttributeName,
                                        type, @"ANPostLabelAttributeType",
                                        keyValue, @"ANPostLabelAttributeValue",
                                        type, DTGUIDAttribute,
@@ -139,7 +143,7 @@
     NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
     NSArray *rawMentions = [_postData arrayForKeyPath:@"entities.mentions"];
     
-    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0f];
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:14.0f];
     CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     [postString addAttribute:(NSString*)kCTFontAttributeName
                         value:(__bridge id)ctFont
