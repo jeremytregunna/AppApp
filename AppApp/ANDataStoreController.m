@@ -66,14 +66,15 @@
     NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReferencedEntity" inManagedObjectContext:self.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(type == %d) AND (name contains[cd] %@)", type, string]];
+    // Maximum number of suggestions we'll return for autocomplete
+    [fetchRequest setFetchLimit:10];
 
     NSError* error = nil;
-    NSArray* temporaryResults = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray* results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if(error)
         NSLog(@"Error during ReferencedEntity fetch: %@, %@", error, [error userInfo]);
-    NSArray* results = [temporaryResults valueForKey:@"name"];
 
-    return [results sortedArrayUsingSelector:@selector(compare:)];
+    return results;
 }
 
 #pragma mark - Core Data Stack
