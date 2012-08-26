@@ -389,6 +389,7 @@
     }
     postTextView.text = text;
     currentCapture = nil;
+    currentCaptureRange = NSMakeRange(NSNotFound, 0);
 
     [UIView animateWithDuration:0.35f animations:^{
         CGRect frame = self.suggestionView.frame;
@@ -459,7 +460,10 @@
         firstCharacter = text;
 
     if([currentCapture length] == 0)
+    {
         currentCapture = nil;
+        currentCaptureRange = NSMakeRange(NSNotFound, 0);
+    }
 
     if(currentCapture == nil && ([firstCharacter isEqualToString:@"@"] || [firstCharacter isEqualToString:@"#"]))
     {
@@ -467,7 +471,10 @@
         currentCapture = [NSMutableString string];
         currentCaptureType = [firstCharacter isEqualToString:@"@"] ? ANReferencedEntityTypeUsername : ANReferencedEntityTypeHashtag;
         if(range.length > 0)
+        {
             currentCapture = nil;
+            currentCaptureRange = NSMakeRange(NSNotFound, 0);
+        }
         else
         {
             currentCaptureRange = range;
