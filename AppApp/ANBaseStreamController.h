@@ -39,12 +39,16 @@
     bool toolbarIsVisible;
     UIView *currentToolbarView;
     UIButton *btnConversation;
+    UIButton *btnReply;
+    UIButton *btnRepost;
 }
 
 @property (nonatomic, readonly) NSString *sideMenuTitle;
 @property (nonatomic, readonly) NSString *sideMenuImageName;
 @property (nonatomic, retain) UIView *currentToolbarView;
 @property (nonatomic, retain) UIButton *btnConversation;
+@property (nonatomic, retain) UIButton *btnReply;
+@property (nonatomic, retain) UIButton *btnRepost;
 
 - (BOOL)refresh;
 - (void)updateTopWithData:(id)dataObject;

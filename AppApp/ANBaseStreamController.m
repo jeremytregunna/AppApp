@@ -48,7 +48,7 @@
 @end
 
 @implementation ANBaseStreamController
-@synthesize currentToolbarView, btnConversation;
+@synthesize currentToolbarView, btnReply, btnRepost, btnConversation;
 
 - (void)viewDidLoad
 {
@@ -94,23 +94,24 @@
         
         UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Action_Bar_Separator.png"]];
         background.frame = CGRectMake(0,0,258,61);
+       
+        self.btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
+        UIImage *btnReplyImg = [UIImage imageNamed:@"Action_Bar_Reply.png"];
+        [self.btnReply setImage:btnReplyImg forState:UIControlStateNormal];
+        [self.btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
         
-        UIImage *btnReplyImg = [UIImage imageNamed:@"Action_Bar_Reply_Active.png"];
-        UIButton *btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        [btnReply setImage:btnReplyImg forState:UIControlStateNormal];
-        [btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
-        [btnReply setFrame:CGRectMake(10,10,40,40)];
+        [self.btnReply setFrame:CGRectMake(10,10,40,40)];
      
-        UIImage *btnRepostImg = [UIImage imageNamed:@"Action_Bar_Repost_Active.png"];
-        UIButton *btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        [btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
-        [btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
+        UIImage *btnRepostImg = [UIImage imageNamed:@"Action_Bar_Repost.png"];
+        self.btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
+        [self.btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
+        [self.btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
         
-        [btnRepost setFrame:CGRectMake(60,10,40,40)];
+        [self.btnRepost setFrame:CGRectMake(60,10,40,40)];
 
-        UIImage *btnConversationImg = [UIImage imageNamed:@"Action_Bar_Conversation_Active.png"];
+        UIImage *btnConversationImg = [UIImage imageNamed:@"Action_Bar_Conversation.png"];
         UIImage *btnConversationImgDisabled = [UIImage imageNamed:@"Action_Bar_Conversation_Disabled.png"];
 
         self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -121,8 +122,8 @@
         [self.btnConversation setFrame:CGRectMake(110,10,40,40)];
         
         [self.currentToolbarView addSubview:background];
-        [self.currentToolbarView addSubview:btnReply];
-        [self.currentToolbarView addSubview:btnRepost];
+        [self.currentToolbarView addSubview:self.btnReply];
+        [self.currentToolbarView addSubview:self.btnRepost];
         [self.currentToolbarView addSubview:self.btnConversation]; // self'ed because we need to be able to hide it on posts without replies (@ralf)
     }
     
