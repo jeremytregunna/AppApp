@@ -50,21 +50,6 @@
 								<reference key="NSNextResponder" ref="675709324"/>
 								<int key="NSvFlags">266</int>
 								<array class="NSMutableArray" key="NSSubviews">
-									<object class="IBUIImageView" id="784019936">
-										<reference key="NSNextResponder" ref="887477709"/>
-										<int key="NSvFlags">266</int>
-										<string key="NSFrameSize">{320, 9}</string>
-										<reference key="NSSuperview" ref="887477709"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="550866826"/>
-										<string key="NSReuseIdentifierKey">_NS:9</string>
-										<bool key="IBUIUserInteractionEnabled">NO</bool>
-										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<object class="NSCustomResource" key="IBUIImage">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">postBottom.png</string>
-										</object>
-									</object>
 									<object class="IBUIButton" id="550866826">
 										<reference key="NSNextResponder" ref="887477709"/>
 										<int key="NSvFlags">292</int>
@@ -191,6 +176,7 @@
 									<object class="IBUIScrollView" id="998094676">
 										<reference key="NSNextResponder" ref="887477709"/>
 										<int key="NSvFlags">268</int>
+										<array class="NSMutableArray" key="NSSubviews"/>
 										<string key="NSFrame">{{44, -34}, {232, 34}}</string>
 										<reference key="NSSuperview" ref="887477709"/>
 										<reference key="NSWindow"/>
@@ -204,6 +190,21 @@
 										<bool key="IBUIMultipleTouchEnabled">YES</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
+									</object>
+									<object class="IBUIImageView" id="784019936">
+										<reference key="NSNextResponder" ref="887477709"/>
+										<int key="NSvFlags">266</int>
+										<string key="NSFrameSize">{320, 9}</string>
+										<reference key="NSSuperview" ref="887477709"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="550866826"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<object class="NSCustomResource" key="IBUIImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">postBottom.png</string>
+										</object>
 									</object>
 								</array>
 								<string key="NSFrame">{{0, 382}, {320, 34}}</string>
@@ -552,13 +553,14 @@
 						<reference key="parent" ref="887477709"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="784019936"/>
+						<int key="objectID">39</int>
+						<reference key="object" ref="998094676"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="887477709"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">39</int>
-						<reference key="object" ref="998094676"/>
+						<int key="objectID">19</int>
+						<reference key="object" ref="784019936"/>
 						<reference key="parent" ref="887477709"/>
 					</object>
 				</array>
