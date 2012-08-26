@@ -160,10 +160,27 @@
 +(MKInfoPanel *)showPanelInView:(UIView *)view type:(MKInfoPanelType)type title:(NSString *)title subtitle:(NSString *)subtitle hideAfter:(NSTimeInterval)interval {    
     MKInfoPanel *panel = [MKInfoPanel infoPanel];
     CGFloat panelHeight = 50;   // panel height when no subtitle set
+    UIColor *textColor = nil;
     
     panel.type = type;
     panel.titleLabel.text = title;
-    
+
+    switch(type)
+    {
+        case MKInfoPanelTypeInfo:
+            textColor = [UIColor colorWithHue:0.361 saturation:0.955 brightness:0.349 alpha:1];
+            break;
+        case MKInfoPanelTypeError:
+            textColor = [UIColor colorWithHue:0.976 saturation:0.882 brightness:0.431 alpha:1];
+            break;
+    }
+
+    panel.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
+    panel.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:15.0f];
+    panel.titleLabel.textColor = textColor;
+    panel.detailLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
+    panel.detailLabel.textColor = textColor;
+
     if(subtitle) {
         panel.detailLabel.text = subtitle;
         [panel.detailLabel sizeToFit];
