@@ -42,6 +42,8 @@
 #import "MKInfoPanel.h"
 #import "TSMiniWebBrowser.h"
 
+#import "SVProgressHUD.h"
+
 
 @interface ANBaseStreamController ()
 
@@ -236,15 +238,17 @@
                 [self.navigationController pushViewController:hashtagController animated:YES];
             }
             else
-            if ([type isEqualToString:@"name"])
+            if ([type isEqualToString:@"name"] && ![SVProgressHUD isVisible])
             {
                 NSString *userID = value;
+                 [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
                 [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
                     if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
                     {
                         NSDictionary *userData = dataObject;
                         ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
                         [self.navigationController pushViewController:userViewController animated:YES];
+                        [SVProgressHUD dismiss];
                     }
                 }];
             }
