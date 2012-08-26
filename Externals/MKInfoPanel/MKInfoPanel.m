@@ -165,8 +165,7 @@
         [panel.detailLabel sizeToFit];
         
         panelHeight = MAX(CGRectGetMaxY(panel.thumbImage.frame), CGRectGetMaxY(panel.detailLabel.frame));
-        if(CGRectGetMaxY(panel.thumbImage.frame) >= CGRectGetMaxY(panel.detailLabel.frame) - 10) // @jtregunna
-            panelHeight += 10.f;    // padding at bottom // @jtregunna
+        panelHeight += 10.f;    // padding at bottom
     } else {
         panel.detailLabel.hidden = YES;
         panel.thumbImage.frame = CGRectMake(15, 5, 35, 35);
