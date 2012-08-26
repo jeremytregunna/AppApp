@@ -51,6 +51,7 @@
     // Autocomplete
     NSMutableString *currentCapture;
     ANReferencedEntityType currentCaptureType;
+    NSRange currentCaptureRange;
     NSArray* currentSuggestions;
 }
 
@@ -277,7 +278,6 @@
     if(index > 0)
         lastButtonFrame = [self frameForSuggestionButtonAtIndex:index - 1];
     CGRect frame = CGRectMake(lastButtonFrame.origin.x + lastButtonFrame.size.width + margin, margin, stringSize.width + margin, stringSize.height + margin);
-    NSLog(@"lastButtonFrame = %@, frame = %@", NSStringFromCGRect(lastButtonFrame), NSStringFromCGRect(frame));
     return frame;
 }
 
@@ -368,13 +368,25 @@
 
 - (void)suggestionAction:(UIButton *)button
 {
-    NSLog(@"Tapped on button at index %d", button.tag);
     NSRange inputRange = [postTextView selectedRange];
     NSMutableString *text = [postTextView.text mutableCopy];
     ReferencedEntity *suggestion = currentSuggestions[button.tag];
     NSString *title = [NSString stringWithFormat:@"%@%@", [suggestion.type intValue] == ANReferencedEntityTypeUsername ? @"@" : @"#", suggestion.name];
-    NSString *stringToInsert = [title stringByReplacingOccurrencesOfString:currentCapture withString:@""];
-    [text insertString:stringToInsert atIndex:inputRange.location];
+
+    if(currentCaptureRange.location != NSNotFound && inputRange.length > 0)
+    {
+        [text replaceCharactersInRange:inputRange withString:title];
+    }
+    else if(currentCaptureRange.location != NSNotFound && inputRange.length == 0)
+    {
+        [text replaceCharactersInRange:NSMakeRange(inputRange.location - [currentCapture length], [currentCapture length]) withString:@""];
+        [text replaceCharactersInRange:currentCaptureRange withString:title];
+    }
+    else
+    {
+        NSString *stringToInsert = [title stringByReplacingOccurrencesOfString:currentCapture withString:@""];
+        [text insertString:stringToInsert atIndex:inputRange.location];
+    }
     postTextView.text = text;
     currentCapture = nil;
 
@@ -457,7 +469,10 @@
         if(range.length > 0)
             currentCapture = nil;
         else
+        {
+            currentCaptureRange = range;
             [currentCapture appendString:text];
+        }
     }
     else if(currentCapture && [firstCharacter isEqualToString:@" "])
     {
@@ -466,6 +481,7 @@
         NSError* error = nil;
         [re save:&error successCallback:^{
             currentCapture = nil;
+            currentCaptureRange = NSMakeRange(NSNotFound, 0);
         }];
 
         [UIView animateWithDuration:0.35f animations:^{
@@ -503,11 +519,9 @@
             {
                 case ANReferencedEntityTypeUsername:
                     currentSuggestions = [[ANDataStoreController sharedController] usernamesForString:sanitizedString];
-                    NSLog(@"usernames like %@ = %@", currentCapture, [currentSuggestions valueForKey:@"name"]);
                     break;
                 case ANReferencedEntityTypeHashtag:
                     currentSuggestions = [[ANDataStoreController sharedController] hashtagsForString:sanitizedString];
-                    NSLog(@"hashtags like %@ = %@", currentCapture, [currentSuggestions valueForKey:@"name"]);
                     break;
             }
 
