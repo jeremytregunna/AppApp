@@ -20,7 +20,7 @@
     NSManagedObjectContext* context = [[ANDataStoreController sharedController] managedObjectContext];
     
     request.entity = [NSEntityDescription entityForName:NSStringFromClass([self class])inManagedObjectContext:context];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+    request.predicate = [NSPredicate predicateWithFormat:@"(type = %d) AND (name = %@)", type, name];
     NSError* executeFetchError = nil;
     re = [[context executeFetchRequest:request error:&executeFetchError] lastObject];
     
