@@ -371,6 +371,12 @@
     [text insertString:stringToInsert atIndex:inputRange.location];
     postTextView.text = text;
     currentCapture = nil;
+
+    [UIView animateWithDuration:0.35f animations:^{
+        CGRect frame = self.suggestionView.frame;
+        frame.origin.y = -frame.size.height;
+        self.suggestionView.frame = frame;
+    }];
 }
 
 #pragma mark - Action sheet delegate methods
