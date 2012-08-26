@@ -49,6 +49,14 @@
 		4E343DAC15E861410091355D /* ANDataStoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAB15E861410091355D /* ANDataStoreController.m */; };
 		4E343DAF15E870450091355D /* AppAppModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */; };
 		4E343DB215E870E30091355D /* ReferencedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DB115E870E30091355D /* ReferencedEntity.m */; };
+		4E84930715E9D24C0086A713 /* Error Notification BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E8492FF15E9D24C0086A713 /* Error Notification BG.png */; };
+		4E84930815E9D24C0086A713 /* Error Notification BG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */; };
+		4E84930915E9D24C0086A713 /* ErrorNotificationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */; };
+		4E84930A15E9D24C0086A713 /* ErrorNotificationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930215E9D24C0086A713 /* ErrorNotificationIcon@2x.png */; };
+		4E84930B15E9D24C0086A713 /* Success Notification BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930315E9D24C0086A713 /* Success Notification BG.png */; };
+		4E84930C15E9D24C0086A713 /* Success Notification BG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930415E9D24C0086A713 /* Success Notification BG@2x.png */; };
+		4E84930D15E9D24C0086A713 /* SuccessNotificationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930515E9D24C0086A713 /* SuccessNotificationIcon.png */; };
+		4E84930E15E9D24C0086A713 /* SuccessNotificationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930615E9D24C0086A713 /* SuccessNotificationIcon@2x.png */; };
 		4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1815E50BD600042C04 /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -290,6 +298,14 @@
 		4E343DAE15E870450091355D /* AppAppModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppAppModel.xcdatamodel; sourceTree = "<group>"; };
 		4E343DB015E870E30091355D /* ReferencedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReferencedEntity.h; sourceTree = "<group>"; };
 		4E343DB115E870E30091355D /* ReferencedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReferencedEntity.m; sourceTree = "<group>"; };
+		4E8492FF15E9D24C0086A713 /* Error Notification BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Error Notification BG.png"; path = "UISource/Error Notification BG.png"; sourceTree = SOURCE_ROOT; };
+		4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Error Notification BG@2x.png"; path = "UISource/Error Notification BG@2x.png"; sourceTree = SOURCE_ROOT; };
+		4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ErrorNotificationIcon.png; path = UISource/ErrorNotificationIcon.png; sourceTree = SOURCE_ROOT; };
+		4E84930215E9D24C0086A713 /* ErrorNotificationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ErrorNotificationIcon@2x.png"; path = "UISource/ErrorNotificationIcon@2x.png"; sourceTree = SOURCE_ROOT; };
+		4E84930315E9D24C0086A713 /* Success Notification BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Success Notification BG.png"; path = "UISource/Success Notification BG.png"; sourceTree = SOURCE_ROOT; };
+		4E84930415E9D24C0086A713 /* Success Notification BG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Success Notification BG@2x.png"; path = "UISource/Success Notification BG@2x.png"; sourceTree = SOURCE_ROOT; };
+		4E84930515E9D24C0086A713 /* SuccessNotificationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SuccessNotificationIcon.png; path = UISource/SuccessNotificationIcon.png; sourceTree = SOURCE_ROOT; };
+		4E84930615E9D24C0086A713 /* SuccessNotificationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SuccessNotificationIcon@2x.png"; path = "UISource/SuccessNotificationIcon@2x.png"; sourceTree = SOURCE_ROOT; };
 		4EF81E1715E50BD600042C04 /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
 		4EF81E1815E50BD600042C04 /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
 		4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
@@ -527,6 +543,7 @@
 		0067483115D8473100065DFF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				4E8492FE15E9D2250086A713 /* Notifications */,
 				AEB6F97115E121C900EEA9ED /* Action Bar */,
 				FD3EB16115DB4995005BF189 /* Side Menu */,
 				FD3EB47115DB6A98005BF189 /* Navigation Bar */,
@@ -661,6 +678,21 @@
 				4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */,
 			);
 			name = "Data Store";
+			sourceTree = "<group>";
+		};
+		4E8492FE15E9D2250086A713 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				4E8492FF15E9D24C0086A713 /* Error Notification BG.png */,
+				4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */,
+				4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */,
+				4E84930215E9D24C0086A713 /* ErrorNotificationIcon@2x.png */,
+				4E84930315E9D24C0086A713 /* Success Notification BG.png */,
+				4E84930415E9D24C0086A713 /* Success Notification BG@2x.png */,
+				4E84930515E9D24C0086A713 /* SuccessNotificationIcon.png */,
+				4E84930615E9D24C0086A713 /* SuccessNotificationIcon@2x.png */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 		4EF81E1615E50BD600042C04 /* PocketSDK */ = {
@@ -1276,6 +1308,14 @@
 				CACE0BC815E94BAC00E1A319 /* TSMiniWebBrowser.xib in Resources */,
 				CACE0BCF15E9626F00E1A319 /* backButtonBG.png in Resources */,
 				CACE0BD015E9626F00E1A319 /* backButtonBG@2x.png in Resources */,
+				4E84930715E9D24C0086A713 /* Error Notification BG.png in Resources */,
+				4E84930815E9D24C0086A713 /* Error Notification BG@2x.png in Resources */,
+				4E84930915E9D24C0086A713 /* ErrorNotificationIcon.png in Resources */,
+				4E84930A15E9D24C0086A713 /* ErrorNotificationIcon@2x.png in Resources */,
+				4E84930B15E9D24C0086A713 /* Success Notification BG.png in Resources */,
+				4E84930C15E9D24C0086A713 /* Success Notification BG@2x.png in Resources */,
+				4E84930D15E9D24C0086A713 /* SuccessNotificationIcon.png in Resources */,
+				4E84930E15E9D24C0086A713 /* SuccessNotificationIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
