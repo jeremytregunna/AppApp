@@ -332,12 +332,15 @@
     [postTextView setSelectedRange:inputRange];
     currentCapture = [@"#" mutableCopy];
     currentCaptureType = ANReferencedEntityTypeHashtag;
-
-    [UIView animateWithDuration:0.35f animations:^{
-        CGRect frame = self.suggestionView.frame;
-        frame.origin.y = 0;
-        self.suggestionView.frame = frame;
-    }];
+    
+    if([currentSuggestions count] > 0)
+    {
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = 0;
+            self.suggestionView.frame = frame;
+        }];
+    }
 }
 
 - (IBAction)mentionAction:(id)sender
@@ -349,11 +352,14 @@
     currentCapture = [@"@" mutableCopy];
     currentCaptureType = ANReferencedEntityTypeUsername;
 
-    [UIView animateWithDuration:0.35f animations:^{
-        CGRect frame = self.suggestionView.frame;
-        frame.origin.y = 0;
-        self.suggestionView.frame = frame;
-    }];
+    if([currentSuggestions count] > 0)
+    {
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = 0;
+            self.suggestionView.frame = frame;
+        }];
+    }
 }
 
 - (IBAction)clearPhotoAction:(id)sender
