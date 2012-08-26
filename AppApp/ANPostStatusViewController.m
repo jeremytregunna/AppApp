@@ -452,12 +452,6 @@
             currentCapture = nil;
         else
             [currentCapture appendString:text];
-
-        [UIView animateWithDuration:0.35f animations:^{
-            CGRect frame = self.suggestionView.frame;
-            frame.origin.y = 0;
-            self.suggestionView.frame = frame;
-        }];
     }
     else if(currentCapture && [firstCharacter isEqualToString:@" "])
     {
@@ -510,6 +504,7 @@
                     NSLog(@"hashtags like %@ = %@", currentCapture, [currentSuggestions valueForKey:@"name"]);
                     break;
             }
+
             CGRect lastFrame = CGRectZero;
             if([currentSuggestions count] > 0)
                 lastFrame = [self frameForSuggestionButtonAtIndex:[currentSuggestions count] - 1];
@@ -519,6 +514,16 @@
             {
                 UIButton *button = [self buttonForSuggestionAtIndex:i];
                 [self.suggestionView addSubview:button];
+            }
+
+            // Only show the suggestion view if we have suggestions.
+            if([currentSuggestions count] > 0)
+            {
+                [UIView animateWithDuration:0.35f animations:^{
+                    CGRect frame = self.suggestionView.frame;
+                    frame.origin.y = 0;
+                    self.suggestionView.frame = frame;
+                }];
             }
         }
     }
