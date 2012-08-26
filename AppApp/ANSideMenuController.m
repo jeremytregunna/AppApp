@@ -336,6 +336,7 @@ NSString *const ANSideMenuControllerSearchTagsKey = @"ANSideMenuControllerSearch
     {
         [self.tableView beginUpdates];
         [searchTags removeObjectAtIndex:indexOfObject];
+        [self _syncHashTagsToDefaults];
         [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         [self.tableView endUpdates];
     }
