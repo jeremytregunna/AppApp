@@ -16,3 +16,13 @@
 #endif
 
 #import "SDLog.h"
+
+// For array subscripting on iOS SDK 5
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+@interface NSObject (ArraySubscriptingSupport)
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key;
+- (id)objectForKeyedSubscript:(id)key;
+@end
+#endif

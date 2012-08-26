@@ -125,7 +125,7 @@
             NSLog(@"CoreData error, attempting automatic migration: %@, %@", error, [error userInfo]);
 
             // Attempt again with automatic lightweight migration
-            NSDictionary* automaticMigrateDict = @{ NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES };
+            NSDictionary* automaticMigrateDict = @{ NSMigratePersistentStoresAutomaticallyOption : @(YES), NSInferMappingModelAutomaticallyOption : @(YES) };
 
             if(![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:automaticMigrateDict error:&error]) {
                 NSLog(@"CoreData error, deleting old store: %@, %@", error, [error userInfo]);
