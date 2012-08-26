@@ -176,10 +176,12 @@
     }
 
     panel.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
-    panel.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:15.0f];
+    panel.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:14.0f];
     panel.titleLabel.textColor = textColor;
+    panel.titleLabel.shadowOffset = CGSizeMake(0, 1);
     panel.detailLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
     panel.detailLabel.textColor = textColor;
+    panel.detailLabel.shadowOffset = CGSizeMake(0, 1);
 
     if(subtitle) {
         panel.detailLabel.text = subtitle;
@@ -189,8 +191,8 @@
         panelHeight += 10.f;    // padding at bottom
     } else {
         panel.detailLabel.hidden = YES;
-        panel.thumbImage.frame = CGRectMake(15, 5, 35, 35);
-        panel.titleLabel.frame = CGRectMake(57, 12, 240, 21);
+        panel.thumbImage.frame = CGRectMake(11, 5, 32, 32);
+        panel.titleLabel.frame = CGRectMake(54, 12, 243, 21);
     }
 
     // update frame of panel
