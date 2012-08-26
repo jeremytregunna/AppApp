@@ -177,7 +177,7 @@
     }
 
     // update frame of panel
-    panel.frame = CGRectMake(0, 0, view.bounds.size.width, panelHeight);
+    panel.frame = CGRectMake(0, CGRectGetMinY(view.bounds), view.bounds.size.width, panelHeight);
     [view addSubview:panel];
     
     if (interval > 0) {
