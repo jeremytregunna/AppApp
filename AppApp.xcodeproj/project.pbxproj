@@ -1627,7 +1627,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "AppApp/AppApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
@@ -1682,7 +1682,7 @@
 				GCC_PREFIX_HEADER = "AppApp/AppApp-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "ENABLEPNS=1";
 				INFOPLIST_FILE = "AppApp/AppApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlightSDK1.0\"",
