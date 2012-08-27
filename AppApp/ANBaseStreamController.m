@@ -43,7 +43,9 @@
 #import "TSMiniWebBrowser.h"
 
 
-@interface ANBaseStreamController ()
+@interface ANBaseStreamController () {
+    BOOL _hasFirstLoadOccurred;
+}
 
 @end
 
@@ -64,13 +66,14 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                            target:self
                                                                                            action:@selector(newPostAction:)];
+    
+    self.tableView.backgroundColor = [UIColor colorWithRed:1/255.0f green:76/255.0f blue:106/255.0f alpha:1.0f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:
                                      [[UIImage imageNamed:@"statusCellBackground"]
                                       resizableImageWithCapInsets:UIEdgeInsetsZero]];
     
     // setup refresh/load more
-    
     self.headerView = [ANStreamHeaderView loadFromNib];
     self.footerView = [ANStreamFooterView loadFromNib];
     
@@ -565,6 +568,8 @@
 //
 - (void) willBeginLoadingMore
 {
+    if (!_hasFirstLoadOccurred) return;
+    
     ANStreamFooterView *fv = (ANStreamFooterView *)self.footerView;
     [fv.activityIndicator startAnimating];
 }
@@ -586,6 +591,8 @@
         // Just show a textual info that there are no more items to load
         fv.infoLabel.hidden = NO;
     }
+    
+    _hasFirstLoadOccurred = YES;
 }
 
 - (BOOL) loadMore
