@@ -49,6 +49,10 @@
 		4E343DAC15E861410091355D /* ANDataStoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAB15E861410091355D /* ANDataStoreController.m */; };
 		4E343DAF15E870450091355D /* AppAppModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DAD15E870450091355D /* AppAppModel.xcdatamodeld */; };
 		4E343DB215E870E30091355D /* ReferencedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E343DB115E870E30091355D /* ReferencedEntity.m */; };
+		4E6E0C8A15EAF2F0001E2DCE /* WarningNotificationBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6E0C8815EAF2F0001E2DCE /* WarningNotificationBG.png */; };
+		4E6E0C8B15EAF2F0001E2DCE /* WarningNotificationBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6E0C8915EAF2F0001E2DCE /* WarningNotificationBG@2x.png */; };
+		4E6E0C8E15EAF303001E2DCE /* WarningNotificationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6E0C8C15EAF303001E2DCE /* WarningNotificationIcon.png */; };
+		4E6E0C8F15EAF303001E2DCE /* WarningNotificationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6E0C8D15EAF303001E2DCE /* WarningNotificationIcon@2x.png */; };
 		4E84930715E9D24C0086A713 /* Error Notification BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E8492FF15E9D24C0086A713 /* Error Notification BG.png */; };
 		4E84930815E9D24C0086A713 /* Error Notification BG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */; };
 		4E84930915E9D24C0086A713 /* ErrorNotificationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */; };
@@ -306,6 +310,10 @@
 		4E343DAE15E870450091355D /* AppAppModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppAppModel.xcdatamodel; sourceTree = "<group>"; };
 		4E343DB015E870E30091355D /* ReferencedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReferencedEntity.h; sourceTree = "<group>"; };
 		4E343DB115E870E30091355D /* ReferencedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReferencedEntity.m; sourceTree = "<group>"; };
+		4E6E0C8815EAF2F0001E2DCE /* WarningNotificationBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WarningNotificationBG.png; path = UISource/WarningNotificationBG.png; sourceTree = SOURCE_ROOT; };
+		4E6E0C8915EAF2F0001E2DCE /* WarningNotificationBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WarningNotificationBG@2x.png"; path = "UISource/WarningNotificationBG@2x.png"; sourceTree = SOURCE_ROOT; };
+		4E6E0C8C15EAF303001E2DCE /* WarningNotificationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WarningNotificationIcon.png; path = UISource/WarningNotificationIcon.png; sourceTree = SOURCE_ROOT; };
+		4E6E0C8D15EAF303001E2DCE /* WarningNotificationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WarningNotificationIcon@2x.png"; path = "UISource/WarningNotificationIcon@2x.png"; sourceTree = SOURCE_ROOT; };
 		4E8492FF15E9D24C0086A713 /* Error Notification BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Error Notification BG.png"; path = "UISource/Error Notification BG.png"; sourceTree = SOURCE_ROOT; };
 		4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Error Notification BG@2x.png"; path = "UISource/Error Notification BG@2x.png"; sourceTree = SOURCE_ROOT; };
 		4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ErrorNotificationIcon.png; path = UISource/ErrorNotificationIcon.png; sourceTree = SOURCE_ROOT; };
@@ -699,6 +707,10 @@
 		4E8492FE15E9D2250086A713 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				4E6E0C8C15EAF303001E2DCE /* WarningNotificationIcon.png */,
+				4E6E0C8D15EAF303001E2DCE /* WarningNotificationIcon@2x.png */,
+				4E6E0C8815EAF2F0001E2DCE /* WarningNotificationBG.png */,
+				4E6E0C8915EAF2F0001E2DCE /* WarningNotificationBG@2x.png */,
 				4E8492FF15E9D24C0086A713 /* Error Notification BG.png */,
 				4E84930015E9D24C0086A713 /* Error Notification BG@2x.png */,
 				4E84930115E9D24C0086A713 /* ErrorNotificationIcon.png */,
@@ -1348,6 +1360,10 @@
 				AE96A85E15EAA61900550D8A /* Action_Bar_Reply@2x.png in Resources */,
 				AE96A85F15EAA61900550D8A /* Action_Bar_Repost.png in Resources */,
 				AE96A86015EAA61900550D8A /* Action_Bar_Repost@2x.png in Resources */,
+				4E6E0C8A15EAF2F0001E2DCE /* WarningNotificationBG.png in Resources */,
+				4E6E0C8B15EAF2F0001E2DCE /* WarningNotificationBG@2x.png in Resources */,
+				4E6E0C8E15EAF303001E2DCE /* WarningNotificationIcon.png in Resources */,
+				4E6E0C8F15EAF303001E2DCE /* WarningNotificationIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

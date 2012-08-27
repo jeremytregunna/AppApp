@@ -77,43 +77,6 @@
     [super dealloc];
 }
 
-#pragma mark -
-#pragma mark - Gradient layers
-
-// The following three methods are all @jtregunna
-
-+ (CAGradientLayer *)blueGradient
-{
-    UIColor *colorOne = [UIColor colorWithRed:(120/255.0) green:(135/255.0) blue:(150/255.0) alpha:1.0];
-    UIColor *colorTwo = [UIColor colorWithRed:(57/255.0)  green:(79/255.0)  blue:(96/255.0)  alpha:1.0];
-    
-    NSArray *colors = [NSArray arrayWithObjects:(id)colorOne.CGColor, colorTwo.CGColor, nil];
-    return [self gradientLayerWithColors:colors];
-}
-
-+ (CAGradientLayer *)redGradient
-{
-    UIColor *colorOne = [UIColor colorWithRed:200/255.0 green:50/255.0 blue:50/255.0 alpha:1.0f];
-    UIColor *colorTwo = [UIColor colorWithRed:150/255.0 green:25/255.0 blue:25/255.0 alpha:1.0f];
-    
-    NSArray *colors = [NSArray arrayWithObjects:(id)colorOne.CGColor, colorTwo.CGColor, nil];
-    return [self gradientLayerWithColors:colors];
-}
-
-+ (CAGradientLayer *)gradientLayerWithColors:(NSArray *)colors
-{
-    NSNumber *stopOne = [NSNumber numberWithFloat:0.0];
-    NSNumber *stopTwo = [NSNumber numberWithFloat:1.0];
-
-    NSArray *locations = [NSArray arrayWithObjects:stopOne, stopTwo, nil];
-
-    CAGradientLayer *headerLayer = [CAGradientLayer layer];
-    headerLayer.colors = colors;
-    headerLayer.locations = locations;
-
-    return headerLayer;
-}
-
 ////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Setter/Getter
@@ -122,28 +85,24 @@
 -(void)setType:(MKInfoPanelType)type {
     if(type == MKInfoPanelTypeError) {
         self.backgroundGradient.image = [UIImage imageNamed:@"Error Notification BG"];
-        /*
-        CAGradientLayer *bgLayer = [[self class] redGradient]; // @jtregunna
-        bgLayer.frame = self.bounds;                            // @jtregunna
-        [self.layer insertSublayer:bgLayer atIndex:0];          // @jtregunna
-         */
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-        self.detailLabel.font = [UIFont fontWithName:@"Helvetica Neue" 
-                                                size:14];
+        self.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:14.0f];
+        self.detailLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
         self.thumbImage.image = [UIImage imageNamed:@"ErrorNotificationIcon"];
         self.detailLabel.textColor = [UIColor colorWithRed:1.f green:0.651f blue:0.651f alpha:1.f];
     }
-    
+    else if(type == MKInfoPanelTypeWarning) {
+        self.backgroundGradient.image = [UIImage imageNamed:@"WarningNotificationBG"];
+        self.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:14.0f];
+        self.detailLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
+        self.thumbImage.image = [UIImage imageNamed:@"WarningNotificationIcon"];
+        self.detailLabel.textColor = [UIColor colorWithHue:0.146 saturation:1.000 brightness:0.416 alpha:1];
+    }
     else if(type == MKInfoPanelTypeInfo) {
         //self.backgroundGradient.image = [[UIImage imageNamed:@"Blue"] stretchableImageWithLeftCapWidth:1 topCapHeight:5];
         self.backgroundGradient.image = [UIImage imageNamed:@"Success Notification BG"];
-        /*
-        CAGradientLayer *bgLayer = [[self class] blueGradient]; // @jtregunna
-        bgLayer.frame = self.bounds;                            // @jtregunna
-        [self.layer insertSublayer:bgLayer atIndex:0];          // @jtregunna
-         */
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:15];
-        self.thumbImage.image = [UIImage imageNamed:@"SuccessNotificationIcon"];   
+        self.titleLabel.font = [UIFont fontWithName:@"Ubuntu-Bold" size:14.0f];
+        self.detailLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
+        self.thumbImage.image = [UIImage imageNamed:@"SuccessNotificationIcon"];
         self.detailLabel.textColor = RGBA(210, 210, 235, 1.0);
     }
 }
@@ -169,6 +128,9 @@
     {
         case MKInfoPanelTypeInfo:
             textColor = [UIColor colorWithHue:0.361 saturation:0.955 brightness:0.349 alpha:1];
+            break;
+        case MKInfoPanelTypeWarning:
+            textColor = [UIColor colorWithHue:0.146 saturation:1.000 brightness:0.416 alpha:1];
             break;
         case MKInfoPanelTypeError:
             textColor = [UIColor colorWithHue:0.976 saturation:0.882 brightness:0.431 alpha:1];
