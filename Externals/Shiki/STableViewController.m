@@ -258,7 +258,7 @@
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
   if (!isRefreshing && isDragging && scrollView.contentOffset.y < 0) {
-    [self headerViewDidScroll:scrollView.contentOffset.y < 0 - [self headerRefreshHeight] 
+    [self headerViewDidScroll:scrollView.contentOffset.y < 0 - [self headerRefreshHeight]
                    scrollView:scrollView];
   } else if (!isLoadingMore && canLoadMore) {
     CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
