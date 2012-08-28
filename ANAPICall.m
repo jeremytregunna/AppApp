@@ -85,12 +85,11 @@
 {
     // refactor SDWebService so error's are passed around properly. -- BKS
     
-    SDWebServiceDataCompletionBlock result = ^(int responseCode, NSString *response, NSError *error) {
-        NSData *data = [response dataUsingEncoding:NSUTF8StringEncoding];
+    SDWebServiceDataCompletionBlock result = ^(int responseCode, NSData *response, NSError *error) {
         NSError *jsonError = nil;
         id dataObject = nil;
-        if (data)
-            dataObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        if (response && response.length > 0)
+            dataObject = [NSJSONSerialization JSONObjectWithData:response options:0 error:&jsonError];
         return dataObject;
     };
     return result;

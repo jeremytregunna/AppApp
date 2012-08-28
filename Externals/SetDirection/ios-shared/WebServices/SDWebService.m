@@ -215,8 +215,9 @@ NSString *const SDWebServiceError = @"SDWebServiceError";
 
 - (SDWebServiceResult)performRequestWithMethod:(NSString *)requestName routeReplacements:(NSDictionary *)replacements completion:(SDWebServiceCompletionBlock)completionBlock shouldRetry:(BOOL)shouldRetry
 {
-    SDWebServiceDataCompletionBlock combinedBlock = ^id (int responseCode, NSString *response, NSError *error) {
-        completionBlock(responseCode, response, &error);
+    SDWebServiceDataCompletionBlock combinedBlock = ^id (int responseCode, NSData *response, NSError *error) {
+        NSString *responseString = [self responseFromData:response];
+        completionBlock(responseCode, responseString, &error);
         return nil;
     };
     return [self performRequestWithMethod:requestName routeReplacements:replacements dataProcessingBlock:combinedBlock uiUpdateBlock:nil shouldRetry:shouldRetry].result;
@@ -389,8 +390,6 @@ NSString *const SDWebServiceError = @"SDWebServiceError";
 
 	SDURLConnectionResponseBlock urlCompletionBlock = ^(SDURLConnection *connection, NSURLResponse *response, NSData *responseData, NSError *error) {
 		@autoreleasepool {
-			NSString *responseString = [self responseFromData:responseData];
-
 #ifdef DEBUG
 			SDLog(@"Service call took %lf seconds. URL was: %@", [[NSDate date] timeIntervalSinceDate:startDate], url);
 #endif
@@ -401,7 +400,7 @@ NSString *const SDWebServiceError = @"SDWebServiceError";
                 if ([error code] == NSURLErrorTimedOut)
                     [self serviceCallDidTimeoutForUrl:url];
                 
-                if (([error code] == NSURLErrorTimedOut || ![blockSelf responseIsValid:responseString forRequest:requestName]) && shouldRetry)
+                if ([error code] == NSURLErrorTimedOut && shouldRetry)
                 {
                     // remove it from the cache if its there.
                     NSURLCache *cache = [NSURLCache sharedURLCache];
@@ -444,13 +443,15 @@ NSString *const SDWebServiceError = @"SDWebServiceError";
 			}
 			
 			if (uiUpdateBlock == nil)
-                dataProcessingBlock(code, responseString, error);
+            {
+                dataProcessingBlock(code, responseData, error);
+            }
             else
             {
                 [dataProcessingQueue addOperationWithBlock:^{
                     id dataObject = nil;
                     if (code != NSURLErrorCancelled)
-                        dataObject = dataProcessingBlock(code, responseString, error);
+                        dataObject = dataProcessingBlock(code, responseData, error);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         uiUpdateBlock(dataObject, error);
                     });

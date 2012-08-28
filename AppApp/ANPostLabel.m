@@ -23,6 +23,7 @@
  DEALINGS IN THE SOFTWARE.
 */
 
+#import <CoreText/CoreText.h>
 #import "ANPostLabel.h"
 #import "NSDictionary+SDExtensions.h"
 #import "PocketAPI.h"
@@ -40,6 +41,29 @@
 - (id)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame]) != NULL)
+    {
+        _enableLinks = YES;
+        _enableDataDetectors = YES;
+        self.userInteractionEnabled = YES;
+        self.lineBreakMode = UILineBreakModeWordWrap;
+        self.numberOfLines = 0;
+        self.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+        self.textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
+        self.linkAttributes = @{ (NSString *)kCTForegroundColorAttributeName : (id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor };
+        self.activeLinkAttributes = @{ (NSString *)kCTForegroundColorAttributeName : (id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor };
+        
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
+        longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
+        
+        [self addGestureRecognizer:tapRecognizer];
+        [self addGestureRecognizer:longPressRecognizer];
+    }
+    return(self);
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if ((self = [super initWithCoder:aDecoder]) != NULL)
     {
         _enableLinks = YES;
         _enableDataDetectors = YES;
@@ -88,7 +112,7 @@
 
 - (void)longPressGestureHandler:(UITapGestureRecognizer*)recognizer
 {
-    if (recognizer.state == UIGestureRecognizerStateEnded)
+    if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSTextCheckingResult *result = [self linkAtPoint:[recognizer locationInView:self]];
         if (_longPressHandler && _enableLinks)
@@ -99,7 +123,7 @@
 - (void)addMentionLinks:(NSString *)string
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(@[a-zA-Z0-9_]+)" options:0 error:nil];
-    [regex enumerateMatchesInString:string options:NSMatchingReportProgress range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    [regex enumerateMatchesInString:string options:NSMatchingCompleted range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         NSString *user = [string substringWithRange:result.range];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnuser://%@", user]];
         [self addLinkToURL:url withRange:result.range];
@@ -109,11 +133,19 @@
 - (void)addHashtagLinks:(NSString *)string
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(#[a-zA-Z0-9_-]+)" options:0 error:nil];
-    [regex enumerateMatchesInString:string options:NSMatchingReportProgress range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    [regex enumerateMatchesInString:string options:NSMatchingCompleted range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         NSString *hashtag = [string substringWithRange:result.range];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnhashtag://%@", hashtag]];
         [self addLinkToURL:url withRange:result.range];
     }];
+}
+
+CTFontRef CTFontCreateFromUIFont(UIFont *font)
+{
+    CTFontRef ctFont = CTFontCreateWithName((__bridge  CFStringRef)font.fontName,
+                                            font.pointSize,
+                                            NULL);
+    return ctFont;
 }
 
 - (void)setPostData:(NSDictionary *)postData
@@ -131,8 +163,18 @@
     else
         self.dataDetectorTypes = UIDataDetectorTypeNone;
 
-    self.text = text;
-
+    // some CT display optimizations
+    NSNumber *kern = [NSNumber numberWithFloat:0];
+    CTFontRef fontRef = CTFontCreateFromUIFont([UIFont fontWithName:@"Helvetica" size:14.0f]);
+    NSDictionary *attrs = @{
+        (NSString *)kCTKernAttributeName : kern,
+        (NSString *)kCTFontAttributeName : (__bridge id)fontRef,
+        (NSString *)kCTForegroundColorAttributeName : (id)[UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0].CGColor
+    };
+    CFRelease(fontRef);
+    
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:text attributes:attrs];
+    self.text = attrString;
     if (_enableDataDetectors)
     {
         [self addMentionLinks:self.text];

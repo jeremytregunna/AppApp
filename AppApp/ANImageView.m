@@ -46,6 +46,9 @@
 
 - (UIImage *)modifiedImage:(UIImage *)image forResponse:(NSURLResponse *)response
 {
+    if (!response)
+        return nil;
+    
     // scale the image down based on width.
     UIImage *resizedImage = [image resizedImageToFitInSize:CGSizeMake(self.bounds.size.width * self.scaleFactor, self.bounds.size.height * self.scaleFactor) scaleIfSmaller:YES];
     
@@ -74,18 +77,7 @@
         else
             [sizedValue appendFormat:@"&w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
         
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:value]];
-        NSCachedURLResponse *response = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
-
-        if (!response)
-            [super setImageURL:sizedValue];
-        else
-        {
-            if (response.data)
-                self.image = [UIImage imageWithData:response.data];
-            else
-                [super setImageURL:sizedValue];
-        }
+        [super setImageURL:sizedValue];
     }
     else
         [super setImageURL:value];
