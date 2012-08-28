@@ -180,11 +180,13 @@
         textLength -= 29;
     
     // unblock / block post button
-    if(textLength > 0 && textLength <= 256) {
+    if(textLength >= 0 && textLength < 256) {
         postButton.enabled = YES;
     } else {
         postButton.enabled = NO;
     }
+    
+    NSLog(@"%i", textLength);
     
     characterCountLabel.text = [NSString stringWithFormat:@"%i", textLength];
 }
@@ -196,7 +198,7 @@
 
 - (void)internalPerformADNPost
 {
-    if([postTextView.text length] < 256)
+    if([postTextView.text length] <= 256)
     {
         if (replyToID)
         {
@@ -226,7 +228,7 @@
 
 -(IBAction) postStatusToAppNet:(id)sender
 {
-    if([postTextView.text length] < 256)
+    if([postTextView.text length] <= 256)
     {
         [self.postTextView resignFirstResponder];
         if (postImage)
