@@ -211,9 +211,11 @@
 {
     NSDictionary *postData = [streamData objectAtIndex:[indexPath row]];
     ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
+    tempLabel.enableDataDetectors = NO;
+    tempLabel.enableLinks = NO;
     tempLabel.postData = postData;
     
-    CGSize statusLabelSize = [tempLabel sizeThatFits:CGSizeMake(230, 10000)];//[tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
+    CGSize statusLabelSize = [tempLabel sizeThatFits:CGSizeMake(230, 10000)];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;

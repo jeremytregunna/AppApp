@@ -8,7 +8,7 @@
 
 #import "JSimpleInstapaper.h"
 #import "SFHFKeychainUtils.h"
-#import "NSData+DTBase64.h"
+#import "NSData+Base64.h"
 
 static NSString* const JSimpleInstapaperServiceNameKey = @"JSimpleInstapaperServiceNameKey";
 static NSString* const kJSimpleInstapaperAuthURLString = @"https://www.instapaper.com/api/authenticate";

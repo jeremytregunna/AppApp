@@ -23,7 +23,6 @@
  DEALINGS IN THE SOFTWARE.
 */
 
-#import "DTAttributedTextContentView.h"
 #import "TTTAttributedLabel.h"
 
 @interface ANPostLabel : TTTAttributedLabel<TTTAttributedLabelDelegate>
