@@ -10,7 +10,7 @@
 #import "Reachability.h"
 
 typedef void (^SDWebServiceCompletionBlock)(int responseCode, NSString *response, NSError **error);
-typedef id (^SDWebServiceDataCompletionBlock)(int responseCode, NSString *response, NSError *error);
+typedef id (^SDWebServiceDataCompletionBlock)(int responseCode, NSData *response, NSError *error);
 typedef void (^SDWebServiceUICompletionBlock)(id dataObject, NSError *error);
 
 extern NSString *const SDWebServiceError;
