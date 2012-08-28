@@ -46,6 +46,9 @@
 
 - (UIImage *)modifiedImage:(UIImage *)image forResponse:(NSURLResponse *)response
 {
+    if (!response)
+        return nil;
+    
     // scale the image down based on width.
     UIImage *resizedImage = [image resizedImageToFitInSize:CGSizeMake(self.bounds.size.width * self.scaleFactor, self.bounds.size.height * self.scaleFactor) scaleIfSmaller:YES];
     
