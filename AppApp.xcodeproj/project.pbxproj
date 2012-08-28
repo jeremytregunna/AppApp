@@ -132,6 +132,11 @@
 		CACE0BD015E9626F00E1A319 /* backButtonBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CACE0BCE15E9626F00E1A319 /* backButtonBG@2x.png */; };
 		CACE0C0715EC82DD00E1A319 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CACE0C0615EC82DD00E1A319 /* TTTAttributedLabel.m */; };
 		CACE0C0B15EC83E100E1A319 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = CACE0C0A15EC83E100E1A319 /* NSData+Base64.m */; };
+		CACE0C0E15EC947D00E1A319 /* ANStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACE0C0D15EC947D00E1A319 /* ANStatusCell.m */; };
+		CACE0C1015EC948F00E1A319 /* ANStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CACE0C0F15EC948F00E1A319 /* ANStatusCell.xib */; };
+		CAD48F4515ECD2F50070FDE6 /* statusCellBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4215ECD2F50070FDE6 /* statusCellBottom.png */; };
+		CAD48F4615ECD2F50070FDE6 /* statusCellMiddle.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4315ECD2F50070FDE6 /* statusCellMiddle.png */; };
+		CAD48F4715ECD2F50070FDE6 /* statusCellTop.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4415ECD2F50070FDE6 /* statusCellTop.png */; };
 		CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648BF15E0C2ED0081E981 /* photoIcon.png */; };
 		CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */; };
 		CAD648C515E0C7AE0081E981 /* ANImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD648C415E0C7AE0081E981 /* ANImageView.m */; };
@@ -365,6 +370,12 @@
 		CACE0C0615EC82DD00E1A319 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		CACE0C0915EC83E100E1A319 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		CACE0C0A15EC83E100E1A319 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		CACE0C0C15EC947D00E1A319 /* ANStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANStatusCell.h; sourceTree = "<group>"; };
+		CACE0C0D15EC947D00E1A319 /* ANStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANStatusCell.m; sourceTree = "<group>"; };
+		CACE0C0F15EC948F00E1A319 /* ANStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ANStatusCell.xib; sourceTree = "<group>"; };
+		CAD48F4215ECD2F50070FDE6 /* statusCellBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusCellBottom.png; sourceTree = "<group>"; };
+		CAD48F4315ECD2F50070FDE6 /* statusCellMiddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusCellMiddle.png; sourceTree = "<group>"; };
+		CAD48F4415ECD2F50070FDE6 /* statusCellTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusCellTop.png; sourceTree = "<group>"; };
 		CAD648BF15E0C2ED0081E981 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoIcon.png; sourceTree = "<group>"; };
 		CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photoIcon@2x.png"; sourceTree = "<group>"; };
 		CAD648C315E0C7AE0081E981 /* ANImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageView.h; sourceTree = "<group>"; };
@@ -517,6 +528,9 @@
 		0067483115D8473100065DFF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				CAD48F4215ECD2F50070FDE6 /* statusCellBottom.png */,
+				CAD48F4315ECD2F50070FDE6 /* statusCellMiddle.png */,
+				CAD48F4415ECD2F50070FDE6 /* statusCellTop.png */,
 				4E8492FE15E9D2250086A713 /* Notifications */,
 				AEB6F97115E121C900EEA9ED /* Action Bar */,
 				FD3EB16115DB4995005BF189 /* Side Menu */,
@@ -713,6 +727,9 @@
 		9229761915D5BF300096B5D8 /* Generic Stream Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CACE0C0C15EC947D00E1A319 /* ANStatusCell.h */,
+				CACE0C0D15EC947D00E1A319 /* ANStatusCell.m */,
+				CACE0C0F15EC948F00E1A319 /* ANStatusCell.xib */,
 				9253EBD315D624F90047C153 /* ANStatusViewCell.h */,
 				9253EBD415D624F90047C153 /* ANStatusViewCell.m */,
 				CAD8D95A15D7144F007FC765 /* ANStreamFooterView.h */,
@@ -1260,6 +1277,10 @@
 				4E6E0C8E15EAF303001E2DCE /* WarningNotificationIcon.png in Resources */,
 				4E6E0C8F15EAF303001E2DCE /* WarningNotificationIcon@2x.png in Resources */,
 				FD4D008A15EB4548003F6B64 /* pullToRefreshBg.png in Resources */,
+				CACE0C1015EC948F00E1A319 /* ANStatusCell.xib in Resources */,
+				CAD48F4515ECD2F50070FDE6 /* statusCellBottom.png in Resources */,
+				CAD48F4615ECD2F50070FDE6 /* statusCellMiddle.png in Resources */,
+				CAD48F4715ECD2F50070FDE6 /* statusCellTop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1332,6 +1353,7 @@
 				CACE0BC715E94BAC00E1A319 /* TSMiniWebBrowser.m in Sources */,
 				CACE0C0715EC82DD00E1A319 /* TTTAttributedLabel.m in Sources */,
 				CACE0C0B15EC83E100E1A319 /* NSData+Base64.m in Sources */,
+				CACE0C0E15EC947D00E1A319 /* ANStatusCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1502,8 +1524,8 @@
 		CA713C9015E70C1300A12A1F /* Debug PNS */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ralf Rottmann (48MQH47W92)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppApp/AppApp-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1524,8 +1546,8 @@
 					"-lAppAppPNS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7B4E3DA7-C9D4-490D-92C6-7926CE55695D";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
