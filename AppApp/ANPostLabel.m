@@ -66,6 +66,16 @@
     [self removeGestureRecognizer:longPressRecognizer];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *result = [super hitTest:point withEvent:event];
+    NSTextCheckingResult *linkCheck = [self linkAtPoint:point];
+    if (linkCheck.URL)
+        return result;
+    else
+        return nil;
+}
+
 - (void)tapGestureHandler:(UITapGestureRecognizer*)recognizer
 {
     if (recognizer.state == UIGestureRecognizerStateEnded)
