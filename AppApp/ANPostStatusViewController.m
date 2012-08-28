@@ -180,7 +180,7 @@
         textLength -= 29;
     
     // unblock / block post button
-    if(textLength > 0 && textLength < 256) {
+    if(textLength > 0 && textLength <= 256) {
         postButton.enabled = YES;
     } else {
         postButton.enabled = NO;
