@@ -467,7 +467,7 @@
 
 - (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
 {
-    NSMutableCharacterSet *validCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_àáâäæãåāèéêëēėęîïíīįìôöòóœøōõûüùúūñńÿßśšłžźżçćč"];
+    NSMutableCharacterSet *validCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_àáâäæãåāèéêëēėęîïíīįìôöòóœøōõûüùúūñńÿßśšłžźżçćčÈÉÊËĒĖĘŸÛÜÙÚŪÎÏÍĪĮÌÔÖÒÓŒØŌÕÀÁÂÄÆÃÅĀŚŠŁŽŹŻÇĆČŃÑM"];
     [validCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
 
     NSString* firstCharacter = nil;
