@@ -73,7 +73,19 @@
             [sizedValue appendFormat:@"?w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
         else
             [sizedValue appendFormat:@"&w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
-        [super setImageURL:sizedValue];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:value]];
+        NSCachedURLResponse *response = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+
+        if (!response)
+            [super setImageURL:sizedValue];
+        else
+        {
+            if (response.data)
+                self.image = [UIImage imageWithData:response.data];
+            else
+                [super setImageURL:sizedValue];
+        }
     }
     else
         [super setImageURL:value];
