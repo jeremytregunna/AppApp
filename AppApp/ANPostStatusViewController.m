@@ -467,6 +467,9 @@
 
 - (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
 {
+    NSMutableCharacterSet *validCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_àáâäæãåāèéêëēėęîïíīįìôöòóœøōõûüùúūñńÿßśšłžźżçćč"];
+    [validCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+
     NSString* firstCharacter = nil;
     if(range.length == 0)
         firstCharacter = text;
@@ -492,23 +495,7 @@
             [currentCapture appendString:text];
         }
     }
-    else if(currentCapture && [firstCharacter isEqualToString:@" "])
-    {
-        // Finished typing
-        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:[currentCapture substringFromIndex:1]];
-        NSError* error = nil;
-        [re save:&error successCallback:^{
-            currentCapture = nil;
-            currentCaptureRange = NSMakeRange(NSNotFound, 0);
-        }];
-
-        [UIView animateWithDuration:0.35f animations:^{
-            CGRect frame = self.suggestionView.frame;
-            frame.origin.y = -frame.size.height;
-            self.suggestionView.frame = frame;
-        }];
-    }
-    else if(currentCapture)
+    else if(currentCapture && [firstCharacter rangeOfCharacterFromSet:validCharacterSet].location != NSNotFound)
     {
         // Normal typing when a capture has started, but before it has finished.
         if(range.length > 0)
@@ -564,6 +551,22 @@
                 }];
             }
         }
+    }
+    else if(currentCapture)
+    {
+        // Finished typing
+        ReferencedEntity* re = [ReferencedEntity referencedEntityWithType:currentCaptureType name:[currentCapture substringFromIndex:1]];
+        NSError* error = nil;
+        [re save:&error successCallback:^{
+            currentCapture = nil;
+            currentCaptureRange = NSMakeRange(NSNotFound, 0);
+        }];
+
+        [UIView animateWithDuration:0.35f animations:^{
+            CGRect frame = self.suggestionView.frame;
+            frame.origin.y = -frame.size.height;
+            self.suggestionView.frame = frame;
+        }];
     }
 
     return YES;
