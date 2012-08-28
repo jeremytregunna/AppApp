@@ -112,7 +112,7 @@
 
 - (void)longPressGestureHandler:(UITapGestureRecognizer*)recognizer
 {
-    if (recognizer.state == UIGestureRecognizerStateEnded)
+    if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         NSTextCheckingResult *result = [self linkAtPoint:[recognizer locationInView:self]];
         if (_longPressHandler && _enableLinks)
