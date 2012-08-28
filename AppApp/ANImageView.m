@@ -74,9 +74,6 @@
         else
             [sizedValue appendFormat:@"&w=%u&h=%u", width * self.scaleFactor, height * self.scaleFactor];
         
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:value]];
-        NSCachedURLResponse *response = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
-
         [super setImageURL:sizedValue];
     }
     else
