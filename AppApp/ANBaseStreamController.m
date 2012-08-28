@@ -213,7 +213,7 @@
     ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
     tempLabel.postData = postData;
     
-    CGSize statusLabelSize = [tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
+    CGSize statusLabelSize = [tempLabel sizeThatFits:CGSizeMake(230, 10000)];//[tempLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
     
     CGFloat height = MAX(ANStatusViewCellUsernameTextHeight + statusLabelSize.height, ANStatusViewCellAvatarHeight)
             + ANStatusViewCellTopMargin + ANStatusViewCellBottomMargin;
@@ -232,19 +232,19 @@
     ANStatusViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ANStatusViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.statusTextLabel.tapHandler = ^BOOL (NSString *type, NSString *value) {
+        cell.statusTextLabel.tapHandler = ^BOOL (NSURL *url) {
             BOOL result = NO;
-            if ([type isEqualToString:@"hashtag"])
+            if ([url.scheme isEqualToString:@"adnhashtag"])
             {
-                NSString *hashtag = value;
+                NSString *hashtag = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnhashtag://#" withString:@""];
                 ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
                 [self.navigationController pushViewController:hashtagController animated:YES];
             }
             else
-            if ([type isEqualToString:@"name"] && ![SVProgressHUD isVisible])
+            if ([url.scheme isEqualToString:@"adnuser"] && ![SVProgressHUD isVisible])
             {
-                NSString *userID = value;
-                 [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
+                NSString *userID = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnuser://" withString:@""];;
+                [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
                 [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
                     if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
                     {
@@ -256,9 +256,7 @@
                 }];
             }
             else
-            if ([type isEqualToString:@"link"])
             {
-                NSURL *url = [NSURL URLWithString:value];
                 if ([[UIApplication sharedApplication] canOpenURL:url])
                 {
                     TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
@@ -277,16 +275,15 @@
                         [self.navigationController pushViewController:webBrowser animated:YES];
                     }
                 }
-
             }
             return result;
         };
         
         __weak typeof(self) blockSelf = self;
-        cell.statusTextLabel.longPressHandler = ^BOOL (NSString *type, NSString *value) {
-            if([type isEqualToString:@"link"])
+        cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
+            if([url.scheme isEqualToString:@"http"])
             {
-                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:value delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
                 [sheet showInView:blockSelf.view];
             }
             else

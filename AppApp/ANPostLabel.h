@@ -24,12 +24,14 @@
 */
 
 #import "DTAttributedTextContentView.h"
+#import "TTTAttributedLabel.h"
 
-@interface ANPostLabel : DTAttributedTextContentView<DTAttributedTextContentViewDelegate>
+@interface ANPostLabel : TTTAttributedLabel<TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) NSDictionary *postData;
 @property (nonatomic, assign) BOOL enableLinks;
-@property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSString *type, NSString *value);
-@property (readwrite, nonatomic, copy) BOOL (^longPressHandler)(NSString *type, NSString *value);
+@property (nonatomic, assign) BOOL enableDataDetectors;
+@property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSURL *url);
+@property (readwrite, nonatomic, copy) BOOL (^longPressHandler)(NSURL *url);
 
 @end

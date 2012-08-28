@@ -171,7 +171,7 @@ CGFloat const ANStatusViewCellAvatarWidth = 50.0;
         statusLabelNewFrame.size.height = statusLabelSize.height;
         statusTextLabel.frame = statusLabelNewFrame;*/
         
-        CGSize size = [statusTextLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
+        CGSize size = [statusTextLabel sizeThatFits:CGSizeMake(230, 10000)];//[statusTextLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:230];
         CGRect statusLabelNewFrame = statusTextLabel.frame;
         statusLabelNewFrame.size = size;
         statusTextLabel.frame = statusLabelNewFrame;

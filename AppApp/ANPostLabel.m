@@ -24,104 +24,86 @@
 */
 
 #import "ANPostLabel.h"
-#import "ANPostLinkButton.h"
-#import "NSAttributedString+HTML.h"
 #import "NSDictionary+SDExtensions.h"
-#import "DTCoreTextConstants.h"
-#import "NSString+HTML.h"
 #import "PocketAPI.h"
 
+@interface TTTAttributedLabel(ANPostLabelExt)
+- (NSTextCheckingResult *)linkAtPoint:(CGPoint)p;
+@end
+
 @implementation ANPostLabel
+{
+    UITapGestureRecognizer *tapRecognizer;
+    UILongPressGestureRecognizer *longPressRecognizer;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame]) != NULL)
     {
-        self.delegate = self;
         _enableLinks = YES;
-        //self.drawDebugFrames = YES;
+        _enableDataDetectors = YES;
         self.userInteractionEnabled = YES;
+        self.lineBreakMode = UILineBreakModeWordWrap;
+        self.numberOfLines = 0;
+        self.font = [UIFont fontWithName:@"Helvetica" size:14.0f];
+        self.textColor = [UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0];
+        self.linkAttributes = @{ (NSString *)kCTForegroundColorAttributeName : (id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor };
+        self.activeLinkAttributes = @{ (NSString *)kCTForegroundColorAttributeName : (id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor };
+        
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
+        longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
+        
+        [self addGestureRecognizer:tapRecognizer];
+        [self addGestureRecognizer:longPressRecognizer];
     }
     return(self);
 }
 
-- (void)setEnableLinks:(BOOL)enableLinks
+- (void)dealloc
 {
-    if (enableLinks == _enableLinks)
-        return;
-    
-    _enableLinks = enableLinks;
-    [self relayoutText];
+    [self removeGestureRecognizer:tapRecognizer];
+    [self removeGestureRecognizer:longPressRecognizer];
 }
 
-- (void)executeTapHandler:(id)sender
+- (void)tapGestureHandler:(UITapGestureRecognizer*)recognizer
 {
-    ANPostLinkButton *button = (ANPostLinkButton *)sender;
-    _tapHandler(button.type, button.value);
-}
-
-- (void)executeLongPressHandler:(UILongPressGestureRecognizer *)longPressRecognizer
-{
-    if(longPressRecognizer.state == UIGestureRecognizerStateBegan)
+    if (recognizer.state == UIGestureRecognizerStateEnded)
     {
-        ANPostLinkButton *button = (ANPostLinkButton *)longPressRecognizer.view;
-        _longPressHandler(button.type, button.value);
+        NSTextCheckingResult *result = [self linkAtPoint:[recognizer locationInView:self]];
+        if (_tapHandler && _enableLinks)
+            _tapHandler(result.URL);
     }
 }
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForLink:(NSURL *)url identifier:(NSString *)identifier frame:(CGRect)frame;
+- (void)longPressGestureHandler:(UITapGestureRecognizer*)recognizer
 {
-    if (!_enableLinks)
-        return nil;
-    // we're misusing an NSURL here, but i want to modify DTCoreText as little as possible.
-    // soon, i hope to do this right and submit a patch.  just trying to get things working again.  -- BKS
-    NSString *value = (NSString *)url;
-    
-    ANPostLinkButton *button = [[ANPostLinkButton alloc] initWithFrame:frame];
-    button.minimumHitSize = CGSizeMake(20, 20);
-    button.type = identifier;
-    button.value = value;
-    button.enabled = YES;
-    button.userInteractionEnabled = YES;
-    [button addTarget:self action:@selector(executeTapHandler:) forControlEvents:UIControlEventTouchUpInside];
-    // This long press gesture recognizer is added so we can perform some action like
-    // popping up an action sheet so a user can save a URL via Pocket. @jtregunna
-    UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(executeLongPressHandler:)];
-    [button addGestureRecognizer:longPressRecognizer];
-
-    return button;
-}
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame;
-{
-    return nil;
-}
-
-- (void)addAttributes:(NSArray *)items key:(NSString *)key type:(NSString *)type attributedString:(NSMutableAttributedString *)attrString
-{
-    for (NSDictionary *item in items)
+    if (recognizer.state == UIGestureRecognizerStateEnded)
     {
-
-        NSUInteger pos = [item unsignedIntegerForKey:@"pos"];
-        NSUInteger len = [item unsignedIntegerForKey:@"len"];
-        NSString *keyValue = [item stringForKey:key];
-        NSRange range = { .location = pos, .length = len };
-        UIFont *font = [UIFont fontWithName:@"Helvetica" size:14.0f];
-        CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
-
-        if (len > [attrString length]-1)
-            len = [attrString length]-1;
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                       (__bridge id)[UIColor colorWithRed:60.0/255.0 green:123.0/255.0 blue:184.0/255.0 alpha:1.0].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
-                                       (__bridge id)ctFont, kCTFontAttributeName,
-                                       type, @"ANPostLabelAttributeType",
-                                       keyValue, @"ANPostLabelAttributeValue",
-                                       type, DTGUIDAttribute,
-                                       keyValue, DTLinkAttribute,
-                                       NULL];
-        
-        [attrString setAttributes:theAttributes range:range];
+        NSTextCheckingResult *result = [self linkAtPoint:[recognizer locationInView:self]];
+        if (_longPressHandler && _enableLinks)
+            _longPressHandler(result.URL);
     }
+}
+
+- (void)addMentionLinks:(NSString *)string
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(@[a-zA-Z0-9_]+)" options:0 error:nil];
+    [regex enumerateMatchesInString:string options:NSMatchingReportProgress range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        NSString *user = [string substringWithRange:result.range];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnuser://%@", user]];
+        [self addLinkToURL:url withRange:result.range];
+    }];
+}
+
+- (void)addHashtagLinks:(NSString *)string
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(#[a-zA-Z0-9_-]+)" options:0 error:nil];
+    [regex enumerateMatchesInString:string options:NSMatchingReportProgress range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        NSString *hashtag = [string substringWithRange:result.range];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnhashtag://%@", hashtag]];
+        [self addLinkToURL:url withRange:result.range];
+    }];
 }
 
 - (void)setPostData:(NSDictionary *)postData
@@ -130,70 +112,24 @@
     
     _postData = postData;
     
-    NSMutableString *text = [[[_postData stringForKey:@"text"] stringByAddingHTMLEntities] mutableCopy];
+    NSString *text = [_postData stringForKey:@"text"];
     if (!text || [text length] == 0)
         text = [@"[deleted post]" mutableCopy];
-    
-    [text replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, text.length)];
-    
-    NSData *htmlData = [text dataUsingEncoding:NSUTF8StringEncoding];
-	NSMutableAttributedString *postString = [[[NSAttributedString alloc] initWithHTMLData:htmlData documentAttributes:NULL] mutableCopy];
 
-    NSArray *rawHashtags = [_postData arrayForKeyPath:@"entities.hashtags"];
-    NSArray *links = [_postData arrayForKeyPath:@"entities.links"];
-    NSArray *rawMentions = [_postData arrayForKeyPath:@"entities.mentions"];
-    
-    UIFont *font = [UIFont fontWithName:@"Helvetica" size:14.0f];
-    CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
-    [postString addAttribute:(NSString*)kCTFontAttributeName
-                        value:(__bridge id)ctFont
-                        range:NSMakeRange(0, postString.length-1)];
-    CFRelease(ctFont);
-    
-    [postString addAttribute:(NSString *)kCTForegroundColorAttributeName
-                       value:(id)[UIColor colorWithRed:30.0/255.0 green:88.0/255.0 blue:119.0/255.0 alpha:1.0].CGColor
-                       range:NSMakeRange(0, postString.length-1)];
-    
-    /* 
-     @ralf: 
-     I had to add this because occasionally ADN does return the wrong start position (pos) for hashtags and mentions.
-     This seems to happen when there are additional unicode characters in a post which will not be displayed.
-     AppApp crashed if that lead to an edge condition, where position + length is out of the boundaries of the text,
-     e.g. when a hashtag is at the end of a post. 
-     
-     We very likely have to check on those for links, too, but they are not as easy to be identified as a # or @.
-     
-     Example Post ID that caused a crash:
-     170655
-     
-     Text:
-     &#55357;&#56891; RP @eay: Think about this: Twitter wasn&apos;t able to create something like Smart Push Notification in three years (since Apple introduced the Push Notification Service), while @ralf, @sneakyness &amp; Co. did it in 10 days! #AppApp
-     
-     Seems as if the unicode entities do not get parsed correctly by ADN API. Opened an issue with App.net https://github.com/appdotnet/api-spec/issues/131.
-    */
-    NSMutableArray *cleanedHashtags = [[NSMutableArray alloc] initWithCapacity:0];
-    [rawHashtags enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        int pos = (int)[(NSDictionary *)obj integerForKey:@"pos"];
-        if ([text characterAtIndex:pos] == '#') {
-            [cleanedHashtags addObject:obj];
-        }
-    }];
-    
-    NSMutableArray *cleanedMentions = [[NSMutableArray alloc] initWithCapacity:0];
-    [rawMentions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        int pos = (int)[(NSDictionary *)obj integerForKey:@"pos"];
-        if ([text characterAtIndex:pos] == '@') {
-            [cleanedMentions addObject:obj];
-        }
-    }];
-    
-    [self addAttributes:cleanedHashtags key:@"name" type:@"hashtag" attributedString:postString];
-    [self addAttributes:links key:@"url" type:@"link" attributedString:postString];
-    [self addAttributes:cleanedMentions key:@"id" type:@"name" attributedString:postString];
-    
-    self.attributedString = postString;
-    [self relayoutText];
-    [self layoutSubviews];
+    if (_enableDataDetectors)
+        self.dataDetectorTypes = UIDataDetectorTypeLink;
+    else
+        self.dataDetectorTypes = UIDataDetectorTypeNone;
+
+    self.text = text;
+
+    if (_enableDataDetectors)
+    {
+        [self addMentionLinks:self.text];
+        [self addHashtagLinks:self.text];
+    }
 }
+
+#pragma mark - TTT delegate methods
 
 @end
