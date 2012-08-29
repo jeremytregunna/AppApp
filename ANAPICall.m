@@ -115,18 +115,22 @@
     else
     if (dataObject)
     {
-        NSDictionary *responseData = (NSDictionary *)responseData;
-        NSUInteger code = [responseData unsignedIntegerForKeyPath:@"error.code"];
-        if (code)
+        if ([dataObject isKindOfClass:[NSDictionary class]])
         {
-            if (code == 401) // invalid access token
+            NSDictionary *responseData = (NSDictionary *)dataObject;
+            NSUInteger code = [responseData unsignedIntegerForKeyPath:@"error.code"];
+            if (code)
             {
-                // got the unauthorized client code.  kill the access token and show the auth screen.
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setObject:@"" forKey:@"access_token"];
+                if (code == 401) // invalid access token
+                {
+                    // got the unauthorized client code.  kill the access token and show the auth screen.
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    [defaults setObject:@"" forKey:@"access_token"];
 
-                AuthViewController *authView = [[AuthViewController alloc] init];
-                [view.window.rootViewController presentModalViewController:authView animated:YES];
+                    AuthViewController *authView = [[AuthViewController alloc] init];
+                    [view.window.rootViewController presentModalViewController:authView animated:YES];
+                    result = YES;
+                }
             }
         }
     }
