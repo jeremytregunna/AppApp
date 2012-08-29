@@ -97,49 +97,6 @@
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
-        
-    /*if (!currentToolbarView) {
-        self.currentToolbarView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.currentToolbarView.backgroundColor = [UIColor colorWithHue:0.574 saturation:0.036 brightness:0.984 alpha:1];
-        
-        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Action_Bar_Separator.png"]];
-        background.frame = CGRectMake(0,0,258,61);
-       
-        self.btnReply = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.btnReply addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        UIImage *btnReplyImg = [UIImage imageNamed:@"Action_Bar_Reply.png"];
-        [self.btnReply setImage:btnReplyImg forState:UIControlStateNormal];
-        [self.btnReply setImage:btnReplyImg forState:UIControlStateHighlighted];
-        
-        [self.btnReply setFrame:CGRectMake(10,10,40,40)];
-     
-        UIImage *btnRepostImg = [UIImage imageNamed:@"Action_Bar_Repost.png"];
-        self.btnRepost = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.btnRepost addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        [self.btnRepost setImage:btnRepostImg forState:UIControlStateNormal];
-        [self.btnRepost setImage:btnRepostImg forState:UIControlStateHighlighted];
-        
-        [self.btnRepost setFrame:CGRectMake(60,10,40,40)];
-
-        UIImage *btnConversationImg = [UIImage imageNamed:@"Action_Bar_Conversation.png"];
-        UIImage *btnConversationImgDisabled = [UIImage imageNamed:@"Action_Bar_Conversation_Disabled.png"];
-
-        self.btnConversation = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.btnConversation addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
-        [self.btnConversation setImage:btnConversationImg forState:UIControlStateNormal];
-        [self.btnConversation setImage:btnConversationImg forState:UIControlStateHighlighted];
-        [self.btnConversation setImage:btnConversationImgDisabled forState:UIControlStateDisabled];
-        [self.btnConversation setFrame:CGRectMake(110,10,40,40)];
-        
-        [self.currentToolbarView addSubview:background];
-        [self.currentToolbarView addSubview:self.btnReply];
-        [self.currentToolbarView addSubview:self.btnRepost];
-        [self.currentToolbarView addSubview:self.btnConversation]; // self'ed because we need to be able to hide it on posts without replies (@ralf)
-    }
-    
-    toolbarIsVisible = false;
-    currentSelection = nil;
-    newSelection = nil;*/
 }
 
 - (void)viewDidUnload
@@ -296,7 +253,6 @@
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
     
     cell.postData = statusDict;
-    cell.showUserButton.tag = indexPath.row;
     
     if (actionBarRow == indexPath.row)
         cell.showActionBar = YES;
@@ -309,45 +265,6 @@
 
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -367,7 +284,7 @@
         actionBarRow = indexPath.row;
         [rowsToReload addObject:indexPath];
     }
-    [tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
+    [tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -376,7 +293,7 @@
     {
         NSIndexPath *oldRow = [NSIndexPath indexPathForRow:actionBarRow inSection:0];
         actionBarRow = -1;
-        [self.tableView reloadRowsAtIndexPaths:@[oldRow] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadRowsAtIndexPaths:@[oldRow] withRowAnimation:UITableViewRowAnimationNone];
     }
 
     [super scrollViewDidScroll:scrollView];
@@ -435,94 +352,6 @@
     NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
     ANPostDetailController *detailController = [[ANPostDetailController alloc] initWithPostData:postData];
     [self.navigationController pushViewController:detailController animated:YES];
-}
-
-- (void)swipeToToolbar:(UISwipeGestureRecognizer *)gestureRecognizer
-{
-    
-    /*CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
-    ANStatusCell *currentCell = (ANStatusCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    
-    newSelection = indexPath;
-    
-    if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
-        if (!toolbarIsVisible) {
-            [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
-            self.currentToolbarView.tag = indexPath.row;
-            NSLog(@"Tag: %i",  self.currentToolbarView.tag);
-            [self toggleToolbarButtonsForIndexPath:indexPath];
-            [currentCell addSubview:self.currentToolbarView];
-            toolbarIsVisible = true;
-            currentSelection = indexPath;
-        } else {
-            [self hideToolbar];
-        }
-    } else { // user swiped on new cell
-        [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
-        self.currentToolbarView.tag = indexPath.row;
-        [self toggleToolbarButtonsForIndexPath:indexPath];
-        [currentCell addSubview:self.currentToolbarView];
-        toolbarIsVisible = true;
-        currentSelection = indexPath;
-    }
-        
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];*/
-}
-
-- (void)toggleToolbarAtIndexPath:(NSIndexPath *)indexPath
-{
-    /*[self.tableView beginUpdates];
-
-    ANStatusCell *currentCell = (ANStatusCell *)[self.tableView cellForRowAtIndexPath:indexPath];    
-    newSelection = indexPath;
-    
-    if ((currentSelection) && (newSelection.row == currentSelection.row)) { // user swiped on same cell twice
-        if (!toolbarIsVisible) {
-            [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
-            self.currentToolbarView.tag = indexPath.row;
-            NSLog(@"Tag: %i",  self.currentToolbarView.tag);
-            [self toggleToolbarButtonsForIndexPath:indexPath];
-            [currentCell addSubview:self.currentToolbarView];
-            toolbarIsVisible = true;
-            currentSelection = indexPath;
-        } else {
-            [self hideToolbar];
-        }
-    } else { // user swiped on new cell
-        [self.currentToolbarView setFrame:CGRectMake(71, currentCell.frame.size.height, 260, 47)];
-        self.currentToolbarView.tag = indexPath.row;
-        [self toggleToolbarButtonsForIndexPath:indexPath];
-        [currentCell addSubview:self.currentToolbarView];
-
-        toolbarIsVisible = true;
-        currentSelection = indexPath;
-    }
-    
-    [self.tableView endUpdates];*/
-    
-}
-
-- (void)hideToolbar
-{
-    /*[self.currentToolbarView removeFromSuperview];
-    toolbarIsVisible = false;
-    currentSelection = nil;*/
-}
-
-- (void)toggleToolbarButtonsForIndexPath:(NSIndexPath *)indexPath
-{
-    /*NSDictionary *postData = [streamData objectAtIndex:indexPath.row];
-    NSString *numReplies = [postData stringForKeyPath:@"num_replies"];
-    NSString *isReplyTo = [postData stringForKeyPath:@"reply_to"];
-    if (([numReplies isEqualToString:@"0"]) && (!isReplyTo))
-    {
-        self.btnConversation.enabled = NO;
-    } else
-    {
-        self.btnConversation.enabled = YES;
-    }*/
 }
 
 - (void)swipeToSideMenu:(UISwipeGestureRecognizer *)gestureRecognizer

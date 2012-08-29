@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *showUserButton;
 @property (weak, nonatomic) IBOutlet UIView *postView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *actionBarSeparatorView;
 @property (weak, nonatomic) IBOutlet UIButton *replyButton;
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 @property (weak, nonatomic) IBOutlet UIButton *convoButton;

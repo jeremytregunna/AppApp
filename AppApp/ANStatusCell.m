@@ -16,6 +16,7 @@ static UIImage *cellMiddle = nil;
 static UIImage *cellBottom = nil;
 
 @implementation ANStatusCell
+
 @synthesize avatarView;
 @synthesize usernameTextLabel;
 @synthesize statusTextLabel;
@@ -90,6 +91,8 @@ static UIImage *cellBottom = nil;
         replyButton.hidden = NO;
         repostButton.hidden = NO;
         convoButton.hidden = NO;
+        _actionBarSeparatorView.hidden = NO;
+        
         self.postView.backgroundColor = [UIColor whiteColor];
     }
     else
@@ -97,6 +100,8 @@ static UIImage *cellBottom = nil;
         replyButton.hidden = YES;
         repostButton.hidden = YES;
         convoButton.hidden = YES;
+        _actionBarSeparatorView.hidden = YES;
+        
         self.postView.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:247.0/255.0 blue:251.0/255.0 alpha:1.0];
     }
 }
