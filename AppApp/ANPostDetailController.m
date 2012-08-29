@@ -66,22 +66,17 @@
     // we're gonna reuse this cell like two mofo's.
     
     detailCell = [ANPostDetailCell loadFromNib];
-    detailCell.contentView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    //detailCell.postLabel.dataDetectorTypes = UIDataDetectorTypeAll;
-    //detailCell.postLabel.delegate = self;
     detailCell.postLabel.postData = postData;
     detailCell.nameLabel.text = [postData stringForKeyPath:@"user.name"];
-    detailCell.usernameLabel.text = [NSString stringWithFormat:@"@%@", [postData stringForKeyPath:@"user.username"]];
+    detailCell.usernameLabel.text = [NSString stringWithFormat:@"%@", [postData stringForKeyPath:@"user.username"]];
     detailCell.userImageView.imageURL = [postData stringForKeyPath:@"user.avatar_image.url"];
-    //[detailCell.postLabel adjustHeightToFit:9999.0]; // hopefully unlimited in height...
 
     // now get that and set the header height..
-    CGFloat defaultViewHeight = 221; // seen in the nib.
-    CGFloat defaultLabelHeight = 21; // ... i'm putting these here in case we need to change it later.
-    CGFloat newLabelHeight = detailCell.postLabel.frame.size.height;
+    CGFloat defaultViewHeight = [ANPostDetailCell defaultCellHeight];
+    CGSize size = [detailCell.postLabel sizeThatFits:CGSizeMake(300, 10000)];
     
-    detailCellHeight = defaultViewHeight + (newLabelHeight - defaultLabelHeight);
+    detailCellHeight = defaultViewHeight + size.height;
 
     [detailCell.replyButton addTarget:self action:@selector(newPostAction:) forControlEvents:UIControlEventTouchUpInside];
     [detailCell.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];

@@ -37,4 +37,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 @property (weak, nonatomic) IBOutlet UIButton *userButton;
 
++ (CGFloat)defaultCellHeight;
+
 @end

@@ -28,8 +28,6 @@
 
 @interface ANPostDetailCell ()
 @property (weak, nonatomic) IBOutlet UIView *topView;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
-@property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
 @end
 
 @implementation ANPostDetailCell
@@ -42,59 +40,23 @@
 @synthesize repostButton;
 @synthesize userButton;
 @synthesize topView;
-@synthesize arrowImageView;
-@synthesize bottomView;
+
++ (CGFloat)defaultCellHeight
+{
+    return 181 - 22; //cell height - text height;
+}
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
-    [self addObserver:self forKeyPath:@"topView.frame" options:NSKeyValueObservingOptionOld context:NULL];
-    [self addObserver:self forKeyPath:@"bottomView.frame" options:NSKeyValueObservingOptionOld context:NULL];
+    self.topView.layer.borderColor = [UIColor colorWithRed:0.62 green:0.65 blue:0.70 alpha:1.0].CGColor;
+    self.userImageView.layer.borderColor = [UIColor colorWithRed:0.62 green:0.65 blue:0.70 alpha:1.0].CGColor;
+    self.topView.layer.borderWidth = 1.0f;
+    self.userImageView.layer.borderWidth = 1.0f;
 }
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"topView.frame"];
-    [self removeObserver:self forKeyPath:@"bottomView.frame"];
-}
-
-- (void)drawTopShadow
-{
-    CGFloat baseHeight = CGRectGetHeight(self.topView.frame);
-    CGFloat baseWidth = CGRectGetWidth(self.topView.frame);
-    CGFloat arrowMinX = CGRectGetMinX(self.arrowImageView.frame);
-    UIBezierPath *path = [UIBezierPath bezierPath];
-
-    [path moveToPoint:CGPointMake(0, baseHeight)];
-    [path addLineToPoint:CGPointMake(arrowMinX, baseHeight)];
-    [path addLineToPoint:CGPointMake(arrowMinX + self.arrowImageView.frame.size.width / 2, baseHeight + self.arrowImageView.frame.size.height)];
-    [path addLineToPoint:CGPointMake(arrowMinX + self.arrowImageView.frame.size.width, baseHeight)];
-    [path addLineToPoint:CGPointMake(baseWidth, baseHeight)];
-    [path addLineToPoint:CGPointMake(baseWidth, baseHeight - 4)];
-    [path addLineToPoint:CGPointMake(0, baseHeight - 4)];
-
-    self.topView.layer.shadowOffset = CGSizeMake(0, 2);
-    self.topView.layer.shadowRadius = 2;
-    self.topView.layer.shadowOpacity = 0.7f;
-    self.topView.layer.shadowPath = path.CGPath;
-    self.topView.layer.masksToBounds = NO;
-}
-
-- (void)drawBottomShadow
-{
-    self.bottomView.layer.shadowOffset = CGSizeMake(0, -2);
-    self.bottomView.layer.shadowRadius = 2;
-    self.bottomView.layer.shadowOpacity = 0.7;
-    self.bottomView.layer.masksToBounds = NO;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if([keyPath isEqualToString:@"topView.frame"])
-        [self drawTopShadow];
-    else if([keyPath isEqualToString:@"bottomView.frame"])
-        [self drawBottomShadow];
 }
 
 @end
