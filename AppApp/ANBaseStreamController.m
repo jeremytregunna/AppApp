@@ -284,7 +284,7 @@
         actionBarRow = indexPath.row;
         [rowsToReload addObject:indexPath];
     }
-    [tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
