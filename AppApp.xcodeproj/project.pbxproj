@@ -1465,6 +1465,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1491,6 +1492,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1556,6 +1558,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1610,6 +1613,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25B34A29-416C-4707-BB2E-125213ED07E6";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Externals/DTCoreText\"/** $(SRCROOT)/Externals/AppAppC/**";
 				WRAPPER_EXTENSION = app;
 			};
