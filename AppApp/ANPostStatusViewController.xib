@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2829</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">1914</string>
@@ -145,6 +145,7 @@
 										<string key="NSFrame">{{272, 4}, {42, 21}}</string>
 										<reference key="NSSuperview" ref="887477709"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -176,7 +177,6 @@
 									<object class="IBUIScrollView" id="998094676">
 										<reference key="NSNextResponder" ref="887477709"/>
 										<int key="NSvFlags">268</int>
-										<array class="NSMutableArray" key="NSSubviews"/>
 										<string key="NSFrame">{{44, -34}, {232, 34}}</string>
 										<reference key="NSSuperview" ref="887477709"/>
 										<reference key="NSWindow"/>
@@ -293,12 +293,16 @@
 						<array key="IBUIItems">
 							<object class="IBUINavigationItem" id="379629066">
 								<reference key="IBUINavigationBar" ref="400955110"/>
-								<string key="IBUITitle">New Status</string>
+								<string key="IBUITitle">New Post</string>
 								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="724532054">
 									<string key="IBUITitle">Close</string>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="379629066"/>
+									<object class="NSColor" key="IBUITintColor">
+										<int key="NSColorSpace">1</int>
+										<bytes key="NSRGB">MSAwLjEyNDcwNDg5MDQgMC4xNDY0MTAyNzY2AA</bytes>
+									</object>
 								</object>
 								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="102430109">
 									<bool key="IBUIEnabled">NO</bool>
@@ -306,6 +310,10 @@
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
 									<reference key="IBUINavigationItem" ref="379629066"/>
+									<object class="NSColor" key="IBUITintColor">
+										<int key="NSColorSpace">1</int>
+										<bytes key="NSRGB">MC4yNTc4OTkxODQ3IDAuNzUgMC4yMDI4NDEyMzMyAA</bytes>
+									</object>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
@@ -596,17 +604,40 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">ANPostStatusViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">dismissPostStatusViewController:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">dismissPostStatusViewController:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clearPhotoAction:">id</string>
+						<string key="dismissPostStatusViewController:">id</string>
+						<string key="hashAction:">id</string>
+						<string key="mentionAction:">id</string>
+						<string key="photoAction:">id</string>
+						<string key="postStatusToAppNet:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clearPhotoAction:">
+							<string key="name">clearPhotoAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="dismissPostStatusViewController:">
 							<string key="name">dismissPostStatusViewController:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="hashAction:">
+							<string key="name">hashAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="mentionAction:">
+							<string key="name">mentionAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="photoAction:">
+							<string key="name">photoAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="postStatusToAppNet:">
+							<string key="name">postStatusToAppNet:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="characterCountLabel">UILabel</string>
 						<string key="groupView">UIView</string>
