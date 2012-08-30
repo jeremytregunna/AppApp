@@ -173,6 +173,7 @@
 
 -(void) updateCharCountLabel: (NSNotification *) notification
 {
+    // counts down from 256
     NSInteger textLength = 256 - [postTextView.text length];
     
     // account for the imgur url.
