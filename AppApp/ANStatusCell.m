@@ -123,7 +123,12 @@ static UIImage *cellBottom = nil;
     statusLabelNewFrame.size.height = size.height;
     statusTextLabel.frame = statusLabelNewFrame;
     
-    NSString *username = [self.postData stringForKeyPath:@"user.username"];
+    BOOL showRealNames = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefShowRealNames"] boolValue];
+    NSString *username = nil;
+    if (showRealNames)
+        username = [self.postData stringForKeyPath:@"user.name"];
+    else
+        username = [self.postData stringForKeyPath:@"user.username"];
     usernameTextLabel.text = username;
     
     NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
