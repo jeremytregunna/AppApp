@@ -5,6 +5,32 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Read Later</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Read Later</string>
+			<key>Titles</key>
+			<array>
+				<string>Pocket</string>
+				<string>Instapaper</string>
+			</array>
+			<key>Key</key>
+			<string>prefReadLater</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Values</key>
+			<array>
+				<string>Pocket</string>
+				<string>Instapaper</string>
+			</array>
+		</dict>
+		<dict>
 			<key>Title</key>
 			<string>Timeline Settings</string>
 			<key>Type</key>

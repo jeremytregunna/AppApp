@@ -265,10 +265,25 @@
         
         __weak typeof(self) blockSelf = self;
         cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             if([url.scheme isEqualToString:@"http"])
             {
-                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
-                [sheet showInView:blockSelf.view];
+                NSString *serviceName = [defaults objectForKey:@"prefReadLater"];
+                if(serviceName && [serviceName isEqualToString:@""] == NO)
+                {
+                    ANReadLaterManager *manager = [[ANReadLaterManager alloc] initWithDelegate:self];
+                    ANReadLaterType readLaterService = NSNotFound;
+                    if([serviceName isEqualToString:@"Pocket"])
+                        readLaterService = kANReadLaterTypePocket;
+                    else if([serviceName isEqualToString:@"Instapaper"])
+                        readLaterService = kANReadLaterTypeInstapaper;
+                    [manager saveURL:url serviceType:readLaterService];
+                }
+                else
+                {
+                    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
+                    [sheet showInView:blockSelf.view];
+                }
             }
             else
             {
@@ -333,14 +348,19 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     ANReadLaterManager *manager = [[ANReadLaterManager alloc] initWithDelegate:self];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     switch(buttonIndex)
     {
         case 0: // Pocket
             [manager saveURL:[NSURL URLWithString:actionSheet.title] serviceType:kANReadLaterTypePocket];
+            [defaults setObject:@"Pocket" forKey:@"prefReadLater"];
+            [defaults synchronize];
             break;
         case 1:
             [manager saveURL:[NSURL URLWithString:actionSheet.title] serviceType:kANReadLaterTypeInstapaper];
+            [defaults setObject:@"Instapaper" forKey:@"prefReadLater"];
+            [defaults synchronize];
             break;
     }
 }
