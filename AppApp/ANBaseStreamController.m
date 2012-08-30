@@ -97,6 +97,14 @@
     
     if ([[ANAPICall sharedAppAPI] hasAccessToken])
         [self refresh];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyChangedSettings:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applyChangedSettings:(NSNotification *)notification
+{
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidUnload
@@ -108,6 +116,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     self.tableView.delegate = nil;
 }
 
