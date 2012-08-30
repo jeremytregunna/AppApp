@@ -221,7 +221,27 @@
             }
             else
             {
-                if ([[UIApplication sharedApplication] canOpenURL:url])
+                NSString *urlString = [url absoluteString];
+                NSURL *newURL = url;
+                
+                // make sure we pick up any changes.
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                BOOL useSafari = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseSafari"] boolValue];
+                BOOL useChrome = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseChrome"] boolValue];
+                
+                if (useChrome)
+                {
+                    NSString *chromeString = [urlString stringByReplacingCharactersInRange:NSMakeRange(0, 4) withString:@"googlechrome"];
+                    newURL = [NSURL URLWithString:chromeString];
+                }
+                
+                BOOL canOpenURL = [[UIApplication sharedApplication] canOpenURL:newURL];
+                
+                if ((useSafari || useChrome) && canOpenURL)
+                {
+                    [[UIApplication sharedApplication] openURL:newURL];
+                }
+                else
                 {
                     TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
                     webBrowser.showActionButton = YES;
