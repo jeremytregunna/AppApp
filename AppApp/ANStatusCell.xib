@@ -68,7 +68,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="899311207"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="900543183">
+								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC45NTI5NDExNzY1IDAuOTY4NjI3NDUxIDAuOTg0MzEzNzI1NQA</bytes>
 								</object>
@@ -98,7 +98,11 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="243253258"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="900543183"/>
+								<object class="NSColor" key="IBUIBackgroundColor" id="720312851">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
+								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -130,7 +134,8 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="92656367"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="900543183"/>
+								<reference key="IBUIBackgroundColor" ref="720312851"/>
+								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -163,7 +168,8 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="273239330"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="900543183"/>
+								<reference key="IBUIBackgroundColor" ref="720312851"/>
+								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -322,10 +328,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="955425498"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MCAwAA</bytes>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="720312851"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
