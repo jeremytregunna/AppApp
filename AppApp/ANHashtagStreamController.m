@@ -58,19 +58,21 @@
 {
     // Call this to indicate that we have finished "refreshing".
     // This will then result in the headerView being unpinned (-unpinHeaderView will be called).
+
+    __weak typeof(self) blockSelf = self;
     
     if ([streamData count] > 0) {
         id firstPost = [streamData objectAtIndex:0];
         [[ANAPICall sharedAppAPI] getTaggedPosts:hashtag sincePost:[firstPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
             if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
-                [self updateTopWithData:dataObject];
-            [self refreshCompleted];
+                [blockSelf updateTopWithData:dataObject];
+            [blockSelf refreshCompleted];
         }];
     } else {
         [[ANAPICall sharedAppAPI] getTaggedPosts:hashtag withCompletionBlock:^(id dataObject, NSError *error) {
             if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
-                [self updateTopWithData:dataObject];
-            [self refreshCompleted];
+                [blockSelf updateTopWithData:dataObject];
+            [blockSelf refreshCompleted];
         }];
     }
 }
@@ -80,14 +82,16 @@
     // grab the last post
     id lastPost = [streamData lastObject];
     
+    __weak typeof(self) blockSelf = self;
+    
     // if we have a post
     if (lastPost) {
         
         // fetch old data
         [[ANAPICall sharedAppAPI] getTaggedPosts:hashtag beforePost:[lastPost objectForKey:@"id"] withCompletionBlock:^(id dataObject, NSError *error) {
             if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
-                [self updateBottomWithData:dataObject];
-            [self loadMoreCompleted];
+                [blockSelf updateBottomWithData:dataObject];
+            [blockSelf loadMoreCompleted];
         }];
     } else {
         [self loadMoreCompleted];

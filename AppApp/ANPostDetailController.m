@@ -67,7 +67,7 @@
     
     detailCell = [ANPostDetailCell loadFromNib];
     detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    detailCell.postLabel.postData = postData;
+    detailCell.postLabel.postText = [postData stringForKey:@"text"];
     detailCell.nameLabel.text = [postData stringForKeyPath:@"user.name"];
     detailCell.usernameLabel.text = [NSString stringWithFormat:@"%@", [postData stringForKeyPath:@"user.username"]];
     detailCell.userImageView.imageURL = [postData stringForKeyPath:@"user.avatar_image.url"];

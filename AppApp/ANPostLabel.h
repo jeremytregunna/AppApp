@@ -27,7 +27,7 @@
 
 @interface ANPostLabel : TTTAttributedLabel<TTTAttributedLabelDelegate>
 
-@property (nonatomic, strong) NSDictionary *postData;
+@property (nonatomic, assign) NSString *postText;
 @property (nonatomic, assign) BOOL enableLinks;
 @property (nonatomic, assign) BOOL enableDataDetectors;
 @property (readwrite, nonatomic, copy) BOOL (^tapHandler)(NSURL *url);

@@ -123,20 +123,22 @@
 - (void)addMentionLinks:(NSString *)string
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(@[a-zA-Z0-9_]+)" options:0 error:nil];
+    __weak typeof(self) blockSelf = self;
     [regex enumerateMatchesInString:string options:NSMatchingCompleted range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         NSString *user = [string substringWithRange:result.range];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnuser://%@", user]];
-        [self addLinkToURL:url withRange:result.range];
+        [blockSelf addLinkToURL:url withRange:result.range];
     }];
 }
 
 - (void)addHashtagLinks:(NSString *)string
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(#[a-zA-Z0-9_-]+)" options:0 error:nil];
+    __weak typeof(self) blockSelf = self;
     [regex enumerateMatchesInString:string options:NSMatchingCompleted range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         NSString *hashtag = [string substringWithRange:result.range];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"adnhashtag://%@", hashtag]];
-        [self addLinkToURL:url withRange:result.range];
+        [blockSelf addLinkToURL:url withRange:result.range];
     }];
 }
 
@@ -148,13 +150,13 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
     return ctFont;
 }
 
-- (void)setPostData:(NSDictionary *)postData
+- (void)setPostText:(NSString *)value
 {
     // example of deleted post id: 70201
     
-    _postData = postData;
+    _postText = value;
     
-    NSString *text = [_postData stringForKey:@"text"];
+    NSString *text = value;
     if (!text || [text length] == 0)
         text = [@"[deleted post]" mutableCopy];
 

@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *convoButton;
 
 @property (nonatomic, assign) BOOL showActionBar;
-@property (nonatomic, strong) NSDictionary *postData;
+@property (nonatomic, copy) NSDictionary *postData;
 
 @property (nonatomic, assign) BOOL drawAsTopCell;
 

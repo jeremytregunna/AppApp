@@ -101,10 +101,21 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyChangedSettings:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    if (self.navigationController.visibleViewController != self)
+        self.view = nil;
+}
+
 - (void)applyChangedSettings:(NSNotification *)notification
 {
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.tableView reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload
@@ -118,6 +129,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -167,7 +179,7 @@
     ANPostLabel *tempLabel = [[ANPostLabel alloc] initWithFrame:CGRectZero];
     tempLabel.enableDataDetectors = NO;
     tempLabel.enableLinks = NO;
-    tempLabel.postData = postData;
+    tempLabel.postText = [postData stringForKey:@"text"];
     
     CGSize statusLabelSize = [tempLabel sizeThatFits:CGSizeMake(230, 10000)];
     
@@ -191,10 +203,9 @@
         [cell.repostButton addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
         [cell.convoButton addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
         
-        // these cause crashes, what are they for??  there's much easier ways to set an overlay on that button.
-        /*[cell.showUserButton addTarget:self action:@selector(addOverlayToUserButton:) forControlEvents:UIControlEventTouchDown];
-        [cell.showUserButton addTarget:self action:@selector(removeLayerFromView:) forControlEvents:UIControlEventTouchDragOutside];*/
         [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        __weak typeof(self) blockSelf = self;
 
         cell.statusTextLabel.tapHandler = ^BOOL (NSURL *url) {
             BOOL result = NO;
@@ -202,7 +213,7 @@
             {
                 NSString *hashtag = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnhashtag://#" withString:@""];
                 ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
-                [self.navigationController pushViewController:hashtagController animated:YES];
+                [blockSelf.navigationController pushViewController:hashtagController animated:YES];
             }
             else
             if ([url.scheme isEqualToString:@"adnuser"] && ![SVProgressHUD isVisible])
@@ -210,11 +221,11 @@
                 NSString *userID = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnuser://" withString:@""];;
                 [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
                 [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-                    if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:self.view])
+                    if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:blockSelf.view])
                     {
                         NSDictionary *userData = dataObject;
                         ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-                        [self.navigationController pushViewController:userViewController animated:YES];
+                        [blockSelf.navigationController pushViewController:userViewController animated:YES];
                         [SVProgressHUD dismiss];
                     }
                 }];
@@ -251,23 +262,22 @@
                     if (webBrowser.mode == TSMiniWebBrowserModeModal)
                     {
                         webBrowser.modalDismissButtonTitle = @"Home";
-                        [self presentModalViewController:webBrowser animated:YES];
+                        [blockSelf presentModalViewController:webBrowser animated:YES];
                     }
                     else
                     if(webBrowser.mode == TSMiniWebBrowserModeNavigation)
                     {
-                        [self.navigationController pushViewController:webBrowser animated:YES];
+                        [blockSelf.navigationController pushViewController:webBrowser animated:YES];
                     }
                 }
             }
             return result;
         };
         
-        __weak typeof(self) blockSelf = self;
         cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
             if([url.scheme isEqualToString:@"http"])
             {
-                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
                 [sheet showInView:blockSelf.view];
             }
             else
@@ -314,6 +324,10 @@
         [rowsToReload addObject:indexPath];
     }
     [tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
+    
+    //ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:@"appapp"];
+    //[self.navigationController pushViewController:hashtagController animated:YES];
+
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

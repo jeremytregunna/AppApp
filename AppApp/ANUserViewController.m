@@ -90,6 +90,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    
+}
+
 - (NSString *)sideMenuTitle
 {
     return @"Me";

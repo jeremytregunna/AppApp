@@ -114,9 +114,9 @@ static UIImage *cellBottom = nil;
 
 - (void)setPostData:(NSDictionary *)postData
 {
-    _postData = postData;
+    _postData = [postData copy];
     
-    statusTextLabel.postData = self.postData;
+    statusTextLabel.postText = [self.postData stringForKey:@"text"];
 
     CGSize size = [statusTextLabel sizeThatFits:CGSizeMake(230, 10000)];
     CGRect statusLabelNewFrame = statusTextLabel.frame;
