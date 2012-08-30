@@ -79,16 +79,16 @@
 					</object>
 					<object class="IBUIActivityIndicatorView" id="390947881">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">300</int>
+						<int key="NSvFlags">-2147483348</int>
 						<string key="NSFrame">{{20, 17}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="136743292"/>
+						<reference key="NSNextKeyView" ref="949773691"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIStyle">2</int>
 					</object>
-					<object class="IBUIImageView" id="136743292">
+					<object class="IBUIImageView" id="949773691">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 53}, {320, 1}}</string>
@@ -140,7 +140,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">cellTopImage</string>
 						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="136743292"/>
+						<reference key="destination" ref="949773691"/>
 					</object>
 					<int key="connectionID">15</int>
 				</object>
@@ -163,7 +163,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="396176702"/>
 							<reference ref="390947881"/>
-							<reference ref="136743292"/>
+							<reference ref="949773691"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Demo Table Header View</string>
@@ -191,7 +191,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="136743292"/>
+						<reference key="object" ref="949773691"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
