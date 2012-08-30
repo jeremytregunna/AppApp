@@ -496,7 +496,9 @@ NSString *const SDWebServiceError = @"SDWebServiceError";
 			{
 				SDLog(@"Cancelling call.");
 				[existingConnection cancel];
+                [dictionaryLock lock]; // NSMutableDictionary isn't thread-safe for writing.
 				[singleRequests removeObjectForKey:requestName];
+                [dictionaryLock unlock];
 				[self decrementRequests];
 			}
         }

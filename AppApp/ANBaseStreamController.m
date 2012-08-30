@@ -372,6 +372,12 @@
     ANStreamHeaderView *hv = (ANStreamHeaderView *)self.headerView;
     [hv.activityIndicator startAnimating];
     hv.title.text = @"Loading...";
+    
+    // show the cap for the top cell.
+    if ([streamData count] > 0)
+        hv.cellTopImage.hidden = NO;
+    else
+        hv.cellTopImage.hidden = YES;
 }
 
 - (void) unpinHeaderView
@@ -379,7 +385,13 @@
     [super unpinHeaderView];
     
     // do custom handling for the header view
-    [[(ANStreamHeaderView *)self.headerView activityIndicator] stopAnimating];
+    ANStreamHeaderView *hv = (ANStreamHeaderView *)self.headerView;
+    [[hv activityIndicator] stopAnimating];
+    // show the cap for the top cell.
+    if ([streamData count] > 0)
+        hv.cellTopImage.hidden = NO;
+    else
+        hv.cellTopImage.hidden = YES;
 }
 
 // Update the header text while the user is dragging

@@ -27,6 +27,8 @@
 @property (nonatomic, assign) BOOL showActionBar;
 @property (nonatomic, strong) NSDictionary *postData;
 
+@property (nonatomic, assign) BOOL drawAsTopCell;
+
 + (CGFloat)baseHeight:(BOOL)showActionBar;
 + (CGFloat)baseTextHeight;
 

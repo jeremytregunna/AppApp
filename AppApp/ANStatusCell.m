@@ -12,6 +12,7 @@
 #import "NSDate+ANExtensions.h"
 
 static UIImage *cellTop = nil;
+static UIImage *cellTopAlt = nil;
 static UIImage *cellMiddle = nil;
 static UIImage *cellBottom = nil;
 
@@ -43,6 +44,7 @@ static UIImage *cellBottom = nil;
 {
     // setup our constantly redrawn images.
     cellTop = [UIImage imageNamed:@"statusCellTop.png"];
+    cellTopAlt = [UIImage imageNamed:@"statusCellTopAlt.png"];
     cellMiddle = [UIImage imageNamed:@"statusCellMiddle.png"];
     cellBottom = [UIImage imageNamed:@"statusCellBottom.png"];
 }
@@ -58,7 +60,10 @@ static UIImage *cellBottom = nil;
 
 - (void)drawRect:(CGRect)rect
 {
-    [cellTop drawInRect:CGRectMake(0, 0, 320, 62)];
+    if (_drawAsTopCell)
+        [cellTopAlt drawInRect:CGRectMake(0, 0, 320, 62)];
+    else
+        [cellTop drawInRect:CGRectMake(0, 0, 320, 62)];
     [cellMiddle drawInRect:CGRectMake(0, 62, 320, rect.size.height - 2)];
     [cellBottom drawInRect:CGRectMake(0, rect.size.height - 2, 320, 2)];
 }
@@ -77,6 +82,7 @@ static UIImage *cellBottom = nil;
     created_atTextLabel.text = nil;
     usernameTextLabel.text = nil;
     self.showActionBar = NO;
+    self.drawAsTopCell = NO;
 }
 
 - (void)setShowActionBar:(BOOL)value
