@@ -134,13 +134,13 @@ static UIImage *cellBottom = nil;
     NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
     created_atTextLabel.text = [createdAt stringInterval];
     
-    [self performSelector:@selector(updateTime) withObject:nil afterDelay:1.0];
+    //[self performSelector:@selector(updateTime) withObject:nil afterDelay:1.0];
     
     NSString *avatarURL = [self.postData stringForKeyPath:@"user.avatar_image.url"];
     avatarView.imageURL = avatarURL;
 }
 
-- (void)updateTime {
+/*- (void)updateTime {
     
      NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
      
@@ -168,6 +168,6 @@ static UIImage *cellBottom = nil;
     }
     
     [self performSelector:@selector(updateTime) withObject:nil afterDelay:1.0];
-}
+}*/
 
 @end
