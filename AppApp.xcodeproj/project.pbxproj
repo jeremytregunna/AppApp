@@ -139,9 +139,8 @@
 		CAD48F4715ECD2F50070FDE6 /* statusCellTop.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4415ECD2F50070FDE6 /* statusCellTop.png */; };
 		CAD48F4E15EDDA8A0070FDE6 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4C15EDDA890070FDE6 /* separator.png */; };
 		CAD48F4F15EDDA8A0070FDE6 /* separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F4D15EDDA8A0070FDE6 /* separator@2x.png */; };
-		CAD48F5515EDF2930070FDE6 /* progressDark.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F5315EDF2930070FDE6 /* progressDark.png */; };
-		CAD48F5615EDF2930070FDE6 /* progressLight.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F5415EDF2930070FDE6 /* progressLight.png */; };
 		CAD48F6715EF35750070FDE6 /* headerCellTop.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F6615EF35750070FDE6 /* headerCellTop.png */; };
+		CAD48F6D15EF38D40070FDE6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CAD48F6C15EF38D40070FDE6 /* Settings.bundle */; };
 		CAD648C115E0C2ED0081E981 /* photoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648BF15E0C2ED0081E981 /* photoIcon.png */; };
 		CAD648C215E0C2ED0081E981 /* photoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */; };
 		CAD648C515E0C7AE0081E981 /* ANImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD648C415E0C7AE0081E981 /* ANImageView.m */; };
@@ -383,9 +382,8 @@
 		CAD48F4415ECD2F50070FDE6 /* statusCellTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusCellTop.png; sourceTree = "<group>"; };
 		CAD48F4C15EDDA890070FDE6 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		CAD48F4D15EDDA8A0070FDE6 /* separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "separator@2x.png"; sourceTree = "<group>"; };
-		CAD48F5315EDF2930070FDE6 /* progressDark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressDark.png; sourceTree = "<group>"; };
-		CAD48F5415EDF2930070FDE6 /* progressLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressLight.png; sourceTree = "<group>"; };
 		CAD48F6615EF35750070FDE6 /* headerCellTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = headerCellTop.png; sourceTree = "<group>"; };
+		CAD48F6C15EF38D40070FDE6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CAD648BF15E0C2ED0081E981 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoIcon.png; sourceTree = "<group>"; };
 		CAD648C015E0C2ED0081E981 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photoIcon@2x.png"; sourceTree = "<group>"; };
 		CAD648C315E0C7AE0081E981 /* ANImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageView.h; sourceTree = "<group>"; };
@@ -548,8 +546,6 @@
 				AEB6F97115E121C900EEA9ED /* Action Bar */,
 				FD3EB16115DB4995005BF189 /* Side Menu */,
 				FD3EB47115DB6A98005BF189 /* Navigation Bar */,
-				CAD48F5315EDF2930070FDE6 /* progressDark.png */,
-				CAD48F5415EDF2930070FDE6 /* progressLight.png */,
 				1F8BCD6E15E1AB2C005CE5E9 /* vertical_seperator.png */,
 				1F8BCD6F15E1AB2C005CE5E9 /* vertical_seperator@2x.png */,
 				FD4D008915EB4548003F6B64 /* pullToRefreshBg.png */,
@@ -659,6 +655,7 @@
 				00B4741715D38E3C00F767CE /* InfoPlist.strings */,
 				00B4741A15D38E3C00F767CE /* main.m */,
 				CA96DE9515E04AA5006A8E40 /* AppApp-Prefix.pch */,
+				CAD48F6C15EF38D40070FDE6 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1298,9 +1295,8 @@
 				CAD48F4715ECD2F50070FDE6 /* statusCellTop.png in Resources */,
 				CAD48F4E15EDDA8A0070FDE6 /* separator.png in Resources */,
 				CAD48F4F15EDDA8A0070FDE6 /* separator@2x.png in Resources */,
-				CAD48F5515EDF2930070FDE6 /* progressDark.png in Resources */,
-				CAD48F5615EDF2930070FDE6 /* progressLight.png in Resources */,
 				CAD48F6715EF35750070FDE6 /* headerCellTop.png in Resources */,
+				CAD48F6D15EF38D40070FDE6 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
