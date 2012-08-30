@@ -134,8 +134,40 @@ static UIImage *cellBottom = nil;
     NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
     created_atTextLabel.text = [createdAt stringInterval];
     
+    [self performSelector:@selector(updateTime) withObject:nil afterDelay:1.0];
+    
     NSString *avatarURL = [self.postData stringForKeyPath:@"user.avatar_image.url"];
     avatarView.imageURL = avatarURL;
+}
+
+- (void)updateTime {
+    
+     NSDate *createdAt = [NSDate dateFromISO8601String:[self.postData stringForKey:@"created_at"]];
+     
+    
+    if (![[createdAt stringInterval] isEqualToString:created_atTextLabel.text]) {
+        [UIView animateWithDuration:0.25
+                              delay:0.0
+                            options: UIViewAnimationCurveEaseInOut
+                         animations:^{
+                             created_atTextLabel.alpha = 0;
+                         }
+                         completion:^(BOOL finished){
+                             created_atTextLabel.text = [createdAt stringInterval];
+                             
+                             [UIView animateWithDuration:0.25
+                                                   delay:0.0
+                                                 options: UIViewAnimationCurveEaseInOut
+                                              animations:^{
+                                                  created_atTextLabel.alpha = 1;
+                                              }
+                                              completion:^(BOOL finished){
+                                                  
+                                              }];
+                         }];
+    }
+    
+    [self performSelector:@selector(updateTime) withObject:nil afterDelay:1.0];
 }
 
 @end
