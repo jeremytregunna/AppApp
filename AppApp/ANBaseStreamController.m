@@ -86,6 +86,11 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.011 green:0.486 blue:0.682 alpha:1];
     
+    // iOS 5 and up, should make tableViews more buttery (thanks @mattyohe)
+        NSString *myIdentifier = @"ANStatusViewCell";
+    [self.tableView registerNib:[UINib nibWithNibName:@"ANStatusCell" bundle:nil]
+                  forCellReuseIdentifier:myIdentifier];
+    
     // add gestures
     UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
     [detailsRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
