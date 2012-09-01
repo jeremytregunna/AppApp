@@ -197,8 +197,6 @@
 {
     static NSString *CellIdentifier = @"ANStatusViewCell";
     ANStatusCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [ANStatusCell loadFromNib];
-    [cell prepareForReuse];
     
     // this only needs to be done once, otherwise actions will keep piling up since we never remove them.
     // also, since we use an index, they're straight up legit pa'nuh.
