@@ -88,8 +88,7 @@
     
     // iOS 5 and up, should make tableViews more buttery (thanks @mattyohe)
         NSString *myIdentifier = @"ANStatusViewCell";
-    [self.tableView registerNib:[UINib nibWithNibName:@"ANStatusCell" bundle:nil]
-                  forCellReuseIdentifier:myIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ANStatusCell" bundle:nil] forCellReuseIdentifier:myIdentifier];
     
     // add gestures
     UISwipeGestureRecognizer *detailsRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToSideMenu:)];
@@ -281,7 +280,7 @@
         
         cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            if([url.scheme isEqualToString:@"http"])
+            if([url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"])
             {
                 NSString *serviceName = [defaults objectForKey:@"prefReadLater"];
                 if(serviceName && [serviceName isEqualToString:@""] == NO)
