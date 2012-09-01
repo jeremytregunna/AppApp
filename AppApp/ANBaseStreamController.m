@@ -197,116 +197,114 @@
 {
     static NSString *CellIdentifier = @"ANStatusViewCell";
     ANStatusCell *cell  = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [ANStatusCell loadFromNib];
-        [cell prepareForReuse];
-        
-        // this only needs to be done once, otherwise actions will keep piling up since we never remove them.
-        // also, since we use an index, they're straight up legit pa'nuh.
-        [cell.replyButton addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.repostButton addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.convoButton addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell = [ANStatusCell loadFromNib];
+    [cell prepareForReuse];
+    
+    // this only needs to be done once, otherwise actions will keep piling up since we never remove them.
+    // also, since we use an index, they're straight up legit pa'nuh.
+    [cell.replyButton addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.repostButton addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.convoButton addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        __weak typeof(self) blockSelf = self;
+    __weak typeof(self) blockSelf = self;
 
-        cell.statusTextLabel.tapHandler = ^BOOL (NSURL *url) {
-            BOOL result = NO;
-            if ([url.scheme isEqualToString:@"adnhashtag"])
-            {
-                NSString *hashtag = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnhashtag://#" withString:@""];
-                ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
-                [blockSelf.navigationController pushViewController:hashtagController animated:YES];
-            }
-            else
-            if ([url.scheme isEqualToString:@"adnuser"] && ![SVProgressHUD isVisible])
-            {
-                NSString *userID = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnuser://" withString:@""];;
-                [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
-                [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
-                    if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:blockSelf.view])
-                    {
-                        NSDictionary *userData = dataObject;
-                        ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-                        [blockSelf.navigationController pushViewController:userViewController animated:YES];
-                        [SVProgressHUD dismiss];
-                    }
-                }];
-            }
-            else
-            {
-                NSString *urlString = [url absoluteString];
-                NSURL *newURL = url;
-                
-                // make sure we pick up any changes.
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                BOOL useSafari = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseSafari"] boolValue];
-                BOOL useChrome = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseChrome"] boolValue];
-                
-                if (useChrome)
+    cell.statusTextLabel.tapHandler = ^BOOL (NSURL *url) {
+        BOOL result = NO;
+        if ([url.scheme isEqualToString:@"adnhashtag"])
+        {
+            NSString *hashtag = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnhashtag://#" withString:@""];
+            ANHashtagStreamController *hashtagController = [[ANHashtagStreamController alloc] initWithHashtag:hashtag];
+            [blockSelf.navigationController pushViewController:hashtagController animated:YES];
+        }
+        else
+        if ([url.scheme isEqualToString:@"adnuser"] && ![SVProgressHUD isVisible])
+        {
+            NSString *userID = [[url absoluteString] stringByReplacingOccurrencesOfString:@"adnuser://" withString:@""];;
+            [SVProgressHUD showWithStatus:@"Fetching user..." maskType:SVProgressHUDMaskTypeBlack];
+            [[ANAPICall sharedAppAPI] getUser:userID uiCompletionBlock:^(id dataObject, NSError *error) {
+                if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:blockSelf.view])
                 {
-                    NSString *chromeString = [urlString stringByReplacingCharactersInRange:NSMakeRange(0, 4) withString:@"googlechrome"];
-                    newURL = [NSURL URLWithString:chromeString];
+                    NSDictionary *userData = dataObject;
+                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                    [blockSelf.navigationController pushViewController:userViewController animated:YES];
+                    [SVProgressHUD dismiss];
                 }
-                
-                BOOL canOpenURL = [[UIApplication sharedApplication] canOpenURL:newURL];
-                
-                if ((useSafari || useChrome) && canOpenURL)
+            }];
+        }
+        else
+        {
+            NSString *urlString = [url absoluteString];
+            NSURL *newURL = url;
+            
+            // make sure we pick up any changes.
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            BOOL useSafari = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseSafari"] boolValue];
+            BOOL useChrome = [[[NSUserDefaults standardUserDefaults] objectForKey:@"prefUseChrome"] boolValue];
+            
+            if (useChrome)
+            {
+                NSString *chromeString = [urlString stringByReplacingCharactersInRange:NSMakeRange(0, 4) withString:@"googlechrome"];
+                newURL = [NSURL URLWithString:chromeString];
+            }
+            
+            BOOL canOpenURL = [[UIApplication sharedApplication] canOpenURL:newURL];
+            
+            if ((useSafari || useChrome) && canOpenURL)
+            {
+                [[UIApplication sharedApplication] openURL:newURL];
+            }
+            else
+            {
+                TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
+                webBrowser.showActionButton = YES;
+                webBrowser.showReloadButton = YES;
+                webBrowser.mode = TSMiniWebBrowserModeNavigation;
+            
+                if (webBrowser.mode == TSMiniWebBrowserModeModal)
                 {
-                    [[UIApplication sharedApplication] openURL:newURL];
+                    webBrowser.modalDismissButtonTitle = @"Home";
+                    [blockSelf presentModalViewController:webBrowser animated:YES];
                 }
                 else
+                if(webBrowser.mode == TSMiniWebBrowserModeNavigation)
                 {
-                    TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
-                    webBrowser.showActionButton = YES;
-                    webBrowser.showReloadButton = YES;
-                    webBrowser.mode = TSMiniWebBrowserModeNavigation;
-                
-                    if (webBrowser.mode == TSMiniWebBrowserModeModal)
-                    {
-                        webBrowser.modalDismissButtonTitle = @"Home";
-                        [blockSelf presentModalViewController:webBrowser animated:YES];
-                    }
-                    else
-                    if(webBrowser.mode == TSMiniWebBrowserModeNavigation)
-                    {
-                        [blockSelf.navigationController pushViewController:webBrowser animated:YES];
-                    }
+                    [blockSelf.navigationController pushViewController:webBrowser animated:YES];
                 }
             }
-            return result;
-        };
-        
-        cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            if([url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"])
+        }
+        return result;
+    };
+    
+    cell.statusTextLabel.longPressHandler = ^BOOL (NSURL *url) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if([url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"])
+        {
+            NSString *serviceName = [defaults objectForKey:@"prefReadLater"];
+            if(serviceName && [serviceName isEqualToString:@""] == NO)
             {
-                NSString *serviceName = [defaults objectForKey:@"prefReadLater"];
-                if(serviceName && [serviceName isEqualToString:@""] == NO)
-                {
-                    ANReadLaterManager *manager = [[ANReadLaterManager alloc] initWithDelegate:self];
-                    ANReadLaterType readLaterService = NSNotFound;
-                    if([serviceName isEqualToString:@"Pocket"])
-                        readLaterService = kANReadLaterTypePocket;
-                    else if([serviceName isEqualToString:@"Instapaper"])
-                        readLaterService = kANReadLaterTypeInstapaper;
-                    [manager saveURL:url serviceType:readLaterService];
-                }
-                else
-                {
-                    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
-                    [sheet showInView:blockSelf.view];
-                }
+                ANReadLaterManager *manager = [[ANReadLaterManager alloc] initWithDelegate:self];
+                ANReadLaterType readLaterService = NSNotFound;
+                if([serviceName isEqualToString:@"Pocket"])
+                    readLaterService = kANReadLaterTypePocket;
+                else if([serviceName isEqualToString:@"Instapaper"])
+                    readLaterService = kANReadLaterTypeInstapaper;
+                [manager saveURL:url serviceType:readLaterService];
             }
             else
             {
-                // TODO: Craft a URL pointing to the post on alpha.app.net
-                //       open the action sheet above with this URL. @jtregunna
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:blockSelf cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Send to Pocket", @""), NSLocalizedString(@"Send to Instapaper", @""), nil];
+                [sheet showInView:blockSelf.view];
             }
-            return YES;
-        };
-    }
+        }
+        else
+        {
+            // TODO: Craft a URL pointing to the post on alpha.app.net
+            //       open the action sheet above with this URL. @jtregunna
+        }
+        return YES;
+    };
 
     NSDictionary *statusDict = [streamData objectAtIndex:[indexPath row]];
     
