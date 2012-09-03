@@ -79,8 +79,11 @@
     detailCellHeight = defaultViewHeight + size.height;
 
     [detailCell.replyButton addTarget:self action:@selector(newPostAction:) forControlEvents:UIControlEventTouchUpInside];
+    [detailCell.replyButton setAccessibilityLabel:@"Reply"];
     [detailCell.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    [detailCell.repostButton setAccessibilityLabel:@"Re-post"];
     [detailCell.userButton addTarget:self action:@selector(userAction:) forControlEvents:UIControlEventTouchUpInside];
+    [detailCell.userButton setAccessibilityLabel:@"User info"];
 }
 
 - (void)viewDidUnload
