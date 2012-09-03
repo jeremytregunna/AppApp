@@ -461,22 +461,22 @@
                 UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
                 button.frame = CGRectMake(0,0,110,90);
                 [button addTarget:self action:@selector(viewPosts:) forControlEvents:UIControlEventTouchUpInside];
-                [button setAccessibilityLabel:postCount.text];
-                [button setAccessibilityHint:@"posts"];
+                [button setAccessibilityLabel:[NSString stringWithFormat:@"%@ posts", [userData stringForKeyPath:@"counts.posts"]]];
+                [button setAccessibilityHint:@"Displays user's posts."];
                 [cell.contentView addSubview:button];
                 
                 button = [UIButton buttonWithType:UIButtonTypeCustom];
                 button.frame = CGRectMake(110,0,106,90);
                 [button addTarget:self action:@selector(viewFollowers:) forControlEvents:UIControlEventTouchUpInside];
-                [button setAccessibilityLabel:followersCount.text];
-                [button setAccessibilityHint:@"followers"];
+                [button setAccessibilityLabel:[NSString stringWithFormat:@"%@ followers", [userData stringForKeyPath:@"counts.followers"]]];
+                [button setAccessibilityHint:@"Displays users following this one."];
                 [cell.contentView addSubview:button];
                 
                 button = [UIButton buttonWithType:UIButtonTypeCustom];
                 button.frame = CGRectMake(216,0,104,90);
                 [button addTarget:self action:@selector(viewFollowing:) forControlEvents:UIControlEventTouchUpInside];
-                [button setAccessibilityLabel:followingCount.text];
-                [button setAccessibilityHint:@"following"];
+                [button setAccessibilityLabel:[NSString stringWithFormat:@"%@ following", [userData stringForKeyPath:@"counts.following"]]];
+                [button setAccessibilityHint:@"Displays the users this user is following."];
                 [cell.contentView addSubview:button];
             }
             

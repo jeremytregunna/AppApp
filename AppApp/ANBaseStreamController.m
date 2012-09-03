@@ -201,10 +201,14 @@
     // this only needs to be done once, otherwise actions will keep piling up since we never remove them.
     // also, since we use an index, they're straight up legit pa'nuh.
     [cell.replyButton addTarget:self action:@selector(replyToFromStream:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.repostButton addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.replyButton setAccessibilityLabel:@"Reply"]
+    ;    [cell.repostButton addTarget:self action:@selector(repostFromStream:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.repostButton setAccessibilityLabel:@"Re-post"];
     [cell.convoButton addTarget:self action:@selector(showConversation:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.convoButton setAccessibilityLabel:@"Show conversation"];
     
     [cell.showUserButton addTarget:self action:@selector(showUserAction:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.showUserButton setAccessibilityLabel:@"Show user info"];
 
     __weak typeof(self) blockSelf = self;
 

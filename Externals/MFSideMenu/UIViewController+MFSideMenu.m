@@ -43,10 +43,13 @@ static char menuStateKey;
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
                                                  initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered 
                                                  target:self action:@selector(toggleSideMenuPressed:)];
-        
-        [self.navigationItem.leftBarButtonItem setAccessibilityLabel:@"Sidebar"];
-        [self.navigationItem.leftBarButtonItem setAccessibilityHint:@"Reveals the sidebar"];
-        
+        if(self.navigationController.menuState == MFSideMenuStateVisible) {
+            [self.navigationItem.leftBarButtonItem setAccessibilityLabel:@"Hide Sidebar"];
+            [self.navigationItem.leftBarButtonItem setAccessibilityHint:@"Hides the sidebar."];
+        } else {
+            [self.navigationItem.leftBarButtonItem setAccessibilityLabel:@"Show Sidebar"];
+            [self.navigationItem.leftBarButtonItem setAccessibilityHint:@"Reveals the sidebar."];
+        }
     }/* else {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"] 
                                          style:UIBarButtonItemStyleBordered target:self action:@selector(backButtonPressed:)];
