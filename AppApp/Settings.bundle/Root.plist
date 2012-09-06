@@ -72,6 +72,12 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>#AppApp - v1.5.8</string>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>
