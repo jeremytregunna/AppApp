@@ -229,8 +229,13 @@
                 if (![[ANAPICall sharedAppAPI] handledError:error dataObject:dataObject view:blockSelf.view])
                 {
                     NSDictionary *userData = dataObject;
-                    ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
-                    [blockSelf.navigationController pushViewController:userViewController animated:YES];
+                    // TODO: Handle errors better, perhaps prevent nonusers from even becoming links? 
+                    if ([userData objectForKey:@"error"]) {
+                        //NSLog(@"%@", [userData objectForKey:@"error"]);
+                    } else {
+                        ANUserViewController* userViewController = [[ANUserViewController alloc] initWithUserDictionary:userData];
+                        [blockSelf.navigationController pushViewController:userViewController animated:YES];
+                    }
                     [SVProgressHUD dismiss];
                 }
             }];
