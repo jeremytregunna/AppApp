@@ -32,20 +32,20 @@
 		00ECA12215D7415500178F8A /* ANUserStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00ECA11D15D7409200178F8A /* ANUserStreamController.m */; };
 		00ECA12315D7415500178F8A /* ANUserPostsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00ECA11C15D7409200178F8A /* ANUserPostsController.m */; };
 		00ECA12415D7415500178F8A /* ANUserMentionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00ECA11B15D7409200178F8A /* ANUserMentionsController.m */; };
-		00F6DFED15FF0C410004071D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFCF15FF0C410004071D /* IASKAppSettingsViewController.m */; };
-		00F6DFEE15FF0C410004071D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD115FF0C410004071D /* IASKAppSettingsWebViewController.m */; };
-		00F6DFEF15FF0C410004071D /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD315FF0C410004071D /* IASKSpecifierValuesViewController.m */; };
-		00F6DFF015FF0C410004071D /* IASKSettingsReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD715FF0C410004071D /* IASKSettingsReader.m */; };
-		00F6DFF115FF0C410004071D /* IASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD915FF0C410004071D /* IASKSettingsStore.m */; };
-		00F6DFF215FF0C410004071D /* IASKSettingsStoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDB15FF0C410004071D /* IASKSettingsStoreFile.m */; };
-		00F6DFF315FF0C410004071D /* IASKSettingsStoreUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDD15FF0C410004071D /* IASKSettingsStoreUserDefaults.m */; };
-		00F6DFF415FF0C410004071D /* IASKSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDF15FF0C410004071D /* IASKSpecifier.m */; };
-		00F6DFF515FF0C410004071D /* IASKPSSliderSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE215FF0C410004071D /* IASKPSSliderSpecifierViewCell.m */; };
-		00F6DFF615FF0C410004071D /* IASKPSTextFieldSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE415FF0C410004071D /* IASKPSTextFieldSpecifierViewCell.m */; };
-		00F6DFF715FF0C410004071D /* IASKPSTitleValueSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE615FF0C410004071D /* IASKPSTitleValueSpecifierViewCell.m */; };
-		00F6DFF815FF0C410004071D /* IASKSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE815FF0C410004071D /* IASKSlider.m */; };
-		00F6DFF915FF0C410004071D /* IASKSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFEA15FF0C410004071D /* IASKSwitch.m */; };
-		00F6DFFA15FF0C410004071D /* IASKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFEC15FF0C410004071D /* IASKTextField.m */; };
+		00F6DFED15FF0C410004071D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFCF15FF0C410004071D /* IASKAppSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFEE15FF0C410004071D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD115FF0C410004071D /* IASKAppSettingsWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFEF15FF0C410004071D /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD315FF0C410004071D /* IASKSpecifierValuesViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF015FF0C410004071D /* IASKSettingsReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD715FF0C410004071D /* IASKSettingsReader.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF115FF0C410004071D /* IASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFD915FF0C410004071D /* IASKSettingsStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF215FF0C410004071D /* IASKSettingsStoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDB15FF0C410004071D /* IASKSettingsStoreFile.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF315FF0C410004071D /* IASKSettingsStoreUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDD15FF0C410004071D /* IASKSettingsStoreUserDefaults.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF415FF0C410004071D /* IASKSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFDF15FF0C410004071D /* IASKSpecifier.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF515FF0C410004071D /* IASKPSSliderSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE215FF0C410004071D /* IASKPSSliderSpecifierViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF615FF0C410004071D /* IASKPSTextFieldSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE415FF0C410004071D /* IASKPSTextFieldSpecifierViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF715FF0C410004071D /* IASKPSTitleValueSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE615FF0C410004071D /* IASKPSTitleValueSpecifierViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF815FF0C410004071D /* IASKSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFE815FF0C410004071D /* IASKSlider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFF915FF0C410004071D /* IASKSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFEA15FF0C410004071D /* IASKSwitch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		00F6DFFA15FF0C410004071D /* IASKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F6DFEC15FF0C410004071D /* IASKTextField.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1F6EAAF915DB54F600892268 /* statusCellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F6EAAF715DB54F600892268 /* statusCellBackground.png */; };
 		1F6EAAFA15DB54F600892268 /* statusCellBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F6EAAF815DB54F600892268 /* statusCellBackground@2x.png */; };
 		1F8BCD7015E1AB2C005CE5E9 /* vertical_seperator.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8BCD6E15E1AB2C005CE5E9 /* vertical_seperator.png */; };
@@ -75,6 +75,7 @@
 		4E84930C15E9D24C0086A713 /* Success Notification BG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930415E9D24C0086A713 /* Success Notification BG@2x.png */; };
 		4E84930D15E9D24C0086A713 /* SuccessNotificationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930515E9D24C0086A713 /* SuccessNotificationIcon.png */; };
 		4E84930E15E9D24C0086A713 /* SuccessNotificationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E84930615E9D24C0086A713 /* SuccessNotificationIcon@2x.png */; };
+		4E88F5A6161FC2CA0052F68F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E88F5A5161FC2CA0052F68F /* MessageUI.framework */; };
 		4EF81E1E15E50BD600042C04 /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1815E50BD600042C04 /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E1F15E50BD600042C04 /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1A15E50BD600042C04 /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4EF81E2015E50BD600042C04 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF81E1D15E50BD600042C04 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -325,6 +326,7 @@
 		4E84930415E9D24C0086A713 /* Success Notification BG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Success Notification BG@2x.png"; path = "UISource/Success Notification BG@2x.png"; sourceTree = SOURCE_ROOT; };
 		4E84930515E9D24C0086A713 /* SuccessNotificationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SuccessNotificationIcon.png; path = UISource/SuccessNotificationIcon.png; sourceTree = SOURCE_ROOT; };
 		4E84930615E9D24C0086A713 /* SuccessNotificationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SuccessNotificationIcon@2x.png"; path = "UISource/SuccessNotificationIcon@2x.png"; sourceTree = SOURCE_ROOT; };
+		4E88F5A5161FC2CA0052F68F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4EF81E1715E50BD600042C04 /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
 		4EF81E1815E50BD600042C04 /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
 		4EF81E1915E50BD600042C04 /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
@@ -539,6 +541,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E88F5A6161FC2CA0052F68F /* MessageUI.framework in Frameworks */,
 				4E343DA915E860FA0091355D /* CoreData.framework in Frameworks */,
 				CA96DE8415E04953006A8E40 /* libxml2.dylib in Frameworks */,
 				CA96DE8215E04945006A8E40 /* ImageIO.framework in Frameworks */,
@@ -633,6 +636,7 @@
 		00B473FF15D38E3C00F767CE = {
 			isa = PBXGroup;
 			children = (
+				4E88F5A5161FC2CA0052F68F /* MessageUI.framework */,
 				CAD8D8DF15D706E7007FC765 /* Externals */,
 				922F80C015D58F360049F194 /* API */,
 				00B4741415D38E3C00F767CE /* AppApp */,
